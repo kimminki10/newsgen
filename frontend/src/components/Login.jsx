@@ -16,7 +16,12 @@ const Login = () => {
             <h1>Login</h1>
             <TextBox label="Email" type="email" placeholder="Enter email" />
             <TextBox label="Password" type="password" placeholder="Enter password" />
-            <button>Login</button>
+
+            <button className='loginBtn'>Login</button>
+            <div className='button-container'>
+                <button>Find your account</button>
+                <button>register</button>
+            </div>
         </div>
     );
 };
