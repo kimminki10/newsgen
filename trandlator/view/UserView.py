@@ -93,22 +93,79 @@ class UserView(APIView):
         except Exception as e:
             return Response({'success': False,'error': str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
         
-    ##def patch(self, request):
+    def patch(self, request):
         ## 내용 업데이트
+        """
+        {
+            "id" :  3, 
+            "name":"A",
+            "password":"aaa",
+            "email":"fenpon45@naver.com"
+        }
+        id는 필수
+        User 테이블에서 id를 조회하여 name , password , email 값을 바꿔줌 
+        """
+        data = request.data
+        
+        # 필수 값 확인
+        user_id = data.get("id")
+        if not user_id:
+            return Response({"error": "User ID is required."}, status=status.HTTP_400_BAD_REQUEST)
+        
+        # User 객체 가져오기
+        user = User.objects.get(id=user_id)
 
+         # 제공된 값만 업데이트
+        update_fields = {}
+        for field in ['name', 'password', 'email']:
+            if field in data:
+                update_fields[field] = data[field]
+        
+        # User 모델 업데이트
+        for key, value in update_fields.items():
+            setattr(user, key, value)
+        
+        user.save()  # 변경 사항 저장
+        
+        return Response({"message": "User updated successfully", "updated_fields": update_fields}, status=status.HTTP_200_OK)
+    def delete(self, request):
+        ##User table에서 id조회하여 제거
+        """
+        {
+            "id" :  3, 
+        }
+        """
+        data = request.data
+        
+        # 필수 값 확인
+        user_id = data.get("id")
+        if not user_id:
+            return Response({"error": "User ID is required."}, status=status.HTTP_400_BAD_REQUEST)
+        
+        # User 객체 가져오기
+        user = User.objects.get(id=user_id)
+        
+        # User 삭제
+        user.delete()
+        
+        return Response({"message": f"User with id {user_id} deleted successfully."}, status=status.HTTP_200_OK)
+       
         
 class UserTickers(APIView):
     """
     User 테이블에 Ticker 객체와 연결
     {
         "user_id":1,
-        "tickers":[1]
+        "tickers":[1],
+        "option" : False
     }
     """
     def post(self, request):
+        
         print("User Tickers : Post")
         user_id = request.data.get('user_id')
         ticker_ids = request.data.get('tickers', [])  # Expecting a list of ticker IDs
+        option = request.data.get('option', True)  # True = add, False = remove (default is add)
 
         # Validate required fields
         if not user_id or not ticker_ids:
@@ -119,22 +176,35 @@ class UserTickers(APIView):
 
         try:
             # Fetch the user
+            print("!")
             user = User.objects.get(id=user_id)
             print(user.name)
-            # Fetch the Ticker objects
-            tickers = Ticker.objects.filter(id__in=ticker_ids)
 
-            # Add the Ticker objects to the user's tickers field
-            user.tickers.add(*tickers)
+            # Fetch the Ticker objects as a queryset
+            tickers = Ticker.objects.filter(id__in=ticker_ids)
+            if not tickers.exists():
+                return Response(
+                    {"success": False, "error": "No valid tickers found for the given IDs."},
+                    status=status.HTTP_400_BAD_REQUEST
+                )
+
+            if option:
+                # Add the Ticker objects to the user's tickers field
+                user.tickers.add(*tickers)  # Unpack only if iterable
+                action = "added"
+            else:
+                # Remove the Ticker objects from the user's tickers field
+                user.tickers.remove(*tickers)
+                action = "removed"
+
             print(user.tickers.count())
             return Response(
-                {"success": True, "message": "Tickers added successfully."},
+                {
+                    "success": True,
+                    "message": f"Tickers successfully {action}.",
+                    "remaining_tickers_count": user.tickers.count()
+                },
                 status=status.HTTP_200_OK
-            )
-        except User.DoesNotExist:
-            return Response(
-                {"success": False, "error": "User not found."},
-                status=status.HTTP_404_NOT_FOUND
             )
         except Exception as e:
             return Response(
