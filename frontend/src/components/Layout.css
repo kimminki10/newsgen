@@ -5,7 +5,6 @@
 }
 
 .main-content {
-    margin-top: 60px; /* Adjust this value based on the height of your header */
     padding: 20px;
     flex: 1;
 }

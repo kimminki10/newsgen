@@ -1,5 +1,3 @@
-import React from "react";
-import Header from "./Header";
 import NewsList from "./NewsList";
 import { Link } from "react-router-dom";
 import SearchTextBox from "./SearchTextBox";

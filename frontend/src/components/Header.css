@@ -3,7 +3,7 @@
     width: 100%;
     background-color: #1a412c;
     color: #fff;
-    padding: 1rem 2rem;
+    padding: 1rem 0;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
     display: flex;
     justify-content: space-between;
@@ -18,10 +18,8 @@
 
 .header-title {
   text-decoration: none;
+  padding: 0 1rem;
   color: inherit;
-  margin: 0; /* 추가: 기본 마진 제거 */
-  padding: 0; /* 추가: 기본 패딩 제거 */
-  line-height: normal; /* 추가: 줄 높이 정상화 */
 }
 
 .header-title:hover {

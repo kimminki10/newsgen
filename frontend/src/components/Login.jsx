@@ -1,20 +1,6 @@
-import React from "react";
 import { useNavigate } from "react-router-dom";
+import TextBox from "./TextBox";
 import "./Login.css";
-
-const TextBox = ({ label, type, placeholder, value, onChange }) => {
-  return (
-    <div className="text-box">
-      <label>{label}</label>
-      <input
-        type={type}
-        placeholder={placeholder}
-        value={value}
-        onChange={onChange}
-      />
-    </div>
-  );
-};
 
 const Login = () => {
   const navigate = useNavigate();
@@ -25,13 +11,13 @@ const Login = () => {
 
   return (
     <div className="login-container">
-      <h1>Login</h1>
-      <TextBox label="Email" type="email" placeholder="Enter email" />
-      <TextBox label="Password" type="password" placeholder="Enter password" />
-      <button className="loginBtn">Login</button>
+      <h1>로그인</h1>
+      <TextBox label="이메일주소" type="email" placeholder="Enter email" />
+      <TextBox label="비밀번호" type="password" placeholder="Enter password" />
+      <button className="login-btn">로그인</button>
       <div className="button-container">
-        <button>Find your account</button>
-        <button onClick={handleRegisterClick}>register</button>
+        <button onClick={handleRegisterClick}>가입하기</button>
+        <button>계정찾기</button>
       </div>
     </div>
   );

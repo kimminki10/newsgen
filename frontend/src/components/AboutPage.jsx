@@ -1,7 +1,4 @@
-import React from "react";
-import SearchTextBox from "./SearchTextBox";
 import './AboutPage.css';
-
 
 const fake_contents = [
     {
@@ -96,8 +93,7 @@ const AboutPage = () => {
     return (
         <div>
             <h1>핀트렌드로 쉽게<br/>미국주식 뉴스기사를<br/>읽기 시작하세요.</h1>
-            <SearchTextBox type="text" placeholder="심볼 또는 회사이름으로 검색" value="" onChange={() => {}} />
-            <p>관심있는 종목 선택만 하면<br/>해당종목 관련 영어 뉴스를<br/>한국어로 번역 및 요약해서 매일 메일로!<br/>출근길 읽어주는 뉴스!</p>
+            <p>관심있는 종목 선택만 하면<br/>관련 영어 뉴스를<br/><br/>한국어로 번역 및 요약해서<br/><br/>📧 매일 메일로!<br/><br/>🔉 출근길 읽어주는 뉴스!</p>
             <TodaysNews contents={fake_contents}/>
         </div>
     );
