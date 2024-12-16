@@ -6,3 +6,13 @@
 .subscription-section, .all-section {
     width: 48%;
 }
+
+.subscription-ticker {
+    display: inline-block;
+    padding: 10px 20px;
+    background-color: #333236;
+    text-align: center;
+    border-radius: 5px;
+    cursor: pointer;
+    text-decoration: none;
+}

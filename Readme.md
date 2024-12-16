@@ -6,7 +6,7 @@
 
 ```bash
 ##가상 환경 실행 방법
-Mac : python -m venv venv , 
+Mac : python -m venv venv
 Window : venv\Scripts\activate
 
 ##필요한 라이브러리 설치
