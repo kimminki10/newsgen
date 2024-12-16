@@ -11,4 +11,6 @@ def crawler(driver: selenium.webdriver, url: str, title_selector: str, time_sele
     title = get_text(driver, title_selector)
     time = get_text(driver, time_selector)
     article = get_text(driver, article_selector)
-    return title, time, article
+    if not title or not time or not article:
+        return False, title, time, article
+    return True, title, time, article
