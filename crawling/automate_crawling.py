@@ -26,6 +26,7 @@ def automate_crawler():
             ai_data = openAI.trans_summ_data(crawled_data[2])
             print(f'ticker: {list[0]}, link{list[1]}, t_title{list[2]}, ai_data{ai_data}')
             #해당 관련 정보를 API에 전송해서 article 및 티커 관련정보 저장
+            
         else:
             #meaning crawled_data is none
             print(f'해당 링크는 crawl이 잘 되지 않음 {list[1]}')
