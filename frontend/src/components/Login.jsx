@@ -9,6 +9,10 @@ const Login = () => {
     navigate("/register");
   };
 
+  const handleResetClick = () => {
+    navigate("/reset-password");
+  };
+
   return (
     <div className="login-container">
       <h1>로그인</h1>
@@ -17,7 +21,7 @@ const Login = () => {
       <button className="login-btn">로그인</button>
       <div className="button-container">
         <button onClick={handleRegisterClick}>가입하기</button>
-        <button>계정찾기</button>
+        <button onClick={handleResetClick}>계정찾기</button>
       </div>
     </div>
   );

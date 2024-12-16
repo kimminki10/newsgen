@@ -9,6 +9,7 @@ import NewsTemplate from "./components/NewsTemplate";
 import Subscription from "./components/Subscription";
 import AboutPage from "./components/AboutPage";
 import Layout from "./components/Layout";
+import ResetPasswordPage from "./components/ResetPasswordPage";
 import "./App.css";
 
 function App() {
@@ -19,6 +20,7 @@ function App() {
           <Routes>
             <Route path="/" element={<Home />} />
             <Route path="/login" element={<Login />} />
+            <Route path="/reset-password" element={<ResetPasswordPage />} />
             <Route path="/register" element={<Register />} />
             <Route path="/news" element={<NewsList />} />
             <Route path="/news/template" element={<NewsTemplate />} />
