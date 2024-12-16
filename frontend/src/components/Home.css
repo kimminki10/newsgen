@@ -1,0 +1,8 @@
+.home .content {
+    display: flex;
+    justify-content: space-between;
+}
+
+.subscription-section, .all-section {
+    width: 48%;
+}
