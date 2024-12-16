@@ -8,7 +8,7 @@ driver = webdriver.Chrome(options=options)
 
 url = "https://www.prnewswire.com/news-releases/lument-finance-trust-inc-declares-quarterly-cash-dividends-for-its-common-and-preferred-stock-and-announces-special-cash-dividend-distribution-302330846.html"
 driver.get(url)
-
+#main > article > header > div > div:nth-child(1) > div > div > div.col-sm-8.col-vcenter.col-xs-12 > h1
 title_selector = "#main > article > header > div > div:nth-child(1) > div > div.row.detail-headline > div > h1"
 time_selector = "#main > article > header > div > div:nth-child(4) > div.col-lg-8.col-md-8.col-sm-7.swaping-class-left > p"
 article_selector = "#main > article > header > div > div:nth-child(4) > div.col-lg-8.col-md-8.col-sm-7.swaping-class-left > a > strong"
