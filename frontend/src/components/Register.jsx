@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom";
 import "./Register.css";
 
 const TextBox = ({ label, type, placeholder, value, onChange }) => {
@@ -22,8 +22,6 @@ const Register = () => {
     email: "",
     password: "",
     confirmPassword: "",
-    name: "",
-    phone: "",
   });
 
   const handleChange = (field) => (e) => {
@@ -35,8 +33,22 @@ const Register = () => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
+
+    // 비밀번호 확인 검증
+    if (formData.password !== formData.confirmPassword) {
+      alert("Passwords do not match!");
+      return;
+    }
+
+    // 백엔드로 전송할 데이터 준비 (confirmPassword 제외)
+    const registrationData = {
+      email: formData.email,
+      password: formData.password,
+    };
+
     // 회원가입 로직 구현
-    console.log("Registration data:", formData);
+    console.log("Registration data:", registrationData);
+    // TODO: API 호출 로직 추가
   };
 
   const handleBackToLogin = () => {
@@ -45,6 +57,9 @@ const Register = () => {
 
   return (
     <div className="register-container">
+      <Link to="/" className="logo">
+        Fintrend
+      </Link>
       <h1>Register</h1>
       <form onSubmit={handleSubmit}>
         <TextBox
@@ -67,20 +82,6 @@ const Register = () => {
           placeholder="Confirm password"
           value={formData.confirmPassword}
           onChange={handleChange("confirmPassword")}
-        />
-        <TextBox
-          label="Name"
-          type="text"
-          placeholder="Enter your name"
-          value={formData.name}
-          onChange={handleChange("name")}
-        />
-        <TextBox
-          label="Phone"
-          type="tel"
-          placeholder="Enter phone number"
-          value={formData.phone}
-          onChange={handleChange("phone")}
         />
         <button type="submit" className="registerBtn">
           Register
