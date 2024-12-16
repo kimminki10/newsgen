@@ -12,7 +12,40 @@ def trans_summ_data(crawled_data: str):
         "Content-Type": "application/json",
         "api-key": API_KEY
     }
-    prompt = "영어 뉴스를 한국 뉴스 스타일로 번역합니다. 영어 기사를 제공받으면 다음 네 가지 작업을 수행하세요: \n\n1. 기사가 크롤링된 것이 잘못된 것 같다면 오류 메시지를 제공합니다.\n2. 기사 제목을 한국어로 번역하거나 새로 만듭니다.\n3. 한국 뉴스 형식으로 기사를 번역합니다.\n4. 기사의 중요한 부분을 간단하게 요약하여 제공합니다.\n\n각 작업의 결과를 JSON 형식으로 반환하세요.\n\n# Steps\n\n1. 영어 기사가 제대로 크롤링되었는지 확인합니다.\n2. 크롤링 오류가 의심되면 `error` 필드를 통해 사용자가 인식할 수 있게 메시지를 반환합니다.\n3. 영어 기사 제목을 읽고 한국어로 적절하게 번역하거나 새로운 제목을 작성합니다.\n4. 기사 본문을 한국어로 번역하여 한국 뉴스 스타일로 재작성합니다.\n5. 주제 또는 핵심 아이디어를 중심으로 기사의 중요한 부분을 간단히 요약합니다.\n\n# Output Format\n\n반환 형식은 JSON입니다. 다음 구조를 따르세요:\n\n```json\n{\n  \"error\": \"null 또는 오류 메시지\",\n  \"translated_title\": \"번역된 또는 새롭게 생성된 제목\",\n  \"translated_article\": \"한국어 번역 뉴스 기사 본문\",\n  \"summary\": \"기사의 요약본\"\n}\n```\n\n# Examples\n\n**예시 입력:**\n\n```\nArticle Title: \"Global Markets Rally as Economic Data Beats Expectations\"\nArticle Body: \"Stocks around the world surged today as better-than-expected economic data fueled optimism...\"\n```\n\n**예시 출력:**\n\n```json\n{\n  \"error\": null,\n  \"translated_title\": \"세계 시장, 경제 데이터 기대 이상으로 상승\",\n  \"translated_article\": \"전 세계 주식은 오늘 기대 이상의 경제 데이터가 낙관론에 불을 붙이며 급등했습니다...\",\n  \"summary\": \"전 세계 주식 시장이 경제 데이터 호조로 상승세를 보였습니다.\"\n}\n```\n\n# Notes\n\n- 정확한 번역과 스타일 적용을 위해 한국 미디어의 전형적인 표현 방식을 참고하세요.\n- 요약은 핵심 아이디어를 명확히 전달할 수 있도록 간결하게 유지하세요."
+    prompt = """영어 뉴스 기사의 주 내용을 파악하고 한국어로 번역하세요. 크롤링된 데이터에는 관련 없는 내용이 포함될 수 있으므로, 그런 내용은 무시하고 배제하십시오. 핵심 내용을 기준으로 한국어 제목, 번역본, 요약본을 작성하세요. 그런 다음, 결과를 JSON 형태로 출력하세요.​
+​
+# Steps​
+1. **기사 분석** ​
+   - 기사의 주요 내용을 파악하여 관련 없는 부분은 제외합니다.​
+2. **번역 작업**​
+   - 주 내용을 기반으로 영어 기사를 한국어로 번역합니다.​
+3. **요약 작성**​
+   - 주요 내용을 간결하게 요약합니다.​
+4. **타이틀 작성**​
+   - 번역한 내용에 어울리는 적절한 한국어 제목을 작성합니다.​
+​
+# Output Format​
+- JSON 형식으로 출력합니다.​
+- 구조: `{"k_title": "한국어 제목", "k_article": "한국어 번역", "k_summary": "한국어 요약"}`​
+- 데이터가 부족하거나 이상하면 `k_title`의 값에 `"error"`를 입력합니다.​
+​
+# Examples​
+**Input:** ​
+- A news article in English with some extraneous content.​
+​
+**Output:**​
+```json
+{​
+  "k_title": "뉴스의 주요 흐름에 맞는 한국어 제목",​
+  "k_article": "영어 기사의 주요 내용을 번역한 한국어 텍스트. 기사 전체가 정돈되고 일관된 구조를 가지고, 문맥과 중요한 내용에 맞추어 번역.",​
+  "k_summary": "주요 요점을 간략히 정리한 한국어 요약."​
+}​
+```​
+​
+# Notes​
+​
+- 번역이 어려운 구문은 문맥에 맞게 한국어로 자연스럽게 표현하세요.​
+- 크롤링 데이터의 질이 불확실할 수 있으므로 기사 분석 단계에서 비중 있는 내용을 선별해내는 것이 중요합니다.​​"""
     # Payload for the request
     payload = {
     "messages": [
@@ -162,4 +195,4 @@ Biden Made This Billionaire Much Richer. The Bonanza Could End With Trump
 Market-Moving Data Under Threat as Trump Returns to Washington
 
 In a MedSpa, Your Surgeon May Be a Nurse"""
-    trans_summ_data(data)
+    print(trans_summ_data(data))
