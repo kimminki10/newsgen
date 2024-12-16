@@ -1,52 +1,60 @@
 .login-container {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    width: 90%;
-    max-width: 400px;
-    margin: 0 auto;
-    padding: 20px;
-    border: 1px solid #444;
-    border-radius: 8px;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
-    background-color: #333;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 90%;
+  max-width: 400px;
+  margin: 0 auto;
+  padding: 20px;
+  border: 1px solid #444;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
+  background-color: #333;
+}
+
+/* Login 글자 스타일 추가 */
+.login-container h1 {
+  color: #fff; /* 흰색으로 변경 */
+  font-size: 2.5rem; /* 크기 증가 */
+  margin-bottom: 1.5rem; /* 아래 여백 추가 */
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3); /* 그림자 효과 추가 */
 }
 
 .text-box {
-    display: flex;
-    flex-direction: row;
-    margin-bottom: 15px;
-    justify-content: space-between;
-    width: 100%;
+  display: flex;
+  flex-direction: row;
+  margin-bottom: 15px;
+  justify-content: space-between;
+  width: 100%;
 }
 
 .text-box label {
-    flex: 1;
-    margin-bottom: 5px;
-    font-weight: bold;
+  flex: 1;
+  margin-bottom: 5px;
+  font-weight: bold;
 }
 
 .text-box input {
-    flex: 2;
-    padding: 8px;
-    border: 1px solid #555;
-    border-radius: 4px;
-    box-sizing: border-box;
-    background-color: #444;
+  flex: 2;
+  padding: 8px;
+  border: 1px solid #555;
+  border-radius: 4px;
+  box-sizing: border-box;
+  background-color: #444;
 }
 
 .text-box input::placeholder {
-    color: #bbb;
+  color: #bbb;
 }
 
 .button-container {
-    display: flex;
-    flex-direction: row;
-    justify-content: space-between;
-    width: 100%;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  width: 100%;
 }
 
 .loginBtn {
-    width: 100%;
-    margin: 10px 0;
+  width: 100%;
+  margin: 10px 0;
 }

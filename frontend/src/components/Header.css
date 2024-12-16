@@ -1,16 +1,38 @@
 .header {
-    top: 0;
-    width: 100%;
-    background-color: #333;
-    color: #fff;
-    padding: 10px 20px;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-    z-index: 1000;
-    display: flex;
-    justify-content: space-between;
+  top: 0;
+  width: 100%;
+  background-color: #333;
+  color: #fff;
+  padding: 10px 20px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  z-index: 1000;
+  display: flex;
+  justify-content: space-between;
+  align-items: center; /* 추가: 수직 중앙 정렬 */
 }
 
 .header-content {
-    display: flex;
-    justify-content: flex-end;
+  display: flex;
+  justify-content: flex-end;
+  align-items: center; /* 추가: 수직 중앙 정렬 */
+}
+
+.header-title {
+  text-decoration: none;
+  color: inherit;
+  margin: 0; /* 추가: 기본 마진 제거 */
+  padding: 0; /* 추가: 기본 패딩 제거 */
+  line-height: normal; /* 추가: 줄 높이 정상화 */
+}
+
+.header-title:hover {
+  cursor: pointer;
+}
+
+/* HeaderButton 컴포넌트의 스타일도 필요하다면 추가 */
+.header-button {
+  text-decoration: none;
+  color: inherit;
+  padding: 5px 10px; /* 버튼 패딩 추가 */
+  margin-left: 10px; /* 버튼 간격 */
 }
