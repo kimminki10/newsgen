@@ -14,4 +14,13 @@ pip install -r requirements.txt
 
 #서버 실행
 python manage.py runserver
+
+
+# DB 최초 세팅
+python manage.py makemigrations trandlator
+python manage.py migrate  trandlator  
+
+# DB 경로
+/db.sqlite3
+
 ```
