@@ -11,6 +11,7 @@ const HeaderButton = ({ text, link }) => {
 const Header = () => {
     return (
         <div className="header">
+            <div className="header-title">Fintrend</div>
             <div className="header-content">
                 <HeaderButton text="about" link="/about" />
                 <HeaderButton text="login" link="/login" />
