@@ -1,3 +1,4 @@
+import React from "react";
 import NewsList from "./NewsList";
 import { Link } from "react-router-dom";
 import SearchTextBox from "./SearchTextBox";

@@ -1,3 +1,4 @@
+import React from 'react';
 import './TextBox.css';
 
 const TextBox = ({ label, type, placeholder, value, onChange }) => {

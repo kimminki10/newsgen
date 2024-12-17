@@ -1,3 +1,4 @@
+import React from "react";
 import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
 import Home from "./components/Home";
 import Login from "./components/Login";
@@ -21,6 +22,7 @@ function App() {
             <Route path="/" element={<Home />} />
             <Route path="/login" element={<Login />} />
             <Route path="/reset-password" element={<ResetPasswordPage />} />
+            <Route path="/ticker/:ticker" element={<NewsList />} />
             <Route path="/register" element={<Register />} />
             <Route path="/news" element={<NewsList />} />
             <Route path="/news/template" element={<NewsTemplate />} />

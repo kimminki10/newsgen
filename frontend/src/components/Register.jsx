@@ -1,3 +1,4 @@
+import React from "react";
 import TextBox from "./TextBox";
 import "./TextBox.css";
 import "./Register.css";
