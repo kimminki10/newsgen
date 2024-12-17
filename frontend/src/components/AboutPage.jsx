@@ -65,6 +65,7 @@ const TodaysNews = ({contents}) => {
                     currentPrice={content.currentPrice}
                     pricePointChange={content.pricePointChange}
                     priceChange={content.priceChange}
+                    content={fake_content}
                 />
             ))}
         </div>
