@@ -1,36 +1,92 @@
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import status
+from django.db import connection
+from django.core.exceptions import ObjectDoesNotExist
 from ..model.TickerModel import Ticker
-from ..controller.TickerSerializer import TickerSerializer
+from ..controller.TickerSerialize import TickerSerializer
 
-class TickerListView(APIView):
+
+class TickerView(APIView):
     """
     GET: 전체 티커 목록 조회 
     POST: 새로운 티커 데이터 생성
     """
+
+        
+        
     def get(self, request):
         """
-        Query Params로 필터링된 티커 목록 반환
+        {
+            "ticker_name": "ticker"
+        }
+        Query Params로 필터링된 Ticker 객체 반환
+
+        아무런 파라미터 없이 요청시 전체 Ticker 목록 반환
         """
-        title = request.GET.get('title')  
+        ticker_name = request.data.get('ticker_name')  # Query Params에서 'ticker_name' 가져오기
         
-        if title:
-            tickers = Ticker.objects.filter(ticker_name__icontains=title)
-        else:
-            tickers = Ticker.objects.all()
-        
-        serializer = TickerSerializer(tickers, many=True)
-        return Response({"success": True, "tickers": serializer.data}, status=status.HTTP_200_OK)
+        try:
+            if ticker_name:
+                # 특정 ticker_name으로 필터링
+                ticker = Ticker.objects.get(ticker_name=ticker_name)
+                serializer = TickerSerializer(ticker)
+                return Response({
+                    "success": True,
+                    "ticker": serializer.data
+                }, status=status.HTTP_200_OK)
+            else:
+                # ticker_name이 없으면 전체 목록 반환
+                tickers = Ticker.objects.all()
+                serializer = TickerSerializer(tickers, many=True)
+                return Response({
+                    "success": True,
+                    "tickers": serializer.data
+                }, status=status.HTTP_200_OK)
+
+        except ObjectDoesNotExist:
+            return Response({
+                "success": False,
+                "error": f"Ticker with name '{ticker_name}' does not exist."
+            }, status=status.HTTP_404_NOT_FOUND)
+
+        except Exception as e:
+            return Response({
+                "success": False,
+                "error": str(e)
+            }, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
     def post(self, request):
         """
+        {
+            "ticker_name" : "ticker",
+            "articles" : []
+        }
         새로운 Ticker 객체 생성
+        ticker_name 중복 불가
         """
-        serializer = TickerSerializer(data=request.data)
-
-        if serializer.is_valid():
-            serializer.save()
-            return Response({"success": True, "ticker": serializer.data}, status=status.HTTP_201_CREATED)
+        print("Ticker Post")
+        ticker_name = request.data.get('name')
+        articles = request.data.get('articles', [])  # Expecting a list of ticker IDs
         
-        return Response({"success": False, "errors": serializer.errors}, status=status.HTTP_400_BAD_REQUEST)
+        try:
+            # 유효성 검사
+            if not ticker_name:
+                return Response({'success': False, 'error': "ticker_name is required"}, 
+                                status=status.HTTP_400_BAD_REQUEST)
+            
+            # Ticker 객체 생성
+            ticker = Ticker.objects.create(ticker_name=ticker_name)
+            print("Ticker Created:", ticker.name)
+            
+            # ManyToMany 관계 설정
+            if articles:
+                ticker.articles.set(articles)  # Article ID 리스트 설정
+                print("Articles Linked:", articles)
+
+            return Response({'success': True, 'ticker_id': ticker.id}, 
+                            status=status.HTTP_201_CREATED)
+        except Exception as e:
+            print("Error:", str(e))
+            return Response({'success': False, 'error': str(e)}, 
+                            status=status.HTTP_500_INTERNAL_SERVER_ERROR)

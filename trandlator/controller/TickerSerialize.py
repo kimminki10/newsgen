@@ -5,30 +5,16 @@ from ..model.TickerModel import Ticker
 class TickerSerializer(serializers.ModelSerializer):
     class Meta:
         model = Ticker
-        fields = ['ticker_id', 'ticker_name', 'article_list']
+        fields =  [ 'ticker_name', 'articles']
         extra_kwargs = {
-            'ticker_id': {'read_only': True},  # 자동 증가 필드이므로 읽기 전용
-            'ticker_name': {'required': True},  # 필수 입력 필드
+            'ticker_name': {'required': True}  # 필수 입력 필드
         }
 
+    # 비밀번호를 해시로 저장하도록 커스텀 create 메서드 작성
     def create(self, validated_data):
-        """
-        Ticker 객체 생성
-        """
-        article_list = validated_data.pop('article_list', [])  # ManyToMany 관계 처리
-        ticker = Ticker.objects.create(**validated_data)  # Ticker 객체 생성
-        ticker.article_list.set(article_list)  # 관계 설정
+        ticker = Ticker(
+            ticker_name=validated_data['ticker_name'],
+            articles=validated_data['articles']
+        )
+        ticker.save()
         return ticker
-
-    def update(self, instance, validated_data):
-        """
-        Ticker 객체 업데이트
-        """
-        instance.ticker_name = validated_data.get('ticker_name', instance.ticker_name)
-
-        if 'article_list' in validated_data:
-            article_list = validated_data.pop('article_list')
-            instance.article_list.set(article_list)  # ManyToMany 관계 업데이트
-
-        instance.save()
-        return instance

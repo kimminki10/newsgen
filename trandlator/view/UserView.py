@@ -2,8 +2,11 @@ from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import status
 from django.db import connection
-from ..model.UserModel import User, Ticker
+from django.core.exceptions import ObjectDoesNotExist
+from ..model.UserModel import User
+from ..model.TickerModel import Ticker
 from ..controller.UserSerialize import UserSerializer
+from ..controller.TickerSerialize import TickerSerializer
 
 
 class UserView(APIView):
@@ -155,25 +158,27 @@ class UserTickers(APIView):
     """
     User 테이블에 Ticker 객체와 연결
     {
-        "user_id":1,
-        "tickers":[1],
-        "option" : False
+        "id":1,
+        "ticker_names":["ticker"],
+        "option" : false
     }
     """
     def post(self, request):
         
         print("User Tickers : Post")
-        user_id = request.data.get('user_id')
-        ticker_ids = request.data.get('tickers', [])  # Expecting a list of ticker IDs
+        user_id = request.data.get('id')
+        ticker_names = request.data.get('ticker_names', [])  # Expecting a list of ticker IDs
         option = request.data.get('option', True)  # True = add, False = remove (default is add)
 
-        # Validate required fields
-        if not user_id or not ticker_ids:
+        if not user_id or not ticker_names:
             return Response(
                 {"success": False, "error": "User ID and tickers are required."},
                 status=status.HTTP_400_BAD_REQUEST
             )
+        
 
+        tickers = Ticker.objects.filter(ticker_name__in=ticker_names)
+        
         try:
             # Fetch the user
             print("!")
@@ -181,21 +186,25 @@ class UserTickers(APIView):
             print(user.name)
 
             # Fetch the Ticker objects as a queryset
-            tickers = Ticker.objects.filter(id__in=ticker_ids)
-            if not tickers.exists():
-                return Response(
-                    {"success": False, "error": "No valid tickers found for the given IDs."},
-                    status=status.HTTP_400_BAD_REQUEST
-                )
-
+           
+           
             if option:
                 # Add the Ticker objects to the user's tickers field
                 user.tickers.add(*tickers)  # Unpack only if iterable
                 action = "added"
+                print("+")
             else:
+                print("----")
+                print(tickers)
+                if not tickers.exists():
+                    return Response(
+                        {"success": False, "error": "No valid tickers found for the given IDs."},
+                        status=status.HTTP_400_BAD_REQUEST
+                    )
                 # Remove the Ticker objects from the user's tickers field
                 user.tickers.remove(*tickers)
                 action = "removed"
+                print("-")
 
             print(user.tickers.count())
             return Response(
@@ -212,6 +221,48 @@ class UserTickers(APIView):
                 status=status.HTTP_500_INTERNAL_SERVER_ERROR
             )
 
+    def get(self, request):
+        """
+        User 테이블에 연결된 Ticker 객체 목록 가져옴
+        {
+            "id":1
+        }
+        """
+        user_id = request.data.get('id')  # Query Parameters에서 id 가져오기
+        
+        # id가 제공되지 않은 경우 예외 처리
+        if not user_id:
+            return Response({
+                "success": False,
+                "error": "Query parameter 'id' is required."
+            }, status=status.HTTP_400_BAD_REQUEST)
+
+        try:
+            # User 객체 가져오기
+            user = User.objects.get(id=user_id)
+
+            # ManyToMany 관계로 연결된 Ticker 객체들 가져오기
+            tickers = user.tickers.all()
+
+            # Ticker 데이터 직렬화
+            serializer = TickerSerializer(tickers, many=True)
+
+            return Response({
+                "success": True,
+                "tickers": serializer.data
+            }, status=status.HTTP_200_OK)
+
+        except ObjectDoesNotExist:
+            return Response({
+                "success": False,
+                "error": f"User with id '{user_id}' does not exist."
+            }, status=status.HTTP_404_NOT_FOUND)
+
+        except Exception as e:
+            return Response({
+                "success": False,
+                "error": str(e)
+            }, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
     
     
