@@ -1,0 +1,100 @@
+.profile-container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 2rem;
+}
+
+.profile-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 2rem;
+}
+
+.profile-title {
+  background-color: #ffd700;
+  padding: 0.5rem 1rem;
+  font-weight: bold;
+}
+
+.user-info {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.emoji {
+  font-size: 1.5rem;
+}
+
+.stock-section {
+  background-color: white;
+  padding: 2rem;
+  border-radius: 8px;
+  margin-bottom: 2rem;
+}
+
+.stock-info {
+  margin: 1rem 0;
+}
+
+.remaining {
+  color: #666;
+  margin-left: 0.5rem;
+}
+
+.stock-grid {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 1rem;
+  margin: 1rem 0;
+}
+
+.stock-item {
+  background-color: #1a412c;
+  color: white;
+  padding: 0.5rem 1rem;
+  border-radius: 4px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.remove-btn {
+  background: none;
+  border: none;
+  color: white;
+  cursor: pointer;
+}
+
+.stock-search {
+  margin-top: 1rem;
+}
+
+.stock-search input {
+  width: 100%;
+  padding: 0.5rem;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+}
+
+.notification-section {
+  background-color: white;
+  padding: 2rem;
+  border-radius: 8px;
+}
+
+.notification-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.notification-table td {
+  padding: 1rem;
+  border: 1px solid #eee;
+  text-align: center;
+}
+
+.notification-table tr:nth-child(even) {
+  background-color: #f9f9f9;
+}

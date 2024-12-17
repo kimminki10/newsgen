@@ -1,5 +1,6 @@
 import React from "react";
 import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
+import { AuthProvider } from "./components/AuthContext";
 import Home from "./components/Home";
 import Login from "./components/Login";
 import Register from "./components/Register";
@@ -11,11 +12,12 @@ import Subscription from "./components/Subscription";
 import AboutPage from "./components/AboutPage";
 import Layout from "./components/Layout";
 import ResetPasswordPage from "./components/ResetPasswordPage";
+import Profile from "./components/Profile"; // Profile 컴포넌트 import 추가
 import "./App.css";
 
 function App() {
   return (
-    <>
+    <AuthProvider>
       <Router>
         <Layout>
           <Routes>
@@ -31,10 +33,12 @@ function App() {
             <Route path="/summary/:id" element={<SummarySubject />} />
             <Route path="/about" element={<AboutPage />} />
             <Route path="/subscription" element={<Subscription />} />
+            <Route path="/profile" element={<Profile />} />{" "}
+            {/* Profile 라우트 추가 */}
           </Routes>
         </Layout>
       </Router>
-    </>
+    </AuthProvider>
   );
 }
 
