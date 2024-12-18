@@ -3,7 +3,7 @@ from rest_framework.response import Response
 from rest_framework import status
 from django.db import connection
 from django.core.exceptions import ObjectDoesNotExist
-from ..model.TickerModel import Ticker
+from ..models import Ticker
 from ..controller.TickerSerialize import TickerSerializer
 
 

@@ -1,5 +1,5 @@
 from rest_framework import generics
-from trandlator.model.UserModel import User
+from trandlator.models import User
 from trandlator.controller.UserSerialize import UserSerializer
 from django.core.cache import cache
 from django.core.mail import send_mail
@@ -29,7 +29,7 @@ class UserListCreate(generics.ListCreateAPIView):
     def create(self, request, *args, **kwargs):
         response = super().create(request, *args, **kwargs)
         user = User.objects.get(username=request.data['username'])
-        send_verification_email(request, user.email)
+        #send_verification_email(request, user.email)
         return response
     
 

@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from trandlator.model.ArticleModel import Article
+from trandlator.models import Article
 
 class ArticleSerializer(serializers.ModelSerializer):
     class Meta:

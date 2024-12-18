@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from ..model.TickerModel import Ticker
+from trandlator.models import Ticker
 from .ArticleSerializer import ArticleSerializer
 
 # Ticker 모델 Serializer
