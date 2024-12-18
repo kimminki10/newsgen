@@ -13,6 +13,7 @@ import AboutPage from "./components/AboutPage";
 import Layout from "./components/Layout";
 import ResetPasswordPage from "./components/ResetPasswordPage";
 import Profile from "./components/Profile"; // Profile 컴포넌트 import 추가
+import Mail from "./components/Mail";
 import "./App.css";
 
 function App() {
@@ -34,7 +35,7 @@ function App() {
             <Route path="/about" element={<AboutPage />} />
             <Route path="/subscription" element={<Subscription />} />
             <Route path="/profile" element={<Profile />} />{" "}
-            {/* Profile 라우트 추가 */}
+            <Route path="/mail" element={<Mail />} />
           </Routes>
         </Layout>
       </Router>
