@@ -1,19 +1,40 @@
-from rest_framework.views import APIView
-from rest_framework.response import Response
-from rest_framework import status
+from rest_framework import generics
+from trandlator.models import User
+from trandlator.controller.UserSerialize import UserSerializer
+from django.core.cache import cache
+from django.core.mail import send_mail
+from django.conf import settings
+import uuid
 
-from ..model.UserModel import UserItem
-from ..controller.UserSerialize import UserItemSerializer
 
+def send_verification_email(request, email):
+    # Generate token
+    token = str(uuid.uuid4())
+    cache.set(token, email, timeout=300)  # 5 minutes
 
-class TestAPIView(APIView):
-    """
-    Handle GET and POST requests.
-    """
-    def get(self,request):
-        # GET 요청에서 간단히 데이터를 반환
-        return Response({"data":8}, status=status.HTTP_200_OK)
-    def post(self, request):
-        # POST 요청 데이터를 검증
-        result = {"test": 3}
-        return Response(result, status=status.HTTP_200_OK)
+    # Send email
+    verification_link = "http://verificationlink"
+    send_mail(
+        'Verify your email',
+        f'Click the link to verify your email: {verification_link}',
+        settings.DEFAULT_FROM_EMAIL,
+        [email],
+        fail_silently=False,
+    )
+
+class UserListCreate(generics.ListCreateAPIView):
+    queryset = User.objects.all()
+    serializer_class = UserSerializer
+
+    def create(self, request, *args, **kwargs):
+        response = super().create(request, *args, **kwargs)
+        user = User.objects.get(email=request.data['email'])
+        #send_verification_email(request, user.email)
+        return response
+    
+
+class UserTickers(generics.ListAPIView):
+    serializer_class = UserSerializer
+
+    def get_queryset(self):
+        return User.objects.get(email=self.request.user.email).tickers.all()

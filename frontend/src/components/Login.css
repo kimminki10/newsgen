@@ -1,0 +1,21 @@
+.login-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 90%;
+  max-width: 400px;
+  margin: 0 auto;
+  padding: 20px;
+}
+
+.button-container {
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+}
+
+.login-btn {
+  width: 100%;
+  margin: 10px 0;
+}

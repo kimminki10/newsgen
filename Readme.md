@@ -14,4 +14,20 @@ pip install -r requirements.txt
 
 #서버 실행
 python manage.py runserver
+
+
+# DB 최초 세팅
+python manage.py makemigrations trandlator
+python manage.py migrate  trandlator  
+
+# DB 경로
+/db.sqlite3
+
+#OpenAI 및 Crawling 사용법
+팀즈에서 env 파일을 다운받은 다음 해당 프로젝트 최상위 폴더에 넣고 .env로 이름 변경
+후 가상 환경 실행후 python crawling/automate_crawling.py 작성
+
 ```
+
+
+

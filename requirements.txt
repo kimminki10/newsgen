@@ -2,3 +2,7 @@ djangorestframework
 selenium
 playwright
 django-cors-headers
+selenium
+requests
+python-dotenv
+simple-jwt

@@ -1,0 +1,255 @@
+.profile-container {
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 20px;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Arial,
+    sans-serif;
+}
+
+.profile-header {
+  margin-bottom: 2rem;
+}
+
+.user-info {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px;
+  font-size: 16px;
+  justify-content: space-between;
+  width: 98%;
+}
+
+.emoji {
+  font-size: 20px;
+}
+
+.logout-btn {
+  background-color: #1a412c;
+  color: white;
+  border: none;
+  padding: 8px 16px;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 14px;
+  margin-left: auto;
+}
+
+.logout-btn:hover {
+  background-color: #2c5f41;
+}
+
+.stock-section {
+  background-color: white;
+  padding: 2rem;
+  border-radius: 8px;
+  margin-bottom: 2rem;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.stock-info {
+  margin: 1rem 0;
+}
+
+.remaining {
+  color: #666;
+  margin-left: 0.5rem;
+}
+
+.stock-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+  gap: 1rem;
+  margin: 1rem 0;
+}
+
+.stock-item {
+  background-color: #1a412c;
+  color: white;
+  padding: 0.5rem 1rem;
+  border-radius: 4px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.remove-btn {
+  background: none;
+  border: none;
+  color: white;
+  cursor: pointer;
+}
+
+.stock-search {
+  position: relative;
+  margin-top: 1rem;
+}
+
+.search-container {
+  display: flex;
+  align-items: center;
+  width: 100%;
+  gap: 8px;
+}
+
+.search-button {
+  background: transparent;
+  border: none;
+  border-radius: 4px;
+  padding: 8px 12px;
+  color: #1a412c;
+  cursor: pointer;
+  font-size: 16px;
+  transition: background-color 0.3s ease;
+}
+
+.search-button:hover {
+  background: rgba(26, 65, 44, 0.1);
+}
+
+.search-results {
+  position: absolute;
+  width: 100%;
+  background: white;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  margin-top: 4px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  z-index: 1000;
+}
+
+.search-result-item {
+  padding: 8px 12px;
+  cursor: pointer;
+  display: flex;
+  justify-content: space-between;
+}
+
+.search-result-item:hover {
+  background-color: #f5f5f5;
+}
+
+.ticker {
+  font-weight: bold;
+}
+
+.company-name {
+  color: #666;
+}
+
+.notification-section {
+  background-color: white;
+  padding: 2rem;
+  border-radius: 8px;
+  margin-bottom: 2rem;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.notification-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.notification-table td {
+  padding: 1rem;
+  border: 1px solid #eee;
+  text-align: center;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.notification-table td:hover {
+  background-color: rgba(26, 65, 44, 0.05);
+}
+
+.notification-table td.selected {
+  background-color: #1a412c;
+  color: white;
+  border-color: #1a412c;
+}
+
+.notification-table tr:nth-child(even) td:not(.selected) {
+  background-color: #f9f9f9;
+}
+
+.notification-buttons {
+  display: flex;
+  gap: 1rem;
+  margin-top: 1.5rem;
+  justify-content: flex-end;
+}
+
+.save-button,
+.send-button {
+  padding: 0.75rem 1.5rem;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 14px;
+  border: 1px solid #1a412c;
+  transition: all 0.3s ease;
+}
+
+.save-button {
+  background-color: white;
+  color: #1a412c;
+  opacity: 0.5;
+}
+
+.save-button.active {
+  opacity: 1;
+  cursor: pointer;
+}
+
+.save-button.active:hover {
+  background-color: #f5f5f5;
+}
+
+.send-button {
+  background-color: #1a412c;
+  color: white;
+}
+
+.send-button:hover {
+  background-color: #2c5f41;
+}
+
+.save-button:disabled,
+.send-button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+@media (max-width: 768px) {
+  .profile-container {
+    padding: 10px;
+  }
+
+  .stock-grid {
+    grid-template-columns: 1fr 1fr;
+  }
+
+  .notification-table td {
+    padding: 0.75rem 0.5rem;
+    font-size: 14px;
+  }
+
+  .search-container {
+    flex-direction: column;
+  }
+
+  .search-button {
+    width: 100%;
+    margin-top: 8px;
+  }
+
+  .notification-buttons {
+    flex-direction: column;
+  }
+
+  .save-button,
+  .send-button {
+    width: 100%;
+  }
+}
