@@ -2,7 +2,26 @@ import React, { useRef } from "react";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "./AuthContext";
 import TextBox from "./TextBox";
+import axios from "axios";
 import "./Login.css";
+
+
+const do_login = async (email, password) => {
+  try {
+    const response = await axios.post("http://localhost:8000/token/", { email, password });
+    if (response.status === 200) {
+      alert("로그인에 성공했습니다.");
+      return true;
+    } else {
+      console.log(response.data);
+      alert("로그인에 실패했습니다. 다시 시도해주세요.");
+    }
+  } catch (error) {
+    console.error("로그인 요청 중 오류가 발생했습니다.", error);
+    alert("로그인 요청 중 오류가 발생했습니다.");
+  }
+  return false;
+};
 
 const Login = () => {
   const navigate = useNavigate();
@@ -18,9 +37,21 @@ const Login = () => {
     navigate("/reset-password");
   };
 
-  const handleLogin = () => {
+  const handleLogin = async () => {
     const email = emailRef.current.value;
-    // 실제 백엔드 연동 대신 임시로 로그인 처리
+    const password = passwordRef.current.value;
+
+    if (!email || !password) {
+      alert("이메일과 비밀번호를 입력해주세요.");
+      return;
+    }
+
+    const loginSuccess = await do_login(email, password);
+    if (!loginSuccess) {
+      alert("로그인에 실패했습니다. 다시 시도해주세요.");
+      return;
+    }
+
     login(email);
     navigate("/"); // 홈으로 리다이렉트
   };
