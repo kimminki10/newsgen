@@ -39,8 +39,8 @@ def daily_email():
                 daily_news_html = format_articles_html(articles[:5])
                 content = daily_news_html
             # 이메일 보내는 기능
-            print(f'Sent to: {user_email} \n subject: {subject} \n content: {content}')
-            #se(user_email, subject, content)
+            #print(f'Sent to: {user_email} \n subject: {subject} \n content: {content}')
+            se(user_email, subject, content)
             
 
 def format_articles_html(articles):
@@ -66,11 +66,13 @@ def format_articles_html(articles):
             <div style="padding: 0;">
             <h2 style="font-size: 18px; color: #1b4d3e;">{title}</h2>
             <p style="font-size: 14px; color: #333;">{content}</p>
+            <div style="margin-top: 10px;">
+                        {" ".join([f'<a href="https://finance.example.com/{ticker}" style="text-decoration: none; border: 1px solid #1b4d3e; color: #1b4d3e; padding: 5px 10px; border-radius: 5px; font-size: 12px; margin-right: 5px; display: inline-block;">{ticker}</a>' for ticker in article['tickers']])}
+            </div>
             </div>
             </td>
         </tr>
         """
-        
     basic_html_template  = f"""<!DOCTYPE html>
         <html>
         <head>
