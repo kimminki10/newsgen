@@ -7,32 +7,39 @@ import NewsItem from "./NewsItem";
 
 const NewsList = () => {
   const {ticker} = useParams();
-  const [tickerData, setTickerData] = useState([]);
+  const [tickerData, setTickerData] = useState({});
+  const [articles, setArticles] = useState([]);
   useEffect(() => {
     const fetchTickerData = async () => {
       try {
-        const response = await axios.get(`${config.backendBaseUrl}/article/${ticker}`);
-            setTickerData(response.data);
+        const response = await axios.get(`${config.backendBaseUrl}/ticker/${ticker}/`);
+          const { articles, ...rest } = response.data;
+          setTickerData(rest);
+          setArticles(articles);
         } catch (error) {
-            console.error("Error fetching ticker data:", error);
+          console.error("Error fetching ticker data:", error);
         }
       };
       fetchTickerData();
-  }, [ticker]);
+  }, []);
 
   return (
     <div className="news-list">
-      <div className="ticker-title">{ticker}</div>
-      {tickerData.length === 0 ?
-      tickerData.map((news) => (
+      <div className="ticker-info">
+        <div className="ticker-title">{ticker}</div>
+        <div>{tickerData.last_price}</div>
+      </div>
+
+      {articles.length !== 0 ?
+      articles.map((news) => (
         <NewsItem
                     key={news.id}
                     title={news.title}
-                    ticker={news.ticker}
-                    date={news.date}
-                    currentPrice={news.currentPrice}
-                    pricePointChange={news.pricePointChange}
-                    priceChange={news.priceChange}
+                    ticker={ticker}
+                    date={tickerData.updated_at}
+                    currentPrice={tickerData.last_price}
+                    pricePointChange={tickerData.percentage_diff}
+                    priceChange={tickerData.price_diff}
                     content={news.content}
                 />
       ))
