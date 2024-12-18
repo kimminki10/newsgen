@@ -1,12 +1,9 @@
 import os
-import sys
 import django
 import random
 from datetime import datetime
 # Step 1: Add the project root to the Python path
-PROJECT_ROOT = os.path.abspath(os.path.join(os.path.dirname(__file__), '../../'))
-sys.path.append(PROJECT_ROOT)
-
+# export PYTHONPATH=$PYTHONPATH:/Users/johnwon/Desktop/Projects/project2/project2_github/newsgen
 # Step 2: Set the Django settings module
 os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'trandlator.settings')
 
@@ -14,27 +11,115 @@ os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'trandlator.settings')
 django.setup()
 
 from trandlator.models import User, Article, Ticker
-from trandlator.controller.UserSerialize import UserSerializer
+from trandlator.controller.TickerSerialize import TickerNoArticleSerializer, TickerNameSerializer
+from trandlator.controller.ArticleSerializer import ArticleSerializer
 
+##################################################################################################################################
+#Used in daily_email.py
+##################################################################################################################################
 def get_articles_by_ticker_and_date(ticker_name: str, start_date:datetime, end_date: datetime):
     ticker = Ticker.objects.get(ticker_name=ticker_name)
-    articles = ticker.articles.filter(
+    articles = ticker.articles.prefetch_related('tickers').filter(
         created_at__range=[start_date, end_date]  # 날짜 범위 필터링
     )
-    article_list = [
-        {
-            "id": article.id,
-            "title": article.title,
-            "content": article.content,
-            "tickers": [ticker.ticker_name for ticker in article.tickers.all()],  # Include tickers
-            "created_at": article.created_at,
-            "updated_at": article.updated_at,
-        }
-        for article in articles
-    ]
-    return article_list
+    serializer = ArticleSerializer(articles, many=True)
+    return serializer.data
 
-def get_all_users():#
+##################################################################################################################################
+#Used in auto crawling
+##################################################################################################################################
+def add_article(title: str, content: str, tickers: list, summary: str = 'empty summary',
+                origin_url: str = '', tts_content: str = 'empty tts content', tts_url: str = ''):
+    # Create the Article instance
+    article = Article.objects.create(
+        title=title,
+        content=content,
+        summary=summary,
+        origin_url=origin_url,
+        tts_content=tts_content,
+        tts_url=tts_url
+    )
+    for ticker_name in tickers:
+        ticker, created = Ticker.objects.get_or_create(ticker_name=ticker_name)
+        article.tickers.add(ticker)
+    return article
+
+#Used in auto crawling
+def check_article_exists_by_url(url: str) -> bool:
+    return Article.objects.filter(origin_url=url).exists()
+
+##################################################################################################################################
+#Used in daily_stock_prices
+##################################################################################################################################
+def get_all_ticker_names():
+    tickers = Ticker.objects.all()
+    serializer = TickerNameSerializer(tickers, many=True)
+    return [item['ticker_name'] for item in serializer.data]
+
+def get_all_ticker():
+    tickers = Ticker.objects.all()
+    serializer = TickerNoArticleSerializer(tickers, many=True)
+    return serializer.data
+
+def update_ticker_prices(price_data: dict):
+    """
+    Updates ticker prices in the database based on the provided price data.
+
+    :param price_data: Dictionary with ticker_name as keys and price info as values
+    """
+    # Fetch all tickers from the database
+    tickers = Ticker.objects.filter(ticker_name__in=price_data.keys())
+
+    tickers_to_update = []
+
+    for ticker in tickers:
+        ticker_name = ticker.ticker_name
+        if ticker_name in price_data:
+            data = price_data[ticker_name]
+            # Update the ticker object
+            ticker.before_last_price = data["before_last_price"]
+            ticker.last_price = data["last_price"]
+            ticker.price_diff = data["price_difference"]
+            ticker.percentage_diff = data["percentage_difference"]
+            ticker.last_price_date = data["last_price_date"]
+            ticker.before_last_date = data["before_last_price_date"]
+            tickers_to_update.append(ticker)
+    # Bulk update the database
+    if tickers_to_update:
+        Ticker.objects.bulk_update(
+            tickers_to_update,
+            ["last_price", "before_last_price", "price_diff",
+             "percentage_diff", "last_price_date", "before_last_date"]
+        )
+        print(f"Updated {len(tickers_to_update)} tickers successfully.")
+    else:
+        print("No tickers were updated.")
+
+def get_all_articles():
+    articles = Article.objects.all()
+    serializer = ArticleSerializer(articles, many=True)
+    return serializer.data
+
+#ORM VERSION
+# def get_articles_by_ticker_and_date(ticker_name: str, start_date:datetime, end_date: datetime):
+#     ticker = Ticker.objects.get(ticker_name=ticker_name)
+#     articles = ticker.articles.filter(
+#         created_at__range=[start_date, end_date]  # 날짜 범위 필터링
+#     )
+#     article_list = [
+#         {
+#             "id": article.id,
+#             "title": article.title,
+#             "content": article.content,
+#             "tickers": [ticker.ticker_name for ticker in article.tickers.all()],  # Include tickers
+#             "created_at": article.created_at,
+#             "updated_at": article.updated_at,
+#         }
+#         for article in articles
+#     ]
+#     return article_list
+
+def get_all_users():
     users = User.objects.prefetch_related('tickers').all()
     user_list = [
         {
@@ -57,22 +142,22 @@ def update_user(email, new_email):
     except User.DoesNotExist:
         return {"error": ""}
 
-def get_all_articles():
-    articles = Article.objects.all()
-    article_list = [
-        {
-            "id": article.id,
-            "title": article.title,
-            "content": article.content,
-            "created_at": article.created_at,
-            "updated_at": article.updated_at,
-            "views": article.views,
-            "origin_url": article.origin_url,
-            "tickers": [ticker.ticker_name for ticker in article.tickers.all()]
-        }
-        for article in articles
-    ]
-    return article_list
+# def get_all_articles():
+#     articles = Article.objects.all()
+#     article_list = [
+#         {
+#             "id": article.id,
+#             "title": article.title,
+#             "content": article.content,
+#             "created_at": article.created_at,
+#             "updated_at": article.updated_at,
+#             "views": article.views,
+#             "origin_url": article.origin_url,
+#             "tickers": [ticker.ticker_name for ticker in article.tickers.all()]
+#         }
+#         for article in articles
+#     ]
+#     return article_list
 
 def add_article(title, content, tickers, origin_url=""):
     new_article = Article.objects.create(
@@ -128,11 +213,13 @@ def link_ticker_to_user(ticker_name, user_email):
 
 if __name__ == "__main__":
     # print("\n=== Final Articles ===")
-    # print(get_all_articles())
+    #print(get_all_articles())
+    #print(get_all_ticker_names())
+    print(get_all_ticker())
     #print(get_articles_by_ticker_and_date("TSLA", datetime(2024, 12, 17), datetime(2024, 12, 18, 6, 0)))
-
+    #print(get_articles_by_ticker_and_date("TSLA", datetime(2024, 12, 17), datetime(2024, 12, 20, 6, 0)))
     # print("\n=== Final Users ===")
-    print(get_all_users())
+    #print(get_all_users())
     #update_user("user1@example.com", "johnwon2007@gmail.com")
     # print("=== Adding Users ===")
     # users = [

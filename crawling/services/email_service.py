@@ -15,15 +15,14 @@ def send_email(receiver_email, subject, content):
     load_dotenv(override=True)
 
     # 발신자 이메일과 비밀번호를 환경 변수에서 불러오기
-    sender_email = os.environ.get('EMAIL_ADDRESS')  # 발신자 이메일 주소
-    sender_password = os.environ.get('EMAIL_APP_PASSWORD')  # 발신자 이메일 앱 비밀번호
+    sender_email = os.environ.get('SENDER_EMAIL')  # 발신자 이메일 주소
+    sender_password = os.environ.get('SENDER_PASSWORD')  # 발신자 이메일 앱 비밀번호
 
     # 이메일 내용 및 속성 설정
     html_message = MIMEText(content, 'html')  # 이메일 내용을 HTML 형식으로 설정
     html_message['Subject'] = subject  # 이메일 제목 설정
     html_message['From'] = sender_email  # 발신자 이메일 주소 설정
     html_message['To'] = receiver_email  # 수신자 이메일 주소 설정
-
     # Gmail SMTP 서버 설정
     smtp_server = "smtp.gmail.com"  # Gmail SMTP 서버 주소
     port = 587  # STARTTLS를 위한 포트 번호
@@ -44,32 +43,32 @@ def send_email(receiver_email, subject, content):
         print(e)
 
 
-if __name__ == "__main__":
-    receiver_email = "gameking0301@gmail.com"
-    subject = "TESING NEWS TITLE"
-    content = """
-            <!DOCTYPE html>
-<html>
-<head>
-    <title>Simple HTML</title>
-</head>
-<body>
-    <header>
-        <h1>Header</h1>
-    </header>
-    <main>
-        <section>
-            <h2>Section</h2>
-            <p>Paragraph</p>
-        </section>
-        <article>
-            <h2>Article</h2>
-            <p>Another Paragraph</p>
-        </article>
-    </main>
-    <footer>
-        <p>Footer</p>
-    </footer>
-</body>
-</html>"""
-    send_email(receiver_email, subject, content)
+# if __name__ == "__main__":
+#     receiver_email = "gameking0301@gmail.com"
+#     subject = "TESING NEWS TITLE"
+#     content = """
+#             <!DOCTYPE html>
+# <html>
+# <head>
+#     <title>Simple HTML</title>
+# </head>
+# <body>
+#     <header>
+#         <h1>Header</h1>
+#     </header>
+#     <main>
+#         <section>
+#             <h2>Section</h2>
+#             <p>Paragraph</p>
+#         </section>
+#         <article>
+#             <h2>Article</h2>
+#             <p>Another Paragraph</p>
+#         </article>
+#     </main>
+#     <footer>
+#         <p>Footer</p>
+#     </footer>
+# </body>
+# </html>"""
+#     send_email(receiver_email, subject, content)

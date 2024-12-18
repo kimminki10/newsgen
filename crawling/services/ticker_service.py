@@ -11,7 +11,7 @@ def ticker_price_diff(ticker: str):
         last_price_date: 전날의 정확한 날짜 (한국시간)
         before_last_date: 전전날의 정확한 날짜 (한국시간)
     """
-    ticker_data = yf.Ticker(ticker).history(period="5d")
+    ticker_data = yf.Ticker(ticker).history(period="5d").dropna(subset=["Close"])
     if not ticker_data.empty and len(ticker_data) >= 2:
         #prices
         last_price = ticker_data.Close.iloc[-1] #getting the last closed price
@@ -21,11 +21,11 @@ def ticker_price_diff(ticker: str):
         before_last_price = round(before_last_price, 2)
         
         # dates
+        #TODO: decide if EST date or Korean Date will be used
         original_dates = pd.to_datetime(ticker_data.index)
         korean_dates = original_dates.tz_convert('Asia/Seoul')
         last_price_date = korean_dates[-1] #getting the last closed price Date
         before_last_date = korean_dates[-2] #getting the before last closed Date
-        
         #calculations
         difference = last_price - before_last_price
         percentage = difference / before_last_price * 100
@@ -35,6 +35,61 @@ def ticker_price_diff(ticker: str):
         return last_price, before_last_price, difference, percentage, last_price_date, before_last_date
     return None
 
+def tickers_price_diff(tickers: list[str]):
+    """
+    RETURNS 
+        last_price: 마지막 가격
+        before_last_price: 마지막 전의 가격
+        price diffence in USD: 전날과 전전날의 차이
+        price difference in percentage: 퍼센티지 기준의 차이
+        last_price_date: 전날의 정확한 날짜 (한국시간)
+        before_last_date: 전전날의 정확한 날짜 (한국시간)
+    """
+    # Fetch historical data using yfinance
+    data = yf.Tickers(tickers).history(period="5d")
+
+    # Initialize result dictionary
+    result = {}
+
+    for ticker in tickers:
+        try:
+            # Extract 'Close' prices for the ticker and drop NaN values
+            close_prices = data['Close'][ticker].dropna()
+            
+            # Ensure we have at least two valid prices
+            if len(close_prices) >= 2:
+                # Extract last price and before last price
+                last_price = close_prices.iloc[-1]
+                before_last_price = close_prices.iloc[-2]
+                # Calculate price difference
+                price_difference = last_price - before_last_price
+                percentage_difference = (price_difference / before_last_price) * 100
+                
+                #두자릿수로 계산
+                last_price = round(last_price, 2)
+                before_last_price = round(before_last_price, 2)
+                price_difference = round(price_difference, 2)
+                percentage_difference = round(percentage_difference, 2)
+                
+                # Store results
+                result[ticker] = {
+                    "last_price": last_price,
+                    "before_last_price": before_last_price,
+                    "price_difference": price_difference,
+                    "percentage_difference": percentage_difference,
+                    "last_price_date": close_prices.index[-1],
+                    "before_last_price_date": close_prices.index[-2]
+                }
+            else:
+                # result[ticker] = "Not enough data"
+                print(f"{ticker} does not have Enough price_data")
+
+        except KeyError:
+            result[ticker] = "Ticker not found"
+    
+    return result
+
+    
 if __name__ == "__main__":
     # Major U.S. Indices
     sp500_ticker = "^GSPC"    # S&P 500: Tracks the top 500 large-cap U.S. companies
@@ -88,3 +143,4 @@ if __name__ == "__main__":
     #s&p500
     sp500_ticker = "^GSPC"
     print(ticker_price_diff(sp500_ticker))
+    #print(tickers_price_diff(all_tickers['Major Indices']))
