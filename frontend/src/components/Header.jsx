@@ -35,7 +35,6 @@ const Header = () => {
                 <span className="user-icon">😊</span>
                 <span className="user-email">{userEmail}</span>
               </Link>
-              <HeaderButton text="logout" onClick={logout} />
             </>
           ) : (
             <>
