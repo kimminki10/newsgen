@@ -25,7 +25,7 @@ SECRET_KEY = 'django-insecure-pkpscwyfa#--#*7azfyeufx7d5%_t4k1m45zr)fn(epmrrx3)u
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['*']  # 모든 호스트 허용 (개발용)
 
 
 # Application definition
@@ -40,6 +40,7 @@ INSTALLED_APPS = [
     'corsheaders',
     'trandlator',
     'rest_framework',
+    'tasks',  # Celery 작업을 포함한 앱
 ]
 
 MIDDLEWARE = [
@@ -50,14 +51,28 @@ MIDDLEWARE = [
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
-    'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'django.middleware.clickjacking.XFrameOptionsMiddleware'
 ]
+
+# Celery 설정
+
+CELERY_BROKER_URL = 'redis://redis:6379/0'
+CELERY_ACCEPT_CONTENT = ['json']
+CELERY_TASK_SERIALIZER = 'json'
+CELERY_RESULT_SERIALIZER = 'json'
+CELERY_TIMEZONE = 'Asia/Seoul'
+
+TIMEZONE = 'Asia/Seoul'
 
 CORS_ALLOWED_ORIGINS = [
     'http://127.0.0.1:3000',  # React 또는 Vue 개발 서버
     'http://127.0.0.1:5500',  # 로컬 HTML 파일 실행 시
     'http://localhost:8000',  # 다른 포트에서 Django 호출
 ]
+
+
+STATIC_URL = '/static/'
+STATIC_ROOT = BASE_DIR / 'staticfiles'
 
 CORS_ALLOW_ALL_ORIGINS = True
 
@@ -127,7 +142,6 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/5.1/howto/static-files/
 
-STATIC_URL = 'static/'
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/5.1/ref/settings/#default-auto-field
