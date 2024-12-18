@@ -54,7 +54,7 @@ class TrandlatorConfig(AppConfig):
             Automate()
             
             # Register the job
-            @register_job(scheduler, IntervalTrigger(seconds=10), id=job_id, replace_existing=False)
+            @register_job(scheduler, IntervalTrigger(minutes = 1), id=job_id, replace_existing=False)
             def scheduled_automate():
                 Automate()
         else:
