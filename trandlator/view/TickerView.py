@@ -13,8 +13,6 @@ class TickerView(APIView):
     POST: 새로운 티커 데이터 생성
     """
 
-        
-        
     def get(self, request):
         """
         {
@@ -59,15 +57,13 @@ class TickerView(APIView):
     def post(self, request):
         """
         {
-            "ticker_name" : "ticker",
-            "articles" : []
+            "ticker_name" : "ticker"
         }
         새로운 Ticker 객체 생성
         ticker_name 중복 불가
         """
         print("Ticker Post")
-        ticker_name = request.data.get('name')
-        articles = request.data.get('articles', [])  # Expecting a list of ticker IDs
+        ticker_name = request.data.get('ticker_name')
         
         try:
             # 유효성 검사
@@ -77,12 +73,7 @@ class TickerView(APIView):
             
             # Ticker 객체 생성
             ticker = Ticker.objects.create(ticker_name=ticker_name)
-            print("Ticker Created:", ticker.name)
-            
-            # ManyToMany 관계 설정
-            if articles:
-                ticker.articles.set(articles)  # Article ID 리스트 설정
-                print("Articles Linked:", articles)
+            print("Ticker Created:", ticker.ticker_name)
 
             return Response({'success': True, 'ticker_id': ticker.id}, 
                             status=status.HTTP_201_CREATED)
