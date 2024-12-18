@@ -5,8 +5,9 @@ playwright
 django-cors-headers
 requests
 python-dotenv
-simple-jwt
+djangorestframework-simplejwt
 celery[redis]==5.2.3
 django-celery-beat
 redis==4.1.2
 gunicorn==20.1.0
+
