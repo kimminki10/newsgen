@@ -7,9 +7,10 @@ class Article(models.Model):
     content = models.TextField(default='empty content')
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
-    # 티커
     views = models.PositiveIntegerField(default=0)
     origin_url = models.URLField(max_length=200, blank=True)
+    tts_content = models.TextField(default='empty tts content')
+    tts_url = models.URLField(max_length=200, blank=True)
 
 
 class Ticker(models.Model):
