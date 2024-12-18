@@ -25,11 +25,10 @@ const Header = () => {
   return (
     <div>
       <div className="header">
-        <Link to="/" className="header-title">
+        <Link to="/about" className="header-title">
           Fintrend
         </Link>
         <div className="header-content">
-          <HeaderButton text="about" link="/about" />
           {isLoggedIn ? (
             <>
               <Link to="/profile" className="user-profile">
