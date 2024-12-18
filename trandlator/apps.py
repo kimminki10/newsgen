@@ -1,6 +1,7 @@
 from django.apps import AppConfig
 from django.conf import settings
 from .jobs_status import is_job_registered, register_job  # 작업 상태 관리 함수 가져오기
+import atexit
 import threading
 import os
 
@@ -47,11 +48,13 @@ class TrandlatorConfig(AppConfig):
                     'max_instances': 1,
                 },
             })
+            # 종료 시 스케줄러를 중지하도록 설정
+            atexit.register(self.shutdown_scheduler, scheduler)
             
             register_events(scheduler)
             scheduler.start()
-
             Automate()
+          
             
             # Register the job
             @register_job(scheduler, IntervalTrigger(minutes = 1), id=job_id, replace_existing=False)
@@ -59,3 +62,9 @@ class TrandlatorConfig(AppConfig):
                 Automate()
         else:
             print("Job already registered. Skipping registration.")
+        
+
+    def shutdown_scheduler(self, scheduler):
+        """스케줄러를 안전하게 종료"""
+        print("Shutting down scheduler...")
+        scheduler.shutdown(wait=False)  # 스케줄러 중지
