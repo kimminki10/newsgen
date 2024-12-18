@@ -1,7 +1,7 @@
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import status
-from django.db import connection
+from rest_framework import generics
 from django.core.exceptions import ObjectDoesNotExist
 from ..models import Ticker
 from ..controller.TickerSerialize import TickerSerializer
@@ -81,3 +81,15 @@ class TickerView(APIView):
             print("Error:", str(e))
             return Response({'success': False, 'error': str(e)}, 
                             status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+
+
+class TickerDetailView(generics.RetrieveUpdateDestroyAPIView):
+    """
+    GET: 특정 Ticker 객체 조회
+    PUT: 특정 Ticker 객체 수정
+    DELETE: 특정 Ticker 객체 삭제
+    """
+    queryset = Ticker.objects.all()
+    serializer_class = TickerSerializer
+    lookup_field = 'ticker_name'
+    lookup_url_kwarg = 'ticker_name'
