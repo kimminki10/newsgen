@@ -1,10 +1,10 @@
-# Define a serializer for UserItem
-
+from trandlator.model.UserModel import User
 from rest_framework import serializers
-from ..model.UserModel import UserItem
 
+class UserSerializer(serializers.ModelSerializer):
+    password = serializers.CharField(write_only=True)
+    is_email_verified = serializers.BooleanField(read_only=True)
 
-class UserItemSerializer(serializers.Serializer):
     class Meta:
-        model = UserItem
-        fields = '__all__'  # Include all fields of the model. Adjust as needed.
+        model = User
+        fields = ['id', 'username', 'password', 'email', 'is_email_verified']

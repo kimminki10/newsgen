@@ -38,7 +38,8 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'corsheaders',
-    'trandlator'
+    'trandlator',
+    'rest_framework',
 ]
 
 MIDDLEWARE = [
@@ -59,12 +60,6 @@ CORS_ALLOWED_ORIGINS = [
 ]
 
 CORS_ALLOW_ALL_ORIGINS = True
-
-REST_FRAMEWORK = {
-    'DEFAULT_RENDERER_CLASSES': [
-        'rest_framework.renderers.JSONRenderer',  # JSON 형식만 반환
-    ],
-}
 
 ROOT_URLCONF = 'trandlator.urls'
 
