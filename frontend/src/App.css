@@ -7,3 +7,7 @@
     width: 1280px;
   }
 }
+
+:root {
+  font-family: "Poppins", "Inter", sans-serif;
+}

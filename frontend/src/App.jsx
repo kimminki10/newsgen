@@ -1,4 +1,6 @@
+import React from "react";
 import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
+import { AuthProvider } from "./components/AuthContext";
 import Home from "./components/Home";
 import Login from "./components/Login";
 import Register from "./components/Register";
@@ -10,17 +12,22 @@ import Subscription from "./components/Subscription";
 import AboutPage from "./components/AboutPage";
 import Layout from "./components/Layout";
 import ResetPasswordPage from "./components/ResetPasswordPage";
+import Profile from "./components/Profile";
 import "./App.css";
+
+// Google Fonts import 추가
+import "@fontsource/poppins/600.css"; // Poppins 폰트 600 weight import
 
 function App() {
   return (
-    <>
+    <AuthProvider>
       <Router>
         <Layout>
           <Routes>
             <Route path="/" element={<Home />} />
             <Route path="/login" element={<Login />} />
             <Route path="/reset-password" element={<ResetPasswordPage />} />
+            <Route path="/ticker/:ticker" element={<NewsList />} />
             <Route path="/register" element={<Register />} />
             <Route path="/news" element={<NewsList />} />
             <Route path="/news/template" element={<NewsTemplate />} />
@@ -29,10 +36,11 @@ function App() {
             <Route path="/summary/:id" element={<SummarySubject />} />
             <Route path="/about" element={<AboutPage />} />
             <Route path="/subscription" element={<Subscription />} />
+            <Route path="/profile" element={<Profile />} />
           </Routes>
         </Layout>
       </Router>
-    </>
+    </AuthProvider>
   );
 }
 

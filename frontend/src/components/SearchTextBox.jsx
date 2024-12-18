@@ -7,11 +7,11 @@ const SearchTextBox = ({ type, placeholder, value, onChange }) => {
     return (
         <div className='search-text-box'>
             <input 
+                className="search-input"
                 type={type} 
                 placeholder={placeholder} 
                 value={value} 
                 onChange={onChange} 
-                className="search-input"
             />
             <button className="search-button">
                 <FontAwesomeIcon icon={faSearch} />

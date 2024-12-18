@@ -1,36 +1,36 @@
-.todays-news-item {
-    margin-bottom: 20px;
-    padding: 0 20px;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-}
-
 .ticker-box {
-    padding: 0 1rem;
-    margin-right: 10px;
-    background-color: #1a412c;
-    border-radius: 5px;
-    color: #fff;
+  padding: 0 1rem;
+  margin-right: 10px;
+  background-color: #1a412c;
+  border-radius: 5px;
+  color: #fff;
 }
 
 .ticker-price-box {
-    display: flex;
-    justify-content: row;
-}
-
-.todays-news-item-content {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
+  display: flex;
+  justify-content: row;
 }
 
 .price-change-down {
-    color: red;
+  color: red;
 }
 
 .price-change-up {
-    color: green;
+  color: green;
 }
 
 p {
-    font-size: large;
+  font-size: large;
+}
+
+.user-email {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px;
+  font-size: 16px;
+}
+
+.user-email span {
+  font-size: 20px;
 }
