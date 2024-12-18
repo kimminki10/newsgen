@@ -5,6 +5,7 @@ from django.db import models
 class Article(models.Model):
     title = models.CharField(max_length=100, default='empty title')
     content = models.TextField(default='empty content')
+    summary = models.TextField(default='empty summary')
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
     views = models.PositiveIntegerField(default=0)
@@ -16,6 +17,12 @@ class Article(models.Model):
 class Ticker(models.Model):
     ticker_name = models.CharField(max_length=100, unique=True)
     articles = models.ManyToManyField(Article, related_name='tickers',blank=True)
+    last_price = models.FloatField(default=0)
+    before_last_price = models.FloatField(default=0)
+    price_diff = models.FloatField(default=0)
+    percentage_diff = models.FloatField(default=0)
+    last_price_date = models.DateTimeField(auto_now_add=True)
+    before_last_date = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
         return self.ticker_name
