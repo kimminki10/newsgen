@@ -1,4 +1,4 @@
-from chrome_driver import get_driver
+from .chrome_driver import get_driver
 from selenium.webdriver.common.by import By
 
 

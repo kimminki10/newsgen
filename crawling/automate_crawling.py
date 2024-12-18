@@ -1,10 +1,10 @@
-import finviz, news_crawler, openAI
-import chrome_driver
+from . import finviz, news_crawler, openAI
+from .chrome_driver import get_driver
 
 
 def automate_crawler():
     #finviz에서 리스트 긁어오기
-    driver = chrome_driver.get_driver()
+    driver = get_driver()
     lists = finviz.crawl(driver, "https://finviz.com/news.ashx?v=3")
     for list in lists[:3]: #테스트를 위해 3개만, 다하면 리소슷 많이써서 혼남
         # (ticker, link, title)
@@ -23,8 +23,9 @@ def automate_crawler():
             title = crawled_data[0]
             time = crawled_data[1]
             article = crawled_data[2]
-            ai_data = openAI.trans_summ_data(crawled_data[2])
-            print(f'ticker: {list[0]}, link{list[1]}, t_title{list[2]}, ai_data{ai_data}')
+            #ai_data = openAI.trans_summ_data(crawled_data[2])
+            print(f'ticker: {list[0]}, link{list[1]}, t_title{list[2]}')
+            #print(f'ticker: {list[0]}, link{list[1]}, t_title{list[2]}, ai_data{ai_data}')
             #해당 관련 정보를 API에 전송해서 article 및 티커 관련정보 저장
             
         else:

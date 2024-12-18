@@ -1,5 +1,5 @@
-import chrome_driver
-import yahoo_crawler, basic_crawler
+from .chrome_driver import get_driver
+from . import yahoo_crawler, basic_crawler
 
 
 def crawler(driver, url: str):
@@ -41,5 +41,5 @@ def crawler(driver, url: str):
     return None
         
 # if __name__ == "__main__":
-#     driver = chrome_driver.get_driver()
+#     driver = get_driver()
 #     print(crawler(driver, "https://finance.yahoo.com/news/private-equity-making-big-money-050026774.html"))

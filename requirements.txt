@@ -6,5 +6,9 @@ selenium
 requests
 python-dotenv
 djangorestframework-simplejwt
+
 python-decouple
 yfinance
+
+django-apscheduler
+

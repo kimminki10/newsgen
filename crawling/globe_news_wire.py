@@ -1,6 +1,6 @@
 from selenium import webdriver
 from selenium.webdriver.common.by import By
-from chrome_driver import get_driver
+from .chrome_driver import get_driver
 
 title_selector = "#container-article > div.main-container-content > div.main-header-container > h1"
 time_selector = "#container-article > div.main-container-content > div.main-header-container > p > span.d-flex.justify-content-start > span.article-published > time"
