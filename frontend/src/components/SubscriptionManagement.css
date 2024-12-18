@@ -1,0 +1,135 @@
+.subscription-container {
+  max-width: 800px;
+  margin: 0 auto;
+  width: 100%;
+  box-sizing: border-box;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Arial,
+    sans-serif;
+}
+
+.section-box {
+  background-color: white;
+  padding: 2rem;
+  border-radius: 8px;
+  margin-bottom: 2rem;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.section-content {
+  margin-top: 1rem;
+}
+
+h2 {
+  font-size: 1.2rem;
+  margin-bottom: 1rem;
+  color: #1a2b3c;
+}
+
+.description {
+  color: #666;
+  line-height: 1.6;
+  margin-bottom: 1.5rem;
+}
+
+.input-container {
+  display: flex;
+  gap: 1rem;
+  margin-bottom: 1rem;
+  width: 100%;
+}
+
+.email-input {
+  flex: 1;
+  padding: 0.75rem;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  font-size: 14px;
+}
+
+.send-button {
+  background-color: #1a412c;
+  color: white;
+  border: none;
+  padding: 0.75rem 1.5rem;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 14px;
+  white-space: nowrap;
+}
+
+.send-button:hover {
+  background-color: #2c5f41;
+}
+
+.subscription-buttons {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  width: 100%;
+}
+
+.duration-button {
+  width: 100%;
+  padding: 1rem;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  background-color: white;
+  cursor: pointer;
+  text-align: center;
+  transition: all 0.3s ease;
+}
+
+.duration-button:hover {
+  background-color: #f5f5f5;
+  border-color: #1a412c;
+}
+
+.duration-button.selected {
+  background-color: #1a412c;
+  color: white;
+  border-color: #1a412c;
+}
+
+.unsubscribe-button {
+  width: 100%;
+  padding: 1rem;
+  border: 1px solid #e0e0e0;
+  border-radius: 4px;
+  background-color: #f5f5f5;
+  cursor: pointer;
+  text-align: center;
+  color: #666;
+  margin-top: 0.5rem;
+  transition: all 0.3s ease;
+}
+
+.unsubscribe-button:hover {
+  background-color: #e5e5e5;
+}
+
+.unsubscribe-note {
+  font-size: 0.8rem;
+  color: #888;
+  text-align: center;
+  margin-top: 0.5rem;
+}
+
+.success-message {
+  color: #1a412c;
+  margin-top: 0.5rem;
+}
+
+@media (max-width: 768px) {
+  .subscription-container {
+    padding: 0;
+  }
+
+  .input-container {
+    flex-direction: column;
+  }
+
+  .send-button {
+    width: 100%;
+  }
+}

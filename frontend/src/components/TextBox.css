@@ -1,0 +1,21 @@
+.text-box {
+    display: flex;
+    flex-direction: column;
+    margin: 1rem;
+    width: 100%;
+}
+
+.text-box label {
+    text-align: start;
+    margin-bottom: 5px;
+    font-weight: bold;
+    width: 100%;
+}
+
+.text-box input {
+    width: 100%;
+    font-weight: bold;
+    padding: 0.5rem 0;
+    border: 1px solid #adaea9;
+    background-color: transparent;
+}

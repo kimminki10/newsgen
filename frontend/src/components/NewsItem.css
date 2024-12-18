@@ -1,0 +1,19 @@
+.news-item {
+    margin-bottom: 20px;
+    padding: 0 20px 20px 20px;
+    border: 1px solid #ccc;
+}
+
+.news-item-content {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.price-change-down {
+    color: red;
+}
+
+.price-change-up {
+    color: green;
+}
