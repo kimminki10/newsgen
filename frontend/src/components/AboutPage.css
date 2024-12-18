@@ -1,0 +1,36 @@
+.todays-news-item {
+    margin-bottom: 20px;
+    padding: 0 20px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+.ticker-box {
+    padding: 0 1rem;
+    margin-right: 10px;
+    background-color: #1a412c;
+    border-radius: 5px;
+    color: #fff;
+}
+
+.ticker-price-box {
+    display: flex;
+    justify-content: row;
+}
+
+.todays-news-item-content {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.price-change-down {
+    color: red;
+}
+
+.price-change-up {
+    color: green;
+}
+
+p {
+    font-size: large;
+}
