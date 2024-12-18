@@ -1,7 +1,7 @@
 from rest_framework.generics import ListCreateAPIView
 from trandlator.controller.ArticleSerializer import ArticleSerializer
 from rest_framework.permissions import IsAuthenticated
-from trandlator.model.ArticleModel import Article
+from trandlator.models import Article
 
 class ArticleView(ListCreateAPIView):
     queryset = Article.objects.all()

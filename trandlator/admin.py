@@ -1,7 +1,7 @@
 from django.contrib import admin
-from trandlator.model.ArticleModel import Article
-from trandlator.model.TickerModel import Ticker
-from trandlator.model.UserModel import User
+from .models import Article
+from .models import Ticker
+from .models import User
 
 admin.site.register(Article)
 admin.site.register(Ticker)
