@@ -1,7 +1,6 @@
 import React from "react";
 import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
 import { AuthProvider } from "./components/AuthContext";
-import Home from "./components/Home";
 import Login from "./components/Login";
 import Register from "./components/Register";
 import NewsList from "./components/NewsList";
@@ -13,6 +12,7 @@ import AboutPage from "./components/AboutPage";
 import Layout from "./components/Layout";
 import ResetPasswordPage from "./components/ResetPasswordPage";
 import Profile from "./components/Profile";
+import Mail from "./components/Mail";
 import "./App.css";
 
 // Google Fonts import 추가
@@ -24,7 +24,7 @@ function App() {
       <Router>
         <Layout>
           <Routes>
-            <Route path="/" element={<Home />} />
+            <Route path="/" element={<AboutPage />} />
             <Route path="/login" element={<Login />} />
             <Route path="/reset-password" element={<ResetPasswordPage />} />
             <Route path="/ticker/:ticker" element={<NewsList />} />
@@ -37,6 +37,7 @@ function App() {
             <Route path="/about" element={<AboutPage />} />
             <Route path="/subscription" element={<Subscription />} />
             <Route path="/profile" element={<Profile />} />
+            <Route path="/mail" element={<Mail />} />
           </Routes>
         </Layout>
       </Router>

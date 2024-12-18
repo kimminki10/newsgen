@@ -3,6 +3,7 @@ import axios from "axios";
 import { Link, useParams } from "react-router-dom";
 import "./NewsList.css";
 import config from "../config";
+import NewsItem from "./NewsItem";
 
 const NewsList = () => {
   const {ticker} = useParams();
@@ -24,11 +25,16 @@ const NewsList = () => {
       <div className="ticker-title">{ticker}</div>
       {tickerData.length === 0 ?
       tickerData.map((news) => (
-        <div key={news.id} className="news-item">
-          <h2>{news.title}</h2>
-          <p>{news.summary}</p>
-          <Link to={`/summary/${news.id}`}>Read more</Link>
-        </div>
+        <NewsItem
+                    key={news.id}
+                    title={news.title}
+                    ticker={news.ticker}
+                    date={news.date}
+                    currentPrice={news.currentPrice}
+                    pricePointChange={news.pricePointChange}
+                    priceChange={news.priceChange}
+                    content={news.content}
+                />
       ))
       : 
       <p>No news found for this ticker</p>}
