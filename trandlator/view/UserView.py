@@ -28,7 +28,7 @@ class UserListCreate(generics.ListCreateAPIView):
 
     def create(self, request, *args, **kwargs):
         response = super().create(request, *args, **kwargs)
-        user = User.objects.get(username=request.data['username'])
+        user = User.objects.get(email=request.data['email'])
         #send_verification_email(request, user.email)
         return response
     
@@ -37,4 +37,4 @@ class UserTickers(generics.ListAPIView):
     serializer_class = UserSerializer
 
     def get_queryset(self):
-        return User.objects.get(username=self.request.user.username).tickers.all()
+        return User.objects.get(email=self.request.user.email).tickers.all()

@@ -45,7 +45,6 @@ class UserManager(BaseUserManager):
 class User(AbstractBaseUser):
     email = models.EmailField(unique=True)
     tickers = models.ManyToManyField(Ticker, related_name='users', blank=True)
-    username = models.CharField(max_length=200, unique=True, blank=True)
     is_active = models.BooleanField(default=True)
     is_staff = models.BooleanField(default=False)
     is_superuser = models.BooleanField(default=False)
@@ -54,7 +53,6 @@ class User(AbstractBaseUser):
     objects = UserManager()
 
     USERNAME_FIELD = 'email'
-    REQUIRED_FIELDS = ['username']
 
     def __str__(self):
         return self.email
