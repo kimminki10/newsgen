@@ -11,12 +11,12 @@ import Subscription from "./components/Subscription";
 import AboutPage from "./components/AboutPage";
 import Layout from "./components/Layout";
 import ResetPasswordPage from "./components/ResetPasswordPage";
+import CheckEmailPage from "./components/CheckEmailPage";
 import Profile from "./components/Profile";
 import Mail from "./components/Mail";
 import "./App.css";
 
-// Google Fonts import 추가
-import "@fontsource/poppins/600.css"; // Poppins 폰트 600 weight import
+import "@fontsource/poppins/600.css";
 
 function App() {
   return (
@@ -27,6 +27,7 @@ function App() {
             <Route path="/" element={<AboutPage />} />
             <Route path="/login" element={<Login />} />
             <Route path="/reset-password" element={<ResetPasswordPage />} />
+            <Route path="/check-email" element={<CheckEmailPage />} />
             <Route path="/ticker/:ticker" element={<NewsList />} />
             <Route path="/register" element={<Register />} />
             <Route path="/news" element={<NewsList />} />
