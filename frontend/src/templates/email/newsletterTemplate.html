@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>핀트렌드 뉴스레터</title>
+  </head>
+  <body
+    style="
+      margin: 0;
+      padding: 0;
+      background-color: #f6f6f6;
+      font-family: Arial, sans-serif;
+    "
+  >
+    <table
+      role="presentation"
+      cellpadding="0"
+      cellspacing="0"
+      style="width: 100%; margin: auto; padding: 20px"
+    >
+      <tr>
+        <td>
+          <table
+            role="presentation"
+            cellpadding="0"
+            cellspacing="0"
+            style="
+              width: 100%;
+              max-width: 800px;
+              margin: 0 auto;
+              background: white;
+            "
+          >
+            <!-- 헤더 -->
+            <tr>
+              <td
+                style="
+                  background-color: #1b4d3e;
+                  padding: 20px;
+                  text-align: center;
+                "
+              >
+                <h1 style="color: white; margin: 0; font-size: 24px">
+                  🔥 핀트렌드 뉴스레터 🔥
+                </h1>
+                <p style="color: white; margin: 10px 0 0 0">
+                  {{date}} 새로운 미국 주식시장 소식을 전달해 드릴께요! 📰
+                </p>
+              </td>
+            </tr>
+
+            <!-- 주요 지수 -->
+            <tr>
+              <td style="padding: 15px; background-color: #f8f8f8">
+                {{marketIndices}}
+              </td>
+            </tr>
+
+            <!-- 뉴스 콘텐츠 -->
+            <tr>
+              <td style="padding: 20px">{{newsContent}}</td>
+            </tr>
+
+            <!-- 푸터 -->
+            <tr>
+              <td
+                style="
+                  background-color: #333;
+                  color: white;
+                  padding: 20px;
+                  text-align: center;
+                "
+              >
+                <p style="margin: 0; font-size: 14px">
+                  본 메일은 핀트렌드 메일 수신을 신청하신 분들에게만 발송
+                  되었습니다.<br />
+                  메일을 더이상 원치 않으시면
+                  <a href="{{unsubscribeLink}}" style="color: white"
+                    >구독 해지</a
+                  >를 눌러 해지해 주세요.
+                </p>
+                <p style="margin: 10px 0 0 0; font-size: 12px">
+                  Fintrend.com<br />
+                  COPYRIGHT © 2024 Fintrend. ALL RIGHTS RESERVED
+                </p>
+              </td>
+            </tr>
+          </table>
+        </td>
+      </tr>
+    </table>
+  </body>
+</html>
