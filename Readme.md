@@ -8,38 +8,22 @@
 ##가상 환경
 가상 환경 생성 : python -m venv venv , 
 Window 가상 환경 실행 : venv\Scripts\activate
+[Docker 실행을 위한 환경 설정]
+Windows : Docker Desktop + wsl2 [바이오스 설정에서 가상환경 관련 설정 필요 ((VT-x or AMD-V) )  ]
 
-##필요한 라이브러리 설치
-pip install -r requirements.txt
-
-#서버 실행
-python manage.py runserver
-
-# DB 최초 세팅
-python manage.py makemigrations trandlator
-python manage.py migrate  trandlator  
-
-
-# DB 경로
-/db.sqlite3
+# 서버 빌드 및 실행
+docker-compose up --build
 
 #OpenAI 및 Crawling 사용법
 팀즈에서 env 파일을 다운받은 다음 해당 프로젝트 최상위 폴더에 넣고 .env로 이름 변경
 후 가상 환경 실행후 python crawling/automate_crawling.py 작성
 
+# DB 경로
+/db.sqlite3
 
-#Nginx -> admin 페이지 관련 안떠서 프록시 서버둠
-#Django -> 서버 사이드 스크립트
-#주기적으로 실핸되는 기능 제공 Celery
-#Docker 사용
-
-#OpenAI 3분마다 호출 등록 windows 에서 prefork  지원하지 않아 solo로
-docker-compose up --build
-
-django 서버 포트 80번 
-관리자 계정 
-admin 
-1234
+# DB 최초 세팅 <- Django container에서 실행
+python manage.py makemigrations trandlator
+python manage.py migrate  trandlator
 
 ```
 
