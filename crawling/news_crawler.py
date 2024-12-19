@@ -1,8 +1,11 @@
 from .chrome_driver import get_driver
 from . import yahoo_crawler, basic_crawler
-
+from trandlator.jobs_status import is_job_registered,job_id
 
 def crawler(driver, url: str):
+    if is_job_registered(job_id) == False:
+        return None
+    
     if url.startswith("https://finance.yahoo.com/"):
         print("Crawling yahoo")
         crawler, title, time, article = yahoo_crawler.crawl_yahoo_article(driver, url)
