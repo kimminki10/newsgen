@@ -3,32 +3,40 @@
   flex-direction: column;
   align-items: center;
   width: 90%;
-  max-width: 400px;
-  margin: 0 auto;
+  max-width: 480px;
+  margin: 40px auto;
   padding: 20px;
-  background-color: transparent;
+  background-color: #fff;
+  position: relative; /* 추가 */
 }
 
 .login-container h1 {
-  margin-bottom: 20px;
-  font-size: 2rem;
+  width: 100%;
+  margin-bottom: 30px;
+  font-size: 24px;
+  font-weight: 1000; /* 글씨 두께 증가 */
+  color: #025b4c;
+  text-align: center;
 }
 
-.info-message {
+.input-wrapper {
   width: 100%;
-  text-align: left;
-  color: #666;
-  font-size: 14px;
+  max-width: 400px;
+  margin: 0 auto; /* 중앙 정렬을 위한 margin auto */
+}
+
+.input-field {
+  width: 100%;
   margin-bottom: 20px;
-  padding: 10px;
-  background-color: #f8f8f8;
-  border-radius: 4px;
+  margin: 0 auto;
+  margin-left: -15px; /* 왼쪽으로 이동 */
 }
 
 .password-field {
   width: 100%;
-  position: relative;
   margin-bottom: 20px;
+  margin: 0 auto;
+  margin-left: -15px; /* 왼쪽으로 이동 */
 }
 
 .password-hint {
@@ -37,17 +45,60 @@
   font-size: 12px;
   margin-top: 4px;
   text-align: left;
+  margin: 0 auto;
+  margin-left: 20px; /* 오른쪽으로 이동 */
+}
+
+input {
+  width: 100%;
+  padding: 8px 12px;
+  margin: 8px 0;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  font-size: 14px;
+  height: 35px;
+  box-sizing: border-box;
+}
+
+input::placeholder {
+  color: #999;
+}
+
+label {
+  display: block;
+  margin-bottom: 5px;
+  color: #333;
+  font-size: 14px;
+  text-align: left;
+  width: 100%;
 }
 
 .login-btn {
   width: 100%;
+  max-width: 400px;
+  padding: 8px;
+  background-color: #fff;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  font-size: 14px;
+  cursor: pointer;
+  color: #333;
+  height: 35px;
+  margin: 20px auto;
+}
+
+.login-btn:hover {
+  background-color: #f5f5f5;
 }
 
 .button-container {
   display: flex;
   justify-content: space-between;
   width: 100%;
-  margin-top: 20px;
+  max-width: 400px;
+  margin: 20px auto 0;
+  border-top: 1px solid #eee;
+  padding-top: 20px;
 }
 
 .button-container button {
@@ -56,9 +107,9 @@
   background: none;
   color: #666;
   cursor: pointer;
-  text-decoration: underline;
+  font-size: 14px;
 }
 
 .button-container button:hover {
-  color: #333;
+  text-decoration: underline;
 }
