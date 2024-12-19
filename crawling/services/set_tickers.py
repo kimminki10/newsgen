@@ -115,4 +115,5 @@ def get_ticker_names(csv='combined_tickers_large.csv'):
     all_tickers_list.extend(symbols)
     return all_tickers_list
 
-add_new_tickers()
+if __name__ == "__main__":
+    add_new_tickers()
