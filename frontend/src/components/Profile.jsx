@@ -29,13 +29,22 @@ const Profile = () => {
   const [isSaving, setIsSaving] = useState(false);
   const [isSending, setIsSending] = useState(false);
   
-  const requestUserTicker = async () => {
+
+  const requestUserInfo = async () => {
     try {
+      const email = localStorage.getItem("userEmail");
       const header = {
         Authorization: `Bearer ${localStorage.getItem("fintrend_access_token")}`,
       }
-      const response = await axios.get("/api/user/tickers/", { headers: header });
-      setSelectedStocks(response.data.map((stock) => stock.ticker_name));
+      const response = await axios.get(`/api/user/${email}/`, { headers: header });
+      const user = response.data;
+      setMailSettings({
+        frequency: user.mail_frequency,
+        timeSlot: user.mail_timeSlot,
+        newsCount: user.mail_newsCount,
+      });
+      setSelectedStocks(user.tickers.map((stock) => stock.ticker_name));
+      console.log(response.data);
     } catch (error) {
       console.error(error);
       logout();
@@ -48,7 +57,7 @@ const Profile = () => {
     const email = localStorage.getItem("userEmail");
     if (email) {
       setUserEmail(email);
-      requestUserTicker();
+      requestUserInfo();
     } else {
       navigate("/login");
     }
@@ -61,14 +70,14 @@ const Profile = () => {
     try {
       const data = { 
         tickers: selectedStocks,
-        frequency: mailSettings.frequency,
-        timeSlot: mailSettings.timeSlot,
-        newsCount: mailSettings.newsCount,
+        mail_frequency: mailSettings.frequency,
+        mail_timeSlot: mailSettings.timeSlot,
+        mail_newsCount: mailSettings.newsCount,
       };
       const header = {
         Authorization: `Bearer ${localStorage.getItem("fintrend_access_token")}`,
       }
-      const response = await axios.put("/api/user/tickers/update/", data, { headers: header });
+      const response = await axios.put("/api/user/update/", data, { headers: header });
       console.log(response);
     } catch (error) {
       console.error(error);

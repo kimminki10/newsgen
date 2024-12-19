@@ -35,6 +35,11 @@ class UserCreateView(generics.CreateAPIView):
         send_verification_email('email', user.email, "http://localhost:5173/user/verify_email/")
         return response
     
+class UserDetailView(generics.RetrieveAPIView):
+    queryset = User.objects.all()
+    serializer_class = UserSerializer
+    lookup_field = 'email'
+    
 
 class UserTickers(generics.ListAPIView):
     serializer_class = TickerNameSerializer
