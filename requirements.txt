@@ -5,4 +5,5 @@ django-cors-headers
 selenium
 requests
 python-dotenv
-simple-jwt
+djangorestframework-simplejwt
+python-decouple
