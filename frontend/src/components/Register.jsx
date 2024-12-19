@@ -10,7 +10,7 @@ const do_register = async (email, password) => {
       email,
       password,
     });
-    if (response.status === 200) {
+    if (response.status === 201) {
       alert("회원가입이 완료되었습니다. 로그인해주세요.");
       return true;
     } else {
