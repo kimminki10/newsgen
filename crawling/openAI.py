@@ -1,6 +1,7 @@
 import requests
 from dotenv import load_dotenv
 import os
+import json
 
 def trans_summ_data(crawled_data: str):
     # Configuration
@@ -82,12 +83,18 @@ def trans_summ_data(crawled_data: str):
         #response.encoding = 'utf-8'
         response_json = response.json()
         message = response_json['choices'][0]['message']['content']
-        return message
+        
+        message = message.strip('```json').strip('```').strip()
+        json_data = json.loads(message)
+        #print(message)
+        return (True,json_data)
     except requests.RequestException as e:
-        raise SystemExit(f"Failed to make the request. Error: {e}")
+        print(f"Open AI Request failed. Error: {e}")
+        return (False,None)
 
-if __name__ == "__main__":
-    data = """(Bloomberg) -- Jade Barnett was 15 when she was driven 250 miles away from her home in London to Blackpool, in the northwest of England. There, she was sent to live in a privately owned children’s home.
+#if __name__ == "__main__":
+    #data = 
+    """(Bloomberg) -- Jade Barnett was 15 when she was driven 250 miles away from her home in London to Blackpool, in the northwest of England. There, she was sent to live in a privately owned children’s home.
 
 Most Read from Bloomberg
 
@@ -195,4 +202,4 @@ Biden Made This Billionaire Much Richer. The Bonanza Could End With Trump
 Market-Moving Data Under Threat as Trump Returns to Washington
 
 In a MedSpa, Your Surgeon May Be a Nurse"""
-    print(trans_summ_data(data))
+    #print(trans_summ_data(data))

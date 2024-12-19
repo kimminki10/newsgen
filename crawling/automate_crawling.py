@@ -1,6 +1,6 @@
 from . import finviz, news_crawler, openAI
 from .chrome_driver import get_driver
-
+from .db_services.db_services import add_article
 def automate_crawler():
         # finviz에서 리스트 긁어오기
         driver = get_driver()
@@ -26,7 +26,7 @@ def automate_crawler():
                 title = crawled_data[0]
                 time = crawled_data[1]
                 article = crawled_data[2]
-                crawlings.append(article)
+                crawlings.append((title,article,url_link))
                 # ai_data = openAI.trans_summ_data(crawled_data[2])
                 # print(f'ticker: {list[0]}, link{list[1]}, t_title{list[2]}')
                 # print(f'ticker: {list[0]}, link{list[1]}, t_title{list[2]}, ai_data{ai_data}')
@@ -37,13 +37,15 @@ def automate_crawler():
                 print(f'해당 링크는 crawl이 잘 되지 않음 {list[1]}')
         print("------- 크롤링 완료 -------")
         driver.quit()
-        for now in crawlings:
-            ai_data = openAI.trans_summ_data(now)
-            print("Ai Success")
+        for (title,ori_content,url_link) in crawlings:
+            isSuccess,ai_data = openAI.trans_summ_data(ori_content)
+            if isSuccess == False:
+                 continue
+            
+            print(f"--- Ai Success ---")
+            add_article(title=ai_data['k_title'],content=ai_data['k_article'],origin_url=url_link)
+            #ai_data['k_summary']
+            
         print("------- AI 완료 -------")
        
             
-   
-
-if __name__ == "__main__":
-    automate_crawler()
