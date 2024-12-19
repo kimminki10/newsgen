@@ -37,7 +37,7 @@ def crawler(driver, url: str):
     if crawler:
         #print(title, time, article)
         return title, time, article
-    print(crawler, title)
+    #print(crawler, title)
     return None
         
 # if __name__ == "__main__":

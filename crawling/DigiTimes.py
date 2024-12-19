@@ -25,10 +25,3 @@ def crawl(url):
     return title, time, article
 
 
-
-if __name__ == "__main__":
-    title, time, article = crawl(url)
-    print(title)
-    print(time)
-    print(article)
-    driver.quit()
