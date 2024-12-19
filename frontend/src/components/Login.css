@@ -1,3 +1,41 @@
+:root {
+  /* Light mode variables */
+  --background-color: #fff;
+  --text-color: #333;
+  --heading-color: #025b4c;
+  --input-border: #ddd;
+  --input-background: #fff;
+  --input-text: #333;
+  --input-placeholder: #999;
+  --hint-text: #666;
+  --button-background: #fff;
+  --button-text: #333;
+  --button-hover: #f5f5f5;
+  --button-border: #ddd;
+  --divider-color: #eee;
+  --secondary-button-text: #666;
+}
+
+/* Dark mode styles */
+@media (prefers-color-scheme: dark) {
+  :root {
+    --background-color: #1a1a1a;
+    --text-color: #e0e0e0;
+    --heading-color: #4fd1c5;
+    --input-border: #404040;
+    --input-background: #2d2d2d;
+    --input-text: #e0e0e0;
+    --input-placeholder: #808080;
+    --hint-text: #a0a0a0;
+    --button-background: #2d2d2d;
+    --button-text: #e0e0e0;
+    --button-hover: #404040;
+    --button-border: #404040;
+    --divider-color: #404040;
+    --secondary-button-text: #a0a0a0;
+  }
+}
+
 .login-container {
   display: flex;
   flex-direction: column;
@@ -6,68 +44,71 @@
   max-width: 480px;
   margin: 40px auto;
   padding: 20px;
-  background-color: #fff;
-  position: relative; /* 추가 */
+  background-color: var(--background-color);
+  position: relative;
+  color: var(--text-color);
 }
 
 .login-container h1 {
   width: 100%;
   margin-bottom: 30px;
   font-size: 24px;
-  font-weight: 1000; /* 글씨 두께 증가 */
-  color: #025b4c;
+  font-weight: 1000;
+  color: var(--heading-color);
   text-align: center;
 }
 
 .input-wrapper {
   width: 100%;
   max-width: 400px;
-  margin: 0 auto; /* 중앙 정렬을 위한 margin auto */
+  margin: 0 auto;
 }
 
 .input-field {
   width: 100%;
   margin-bottom: 20px;
   margin: 0 auto;
-  margin-left: -15px; /* 왼쪽으로 이동 */
+  margin-left: -15px;
 }
 
 .password-field {
   width: 100%;
   margin-bottom: 20px;
   margin: 0 auto;
-  margin-left: -15px; /* 왼쪽으로 이동 */
+  margin-left: -15px;
 }
 
 .password-hint {
   display: block;
-  color: #666;
+  color: var(--hint-text);
   font-size: 12px;
   margin-top: 4px;
   text-align: left;
   margin: 0 auto;
-  margin-left: 20px; /* 오른쪽으로 이동 */
+  margin-left: 20px;
 }
 
 input {
   width: 100%;
   padding: 8px 12px;
   margin: 8px 0;
-  border: 1px solid #ddd;
+  border: 1px solid var(--input-border);
   border-radius: 4px;
   font-size: 14px;
   height: 35px;
   box-sizing: border-box;
+  background-color: var(--input-background);
+  color: var(--input-text);
 }
 
 input::placeholder {
-  color: #999;
+  color: var(--input-placeholder);
 }
 
 label {
   display: block;
   margin-bottom: 5px;
-  color: #333;
+  color: var(--text-color);
   font-size: 14px;
   text-align: left;
   width: 100%;
@@ -77,18 +118,18 @@ label {
   width: 100%;
   max-width: 400px;
   padding: 8px;
-  background-color: #fff;
-  border: 1px solid #ddd;
+  background-color: var(--button-background);
+  border: 1px solid var(--button-border);
   border-radius: 4px;
   font-size: 14px;
   cursor: pointer;
-  color: #333;
+  color: var(--button-text);
   height: 35px;
   margin: 20px auto;
 }
 
 .login-btn:hover {
-  background-color: #f5f5f5;
+  background-color: var(--button-hover);
 }
 
 .button-container {
@@ -97,7 +138,7 @@ label {
   width: 100%;
   max-width: 400px;
   margin: 20px auto 0;
-  border-top: 1px solid #eee;
+  border-top: 1px solid var(--divider-color);
   padding-top: 20px;
 }
 
@@ -105,7 +146,7 @@ label {
   padding: 8px 16px;
   border: none;
   background: none;
-  color: #666;
+  color: var(--secondary-button-text);
   cursor: pointer;
   font-size: 14px;
 }
