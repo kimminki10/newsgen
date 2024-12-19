@@ -1,3 +1,9 @@
 djangorestframework
 selenium
 playwright
+django-cors-headers
+selenium
+requests
+python-dotenv
+djangorestframework-simplejwt
+python-decouple
