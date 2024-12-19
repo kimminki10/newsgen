@@ -4,6 +4,27 @@ import { Link, useParams } from "react-router-dom";
 import "./NewsList.css";
 import NewsItem from "./NewsItem";
 
+const TickerTitleItem = ({ tickerData }) => {
+  console.log(tickerData);
+  const isUp = tickerData.price_diff > 0;
+  const last_price = Math.abs(tickerData.last_price)
+  const price_diff = Math.abs(tickerData.price_diff)
+  const percentage_diff = Math.abs(tickerData.percentage_diff)
+  return (
+    <div className="ticker-title-item">
+      <div className="ticker-title">{tickerData.ticker_name}</div>
+      {isUp ? (
+        <div className="price-change-up ticker-title-stock">
+          <div>{`${last_price} ▲${price_diff} (${percentage_diff})%`}</div>
+        </div>
+      ) : (
+        <div className="price-change-down ticker-title-stock">
+          <div>{`${last_price} ▼${price_diff} (${percentage_diff})%`}</div>
+        </div>
+      )}
+    </div>
+  );
+}
 const NewsList = () => {
   const {ticker} = useParams();
   const [tickerData, setTickerData] = useState({});
@@ -20,13 +41,12 @@ const NewsList = () => {
         }
       };
       fetchTickerData();
-  }, []);
+  }, [ticker]);
 
   return (
     <div className="news-list">
       <div className="ticker-info">
-        <div className="ticker-title">{ticker}</div>
-        <div>{tickerData.last_price}</div>
+        <TickerTitleItem tickerData={tickerData} />
       </div>
 
       {articles.length !== 0 ?

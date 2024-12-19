@@ -14,3 +14,17 @@
     background-color: #1a412c;
     color: white;
 }
+
+.ticker-title-item {
+    display: flex;
+    width: 100%;
+    flex-direction: row;
+}
+
+.ticker-title-stock {
+    display: flex;
+    flex-direction: row;
+    align-items: end;
+    font-size: large;
+    padding: 0.5rem;
+}

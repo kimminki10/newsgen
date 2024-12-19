@@ -1,13 +1,16 @@
-import React, { useState, useEffect } from "react";
+import React, { useRef, useState, useEffect } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faSearch } from "@fortawesome/free-solid-svg-icons";
+import { useNavigate } from "react-router-dom";
 import './SearchTextBox.css';
 import axios from "axios";
 
 const SearchTextBox = ({ type, placeholder, value }) => {
+    const searchRef = useRef(null);
     const [searchText, setSearchText] = useState('');
     const [tickerList, setTickerList] = useState([]);
     const [suggestions, setSuggestions] = useState([]);
+    const navigate = useNavigate();
 
     useEffect(() => {
         const fetchSearchResults = async () => {
@@ -39,11 +42,18 @@ const SearchTextBox = ({ type, placeholder, value }) => {
     const handleKeyDown = (e) => {
         if (e.key !== 'Enter') { return; }
         console.log('Enter key pressed');
+        // 첫 번째 suggestion을 선택하고, 해당 ticker의 detail page로 이동
+        if (suggestions.length > 0) {
+            navigate(`/ticker/${suggestions[0].ticker_name}`);
+            searchRef.current.value = '';
+            setSuggestions([]);
+        }
     }
     return (
         <div className='search-text-box-container'>
             <div className='search-text-box'>
                 <input 
+                    ref={searchRef}
                     className="search-input"
                     type={type} 
                     placeholder={placeholder} 
