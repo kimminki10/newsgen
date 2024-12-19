@@ -16,10 +16,19 @@
     border: none;
     border-bottom: 1px solid #ccc;
     background-color: transparent;
-    color: gray;
     cursor: pointer;
 }
 
 .search-button:hover {
     background-color: #0056b3;
+}
+
+.suggestions-list {
+    padding: 0;
+    list-style: none;
+    width: 100%;
+}
+
+.suggestions-list li {
+    border: 1px solid #ccc;
 }
