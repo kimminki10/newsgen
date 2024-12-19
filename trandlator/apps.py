@@ -1,17 +1,30 @@
 from django.apps import AppConfig
 from django.conf import settings
-from .jobs_status import is_job_registered, register_job  # 작업 상태 관리 함수 가져오기
+
+from .jobs_status import is_job_registered, register_job,clear_job_status,job_id  # 작업 상태 관리 함수 가져오기
 import atexit
 import threading
 import os
+import pytz
 
+def scheduled_ticker():
+    print("------------- tickers ---------------------------")
+
+def scheduled_automate():
+    from .jobs import Automate
+    print("--scheduled_automate--")
+    Automate()
+    
+scheduled_task = None
 
 class TrandlatorConfig(AppConfig):
     default_auto_field = 'django.db.models.BigAutoField'
     name = 'trandlator'
 
     def ready(self):
-         # 중복 실행 방지 (디버그 모드시 두번 실행됨)
+        if is_job_registered(job_id):
+            return
+        # 중복 실행 방지 (디버그 모드시 두번 실행됨)
         if os.environ.get('RUN_MAIN') != 'true':
             print("Skipping duplicate scheduler initialization")
             return
@@ -19,53 +32,67 @@ class TrandlatorConfig(AppConfig):
         if settings.DEBUG:
             print("Scheduler ready debug")
             # 스케줄러 초기화를 별도의 스레드에서 수행
-            threading.Thread(target=self.start_scheduler).start()
+            scheduled_task = threading.Thread(target=self.start_scheduler)
+            scheduled_task.start()
 
     def start_scheduler(self):
-        from .jobs import Automate
         from apscheduler.schedulers.background import BackgroundScheduler
         from apscheduler.executors.pool import ThreadPoolExecutor
         from apscheduler.triggers.interval import IntervalTrigger
-        from django_apscheduler.jobstores import DjangoJobStore, register_events, register_job
+        from django_apscheduler.jobstores import DjangoJobStore, register_events
         from apscheduler.triggers.cron import CronTrigger
-        #Automate()
+        if is_job_registered(job_id):
+            print("Job already registered. Skipping registration.")
+            return
+      
+        register_job(job_id)
+        print("Registering new job...")
 
-       
-       
-        job_id = "automate_job"  # 작업의 고유 ID
-        if not is_job_registered(job_id):
-            register_job(job_id)
-            print("Registering new job...")
-            scheduler = BackgroundScheduler({
-                'jobstores': {
+        kst = pytz.timezone('Asia/Seoul')
+        # (실행할 함수, 타이머, 서버 실행시 즉시 실행 한번 할지 여부 )
+        schedulerFuncs =[
+            (scheduled_automate,IntervalTrigger(minutes=1),True),
+            (scheduled_ticker,CronTrigger(hour=23, minute=30, timezone=kst),True) #미국장 시작 11:30  pm (한국시간)
+        ]
+
+        
+        for func,trigger,isImmediately in schedulerFuncs:
+            scheduler = BackgroundScheduler(
+                jobstores={
                     'default': DjangoJobStore(),
                 },
-                'executors': {
+                executors={
                     'default': ThreadPoolExecutor(20),
                 },
-                'job_defaults': {
+                job_defaults={
                     'coalesce': False,
                     'max_instances': 1,
                 },
-            })
-            #ticker_trigger = CronTrigger(hour=9, minute=30)
+            )
+
             # 종료 시 스케줄러를 중지하도록 설정
             atexit.register(self.shutdown_scheduler, scheduler)
-            
+
             register_events(scheduler)
             scheduler.start()
-            Automate()
-          
-            
-            # Register the job
-            @register_job(scheduler, IntervalTrigger(minutes = 1), id=job_id, replace_existing=False)
-            def scheduled_automate():
-                Automate()
-        else:
-            print("Job already registered. Skipping registration.")
-        
+            print(f"Scheduler register : {func.__name__}")
+            # 1분마다 실행되는 작업 등록
+            scheduler.add_job(
+                func,
+                trigger,
+                id=func.__name__,
+                replace_existing=False
+            )
+            if isImmediately == True:
+                func()
 
     def shutdown_scheduler(self, scheduler):
         """스케줄러를 안전하게 종료"""
-        print("Shutting down scheduler...")
+        clear_job_status()
+        print(f"스케줄러 종료 중 (잠시만 기다려주세요)...")
+
+        for job in scheduler.get_jobs():
+            scheduler.remove_job(job.id)
+
         scheduler.shutdown(wait=False)  # 스케줄러 중지
+

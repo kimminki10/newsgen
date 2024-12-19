@@ -1,9 +1,13 @@
 import requests
 from dotenv import load_dotenv
+from trandlator.jobs_status import is_job_registered,job_id
 import os
 import json
 
 def trans_summ_data(crawled_data: str):
+    if is_job_registered(job_id) == False:
+        return (False,None)
+    
     # Configuration
     load_dotenv()
     API_KEY = os.environ.get('API_KEY')
