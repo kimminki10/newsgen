@@ -40,7 +40,8 @@
 }
 
 .stock-section {
-  background-color: white;
+  background-color: transparent;
+  border: 1px solid #adaea9;
   padding: 2rem;
   border-radius: 8px;
   margin-bottom: 2rem;
@@ -139,7 +140,8 @@
 }
 
 .notification-section {
-  background-color: white;
+  background-color: transparent;
+  border: 1px solid #adaea9;
   padding: 2rem;
   border-radius: 8px;
   margin-bottom: 2rem;
@@ -171,7 +173,7 @@
 }
 
 .notification-table tr:nth-child(even) td:not(.selected) {
-  background-color: #f9f9f9;
+  background-color: transparent;
 }
 
 .notification-buttons {

@@ -8,7 +8,8 @@
 }
 
 .section-box {
-  background-color: white;
+  background-color: transparent;
+  border: 1px solid #adaea9;
   padding: 2rem;
   border-radius: 8px;
   margin-bottom: 2rem;
@@ -20,14 +21,7 @@
   margin-top: 1rem;
 }
 
-h2 {
-  font-size: 1.2rem;
-  margin-bottom: 1rem;
-  color: #1a2b3c;
-}
-
 .description {
-  color: #666;
   line-height: 1.6;
   margin-bottom: 1.5rem;
 }
@@ -72,16 +66,15 @@ h2 {
 .duration-button {
   width: 100%;
   padding: 1rem;
-  border: 1px solid #ccc;
+  border: 1px solid #adaea9;
   border-radius: 4px;
-  background-color: white;
+  background-color: transparent;
   cursor: pointer;
   text-align: center;
   transition: all 0.3s ease;
 }
 
 .duration-button:hover {
-  background-color: #f5f5f5;
   border-color: #1a412c;
 }
 
@@ -96,10 +89,9 @@ h2 {
   padding: 1rem;
   border: 1px solid #e0e0e0;
   border-radius: 4px;
-  background-color: #f5f5f5;
+  background-color: transparent;
   cursor: pointer;
   text-align: center;
-  color: #666;
   margin-top: 0.5rem;
   transition: all 0.3s ease;
 }
