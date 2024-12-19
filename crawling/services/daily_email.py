@@ -3,7 +3,9 @@ from datetime import datetime
 from email_service import send_email as se
 
 from crawling.db_service_folder import db_services as ds
-
+# 티커 위로 좀더 작게
+# 구도해지 링크 달아주기
+# 기사마다 아티클 뉴스
 def daily_email():
     daily_news = []
     daily_news_html = ""
@@ -44,34 +46,27 @@ def daily_email():
             
 
 def format_articles_html(articles):
-    html_output = ""
+    content_html = ""
     # Loop through each article and construct HTML
     for article in articles:
         tickers = ", ".join(article['tickers'])  # Convert tickers list to a string
         title = article['title']
         content = article['summary']
         
-        # Add HTML for this article
-        # html_output += f"""
-        # <div>
-        #     <h3>Tickers: {tickers}</h3>
-        #     <h2>{title}</h2>
-        #     <p>{content}</p>
-        # </div>
-        # """
-        
-        html_output += f"""
+        # <div style="margin-top: 10px;">
+        #                 {" ".join([f'<a href="https://finance.example.com/{ticker}" style="text-decoration: none; border: 1px solid #1b4d3e; color: #1b4d3e; padding: 5px 10px; border-radius: 5px; font-size: 12px; margin-right: 5px; display: inline-block;">{ticker}</a>' for ticker in article['tickers']])}
+        #     </div>
+        content_html += f"""
         <tr>
-            <td style="padding: 20px;">
-            <div style="padding: 0;">
-            <h2 style="font-size: 18px; color: #1b4d3e;">{title}</h2>
-            <p style="font-size: 14px; color: #333;">{content}</p>
-            <div style="margin-top: 10px;">
-                        {" ".join([f'<a href="https://finance.example.com/{ticker}" style="text-decoration: none; border: 1px solid #1b4d3e; color: #1b4d3e; padding: 5px 10px; border-radius: 5px; font-size: 12px; margin-right: 5px; display: inline-block;">{ticker}</a>' for ticker in article['tickers']])}
-            </div>
-            </div>
-            </td>
-        </tr>
+                        <td>
+                        <div style="margin: 5px;">
+                            {" ".join([f'<a href="https://finance.example.com/{ticker}" style="text-decoration: none; border: 2px solid #1b4d3e; color: #1a412c; padding: 4px 10px; border-radius: 5px; font-size: 11px; margin-right: 5px; display: inline-block;">{ticker}</a>' for ticker in article['tickers']])}
+                        </div>
+                        <h2 style="font-size: 18px; color: #f6f3f5; padding: 15px; background-color: #6f7074; text-align: center; margin-top: 0;">{title}​</h2>
+                        <p style="font-size: 14px; color: #333; padding: 0 20px;">{content}​</p>
+                        </td>
+                    </tr>
+                    <tr>
         """
     basic_html_template  = f"""<!DOCTYPE html>
         <html>
@@ -92,9 +87,9 @@ def format_articles_html(articles):
             role="presentation"
             cellpadding="0"
             cellspacing="0"
-            style="width: 100%; margin: auto; padding: 20px"
+            style="width: 100%; margin: auto; padding: 20px;"
             >
-            <tr>
+            <tr >
                 <td>
                 <table
                     role="presentation"
@@ -104,7 +99,7 @@ def format_articles_html(articles):
                     width: 100%;
                     max-width: 800px;
                     margin: 0 auto;
-                    background: white;
+                    background-color: #f6f3ec;
                     "
                 >
                     <!-- 헤더 -->
@@ -124,12 +119,17 @@ def format_articles_html(articles):
                         </p>
                     </td>
                     </tr>
+                    <tr>
+                        <!-- 주요지수 관련 지표 -->
+                        <td style="text-align: center;">
+                            <div style="border: 3px solid #1b4d3e; color: #1a412c; padding: 5px 20px; border-radius: 5px; font-size: 14px; margin: 10px; display: inline-block; font-weight: bold;">
+                                주요 지수🐂
+                            </div>
+                        </td>
+                    </tr>
 
                     <!-- 뉴스 콘텐츠 -->
-                    <!-- <tr>
-                    <td style="padding: 20px">{{newsContent}}</td>
-                    </tr> -->
-                    {html_output}
+                    {content_html}
 
                     <!-- 푸터 -->
                     <tr>
@@ -144,7 +144,7 @@ def format_articles_html(articles):
                         <p style="margin: 0; font-size: 14px">
                         본 메일은 핀트렌드 메일 수신을 신청하신 분들에게만 발송
                         되었습니다.<br />
-                        메일을 더이상 원치 않으시면 사이트에서 구독 해지를 눌러 해지해 주세요.
+                        메일을 더이상 원치 않으시면 마이페이지에서 구독 해지를 눌러 해지해 주세요.
                         <!-- <a href="{{unsubscribeLink}}" style="color: white"
                             >구독 해지</a
                         >를 눌러 해지해 주세요. -->
