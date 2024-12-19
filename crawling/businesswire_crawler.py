@@ -38,10 +38,3 @@ def crawl_businesswire_article(url):
     finally:
         driver.quit()
 
-# Example usage
-if __name__ == "__main__":
-    yahoo_url = "https://www.businesswire.com/news/home/20241212043058/en/"  # Replace with the actual Yahoo article URL
-    title, time, article = crawl_businesswire_article(yahoo_url)
-    print("Title:", title)
-    print("Time:", time)
-    print("Article:", article)

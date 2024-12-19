@@ -20,11 +20,3 @@ def crawl(driver, url):
 
 
 
-if __name__ == "__main__":
-    driver = get_driver()
-    url = "https://www.globenewswire.com/news-release/2024/12/12/2996582/32716/en/BioAge-Labs-BIOA-Azelaprag-Trial-Halt-Raises-Questions-About-Pre-IPO-Disclosures-Hagens-Berman.html"
-    title, time, article = crawl(driver, url)
-    print(title)
-    print(time)
-    print(article)
-    driver.quit()

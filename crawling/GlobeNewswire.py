@@ -24,11 +24,3 @@ def crawl(url):
     article = get_text(article_selector)
     return title, time, article
 
-
-
-if __name__ == "__main__":
-    title, time, article = crawl(url)
-    print(title)
-    print(time)
-    print(article)
-    driver.quit()

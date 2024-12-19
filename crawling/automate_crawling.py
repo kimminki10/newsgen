@@ -1,6 +1,6 @@
 from . import finviz, news_crawler, openAI
 from .chrome_driver import get_driver
-from .db_service_folder.db_services import add_article
+from .db_service_folder.db_services import add_article, check_article_exists_by_url
 
 def automate_crawler():
         # finviz에서 리스트 긁어오기
@@ -21,8 +21,7 @@ def automate_crawler():
                 # title, time, article
                 # crawl이 잘 됬으면,
                 print("===================================================================================================")
-                print("===================================================================================================")
-                print("===================================================================================================")
+             
                 if crawled_data is not None:
                     # OpenAI에 요약 부탁하기
                     title = crawled_data[0]
@@ -46,7 +45,13 @@ def automate_crawler():
             if isSuccess == False:
                  continue
             
-            print(f"--- Ai Success ---")
+            
+
+            if check_article_exists_by_url(url_link) == True:
+                print(f"--- Ai Exist ---")
+                continue
+            
+            print(f"--- Ai Success ---")       
             add_article(title=ai_data['k_title'],content=ai_data['k_article'],tickers="",origin_url=url_link)
             #ai_data['k_summary']
             

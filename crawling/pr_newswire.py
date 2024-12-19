@@ -33,10 +33,3 @@ def crawl(url):
 
 
 
-if __name__ == "__main__":
-    title,time, article,contents = crawl(url)
-    print(title)
-    print(time)
-    print(article)
-    print(contents)
-    driver.quit()

@@ -27,7 +27,7 @@ class TrandlatorConfig(AppConfig):
         from apscheduler.executors.pool import ThreadPoolExecutor
         from apscheduler.triggers.interval import IntervalTrigger
         from django_apscheduler.jobstores import DjangoJobStore, register_events, register_job
-
+        from apscheduler.triggers.cron import CronTrigger
         #Automate()
 
        
@@ -48,6 +48,7 @@ class TrandlatorConfig(AppConfig):
                     'max_instances': 1,
                 },
             })
+            #ticker_trigger = CronTrigger(hour=9, minute=30)
             # 종료 시 스케줄러를 중지하도록 설정
             atexit.register(self.shutdown_scheduler, scheduler)
             
