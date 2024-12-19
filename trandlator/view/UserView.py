@@ -59,6 +59,9 @@ class UserTickerUpdate(generics.UpdateAPIView):
         user = self.get_queryset()
         tickers = Ticker.objects.filter(ticker_name__in=request.data['tickers']).all()
         user.tickers.set(tickers)
+        user.mail_frequency = request.data['mail_frequency']
+        user.mail_timeSlot = request.data['mail_timeSlot']
+        user.mail_newsCount = request.data['mail_newsCount']
         user.save()
         return Response({'message': 'Tickers updated'}, status=status.HTTP_200_OK)
     

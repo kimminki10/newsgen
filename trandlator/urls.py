@@ -15,7 +15,7 @@ urlpatterns = [
     path('admin/', admin.site.urls),  # Django 관리자 페이지
     path('user/', UserCreateView.as_view(), name='user'),
     path('user/tickers/', UserTickers.as_view(), name='user_tickers'),
-    path('user/tickers/update/', UserTickerUpdate.as_view(), name='user_tickers_update'),
+    path('user/update/', UserTickerUpdate.as_view(), name='user_tickers_update'),
     path('user/verify_email/<str:token>/', UserVerifyEmail.as_view(), name='verify_email'),
     path('user/resend_verification/', UserCreateView.as_view(), name='resend_verification'),
     path('user/reset_password/', ResetPassword.as_view(), name='reset_password'),

@@ -52,6 +52,9 @@ class UserManager(BaseUserManager):
 
 class User(AbstractBaseUser):
     email = models.EmailField(unique=True)
+    mail_frequency = models.CharField(max_length=20, default='daily')
+    mail_timeSlot = models.PositiveIntegerField(default=1) # 8:00 once or (9:00 and 21:00) twice
+    mail_newsCount = models.PositiveIntegerField(default=1)
     tickers = models.ManyToManyField(Ticker, related_name='users', blank=True)
     is_active = models.BooleanField(default=True)
     is_staff = models.BooleanField(default=False)
