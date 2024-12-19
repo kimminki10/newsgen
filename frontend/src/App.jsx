@@ -15,6 +15,7 @@ import CheckEmailPage from "./components/CheckEmailPage";
 import Profile from "./components/Profile";
 import Mail from "./components/Mail";
 import "./App.css";
+import NewPasswordPage from "./components/NewPasswordPage";
 
 import "@fontsource/poppins/600.css";
 
@@ -28,6 +29,10 @@ function App() {
             <Route path="/login" element={<Login />} />
             <Route path="/reset-password" element={<ResetPasswordPage />} />
             <Route path="/check-email" element={<CheckEmailPage />} />
+            <Route
+              path="/reset-password/:token"
+              element={<NewPasswordPage />}
+            />
             <Route path="/ticker/:ticker" element={<NewsList />} />
             <Route path="/register" element={<Register />} />
             <Route path="/news" element={<NewsList />} />

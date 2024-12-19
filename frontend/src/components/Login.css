@@ -6,16 +6,59 @@
   max-width: 400px;
   margin: 0 auto;
   padding: 20px;
+  background-color: transparent;
 }
 
-.button-container {
+.login-container h1 {
+  margin-bottom: 20px;
+  font-size: 2rem;
+}
+
+.info-message {
   width: 100%;
-  display: flex;
-  flex-direction: row;
-  justify-content: space-between;
+  text-align: left;
+  color: #666;
+  font-size: 14px;
+  margin-bottom: 20px;
+  padding: 10px;
+  background-color: #f8f8f8;
+  border-radius: 4px;
+}
+
+.password-field {
+  width: 100%;
+  position: relative;
+  margin-bottom: 20px;
+}
+
+.password-hint {
+  display: block;
+  color: #666;
+  font-size: 12px;
+  margin-top: 4px;
+  text-align: left;
 }
 
 .login-btn {
   width: 100%;
-  margin: 10px 0;
+}
+
+.button-container {
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+  margin-top: 20px;
+}
+
+.button-container button {
+  padding: 8px 16px;
+  border: none;
+  background: none;
+  color: #666;
+  cursor: pointer;
+  text-decoration: underline;
+}
+
+.button-container button:hover {
+  color: #333;
 }

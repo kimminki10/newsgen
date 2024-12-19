@@ -5,10 +5,12 @@ import TextBox from "./TextBox";
 import axios from "axios";
 import "./Login.css";
 
-
 const do_login = async (email, password) => {
   try {
-    const response = await axios.post("http://localhost:8000/token/", { email, password });
+    const response = await axios.post("http://localhost:8000/token/", {
+      email,
+      password,
+    });
     if (response.status === 200) {
       alert("로그인에 성공했습니다.");
       localStorage.setItem("fintrend_access_token", response.data.access);
@@ -48,6 +50,17 @@ const Login = () => {
       return;
     }
 
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailRegex.test(email)) {
+      alert("올바른 이메일 형식을 입력해주세요.");
+      return;
+    }
+
+    if (password.length < 8) {
+      alert("비밀번호는 8자 이상이어야 합니다.");
+      return;
+    }
+
     const loginSuccess = await do_login(email, password);
     if (!loginSuccess) {
       alert("로그인에 실패했습니다. 다시 시도해주세요.");
@@ -61,9 +74,27 @@ const Login = () => {
   return (
     <div className="login-container">
       <h1>로그인</h1>
-      <TextBox ref={emailRef} label="이메일주소" type="email" placeholder="Enter email" />
-      <TextBox ref={passwordRef} label="비밀번호" type="password" placeholder="Enter password" />
-      <button className="login-btn" onClick={handleLogin}>로그인</button>
+      <div className="info-message">
+        * 보안을 위해 비밀번호는 8자 이상으로 설정되어 있습니다.
+      </div>
+      <TextBox
+        ref={emailRef}
+        label="이메일주소"
+        type="email"
+        placeholder="Enter email"
+      />
+      <div className="password-field">
+        <TextBox
+          ref={passwordRef}
+          label="비밀번호"
+          type="password"
+          placeholder="비밀번호 8자 이상 입력"
+        />
+        <span className="password-hint">비밀번호는 8자 이상이어야 합니다</span>
+      </div>
+      <button className="login-btn" onClick={handleLogin}>
+        로그인
+      </button>
       <div className="button-container">
         <button onClick={handleRegisterClick}>가입하기</button>
         <button onClick={handleResetClick}>계정찾기</button>

@@ -1,0 +1,31 @@
+.password-hint {
+  display: block;
+  color: #666;
+  font-size: 12px;
+  margin-top: 4px;
+  text-align: left;
+}
+
+.login-btn {
+  width: 100%;
+}
+
+.button-container {
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+  margin-top: 20px;
+}
+
+.button-container button {
+  padding: 8px 16px;
+  border: none;
+  background: none;
+  color: #666;
+  cursor: pointer;
+  text-decoration: underline;
+}
+
+.button-container button:hover {
+  color: #333;
+}
