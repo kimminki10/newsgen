@@ -1,12 +1,12 @@
 class ResetPasswordMailService {
   constructor() {
-    this.baseUrl = import.meta.env.VITE_API_URL || "http://localhost:3000";
+    this.baseUrl = import.meta.env.JUSIC_API_URL || "http://localhost:8000";
   }
 
   async sendResetPasswordEmail(email) {
     try {
       const response = await fetch(
-        `${this.baseUrl}/api/mail/send-reset-password`,
+        `${this.baseUrl}/user/reset_password/`,
         {
           method: "POST",
           headers: {
