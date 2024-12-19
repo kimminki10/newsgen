@@ -3,8 +3,10 @@ import "./Profile.css";
 import TextBox from "./TextBox";
 import { useNavigate } from "react-router-dom";
 import SubscriptionManagement from "./SubscriptionManagement";
+import { useAuth } from "./AuthContext";
 
 const Profile = () => {
+  const {logout} = useAuth();
   const navigate = useNavigate();
   const [searchTerm, setSearchTerm] = useState("");
   const [userEmail, setUserEmail] = useState("");
@@ -51,8 +53,9 @@ const Profile = () => {
 
   // 로그아웃 핸들러
   const handleLogout = () => {
-    localStorage.removeItem("token");
-    localStorage.removeItem("userEmail");
+    localStorage.removeItem("fintrend_access_token");
+    localStorage.removeItem("fintrend_refresh_token");
+    logout();
     navigate("/login");
   };
 
