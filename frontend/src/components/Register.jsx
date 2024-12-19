@@ -4,12 +4,11 @@ import TextBox from "./TextBox";
 import axios from "axios";
 import "./Register.css";
 
-const do_register = async (email, password, password_check) => {
+const do_register = async (email, password) => {
   try {
-    const response = await axios.post("http://localhost:8000/register/", {
+    const response = await axios.post("http://localhost:8000/user/", {
       email,
       password,
-      password_check,
     });
     if (response.status === 200) {
       alert("회원가입이 완료되었습니다. 로그인해주세요.");
@@ -65,7 +64,7 @@ const Register = () => {
       return;
     }
 
-    const registerSuccess = await do_register(email, password, password_check);
+    const registerSuccess = await do_register(email, password);
     if (!registerSuccess) {
       alert("회원가입에 실패했습니다. 다시 시도해주세요.");
       return;
