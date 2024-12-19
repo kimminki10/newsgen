@@ -1,6 +1,6 @@
 class ResetPasswordMailService {
   constructor() {
-    this.baseUrl = import.meta.env.JUSIC_API_URL || "http://localhost:8000";
+    this.baseUrl = import.meta.env.JUSIC_API_URL || "/";
   }
 
   async sendResetPasswordEmail(email) {
