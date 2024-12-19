@@ -1,60 +1,30 @@
+from crawling.db_service_folder import db_services as ds
 import yfinance as yf
 import pandas as pd
 
-def ticker_price_diff(ticker: str):
-    """
-    RETURNS 
-        last_price: 마지막 가격
-        before_last_price: 마지막 전의 가격
-        price diffence in USD: 전날과 전전날의 차이
-        price difference in percentage: 퍼센티지 기준의 차이
-        last_price_date: 전날의 정확한 날짜 (한국시간)
-        before_last_date: 전전날의 정확한 날짜 (한국시간)
-    """
-    ticker_data = yf.Ticker(ticker).history(period="5d").dropna(subset=["Close"])
-    if not ticker_data.empty and len(ticker_data) >= 2:
-        #prices
-        last_price = ticker_data.Close.iloc[-1] #getting the last closed price
-        before_last_price = ticker_data.Close.iloc[-2] # getting the before last closed price
-        #두자리수를 원할지
-        last_price = round(last_price, 2)
-        before_last_price = round(before_last_price, 2)
-        
-        # dates
-        #TODO: decide if EST date or Korean Date will be used
-        original_dates = pd.to_datetime(ticker_data.index)
-        korean_dates = original_dates.tz_convert('Asia/Seoul')
-        last_price_date = korean_dates[-1] #getting the last closed price Date
-        before_last_date = korean_dates[-2] #getting the before last closed Date
-        #calculations
-        difference = last_price - before_last_price
-        percentage = difference / before_last_price * 100
-        #두자리수를 원할지
-        difference = round(difference, 2)
-        percentage = round(percentage, 2)
-        return last_price, before_last_price, difference, percentage, last_price_date, before_last_date
-    return None
+def add_new_tickers():
+    print("티커 이름들 가져오기기")
+    ticker_names = get_ticker_names()
+    print("티커 값들 가져오기기")
+    result, valid_tickers, invalid_tickers = validate_tickers(ticker_names)
+    print("디비에 저장하기기")
+    print(ds.add_tickers_to_db(result))
 
-def tickers_price_diff(tickers: list[str]):
-    """
-    RETURNS 
-        last_price: 마지막 가격
-        before_last_price: 마지막 전의 가격
-        price diffence in USD: 전날과 전전날의 차이
-        price difference in percentage: 퍼센티지 기준의 차이
-        last_price_date: 전날의 정확한 날짜 (한국시간)
-        before_last_date: 전전날의 정확한 날짜 (한국시간)
-    """
-    # Fetch historical data using yfinance
-    data = yf.Tickers(tickers).history(period="5d")
-
-    # Initialize result dictionary
+def validate_tickers(ticker_list, period="5d"):
+    # Fetch minimal data for the ticker list
+    data = yf.download(ticker_list, period=period, group_by="ticker", progress=False, actions=False)
+    print(data)
+    # Initialize lists for valid and invalid tickers
+    valid_tickers = []
+    invalid_tickers = []
     result = {}
-
-    for ticker in tickers:
-        try:
+    # Iterate through the tickers and validate in a single loop
+    for ticker in data.columns.levels[0]:
+        if not data[ticker]['Open'].isna().all():  # Check if the 'Open' column is not all NaN
+            valid_tickers.append(ticker)
+            ################################################
             # Extract 'Close' prices for the ticker and drop NaN values
-            close_prices = data['Close'][ticker].dropna()
+            close_prices = data[ticker]['Close'].dropna()
             
             # Ensure we have at least two valid prices
             if len(close_prices) >= 2:
@@ -80,17 +50,13 @@ def tickers_price_diff(tickers: list[str]):
                     "last_price_date": close_prices.index[-1],
                     "before_last_price_date": close_prices.index[-2]
                 }
-            else:
-                # result[ticker] = "Not enough data"
-                print(f"{ticker} does not have Enough price_data")
+            ################################################
+        else:
+            invalid_tickers.append(ticker)
 
-        except KeyError:
-            result[ticker] = "Ticker not found"
-    
-    return result
+    return result, valid_tickers, invalid_tickers
 
-    
-if __name__ == "__main__":
+def get_ticker_names(csv='combined_tickers_large.csv'):
     # Major U.S. Indices
     sp500_ticker = "^GSPC"    # S&P 500: Tracks the top 500 large-cap U.S. companies
     dji_ticker = "^DJI"       # Dow Jones Industrial Average: 30 blue-chip U.S. companies
@@ -140,7 +106,13 @@ if __name__ == "__main__":
         "Commodities and Inflation": [gold_ticker, crude_oil_ticker, usd_index_ticker, inflation_protected_ticker],
         "Other Indices": [dow_transport_ticker, dow_utilities_ticker, sp_midcap_ticker, sp_smallcap_ticker]
     }
-    #s&p500
-    sp500_ticker = "^GSPC"
-    print(ticker_price_diff(sp500_ticker))
-    #print(tickers_price_diff(all_tickers['Major Indices']))
+    # Flatten the dictionary into a single list of tickers
+    all_tickers_list = [ticker for category in all_tickers.values() for ticker in category]
+
+    # Print the resulting list
+    combined_df = pd.read_csv(f"crawling/services/ticker_csv/{csv}")
+    symbols = list(combined_df['Symbol'])
+    all_tickers_list.extend(symbols)
+    return all_tickers_list
+
+add_new_tickers()

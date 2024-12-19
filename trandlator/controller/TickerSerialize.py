@@ -8,3 +8,14 @@ class TickerSerializer(serializers.ModelSerializer):
     class Meta:
         model = Ticker
         fields =  '__all__'
+
+#
+class TickerNameSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Ticker
+        fields =  ['ticker_name']
+        
+class TickerNoArticleSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Ticker
+        fields =  '__all__'
