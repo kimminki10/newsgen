@@ -100,6 +100,37 @@ def get_all_articles():
     serializer = ArticleSerializer(articles, many=True)
     return serializer.data
 
+def add_tickers_to_db(price_data):
+    """
+    Adds tickers to the database with detailed price information.
+
+    :param price_data: Dictionary with ticker_name as keys and price details as values.
+    :return: Summary dictionary with counts of added tickers.
+    """
+    # Extract ticker names from the price_data keys
+    ticker_names = price_data.keys()
+
+    # Prepare Ticker objects for bulk creation
+    ticker_objects = [
+        Ticker(
+            ticker_name=name,
+            last_price=float(data["last_price"]),
+            before_last_price=float(data["before_last_price"]),
+            price_diff=float(data["price_difference"]),
+            percentage_diff=float(data["percentage_difference"]),
+            last_price_date=data["last_price_date"],
+            before_last_date=data["before_last_price_date"]
+        )
+        for name, data in price_data.items()
+    ]
+
+    # Bulk insert the new tickers into the database
+    Ticker.objects.bulk_create(ticker_objects)
+
+    # Return a summary
+    return {
+        "added": len(ticker_objects)
+    }
 #ORM VERSION
 # def get_articles_by_ticker_and_date(ticker_name: str, start_date:datetime, end_date: datetime):
 #     ticker = Ticker.objects.get(ticker_name=ticker_name)
@@ -214,12 +245,14 @@ def link_ticker_to_user(ticker_name, user_email):
 if __name__ == "__main__":
     # print("\n=== Final Articles ===")
     #print(get_all_articles())
+    print(len(get_all_ticker()))
+    #print(add_tickers_to_db(['NVDA']))
     #print(get_all_ticker_names())
-    print(get_all_ticker())
-    #print(get_articles_by_ticker_and_date("TSLA", datetime(2024, 12, 17), datetime(2024, 12, 18, 6, 0)))
-    #print(get_articles_by_ticker_and_date("TSLA", datetime(2024, 12, 17), datetime(2024, 12, 20, 6, 0)))
+    #print(get_all_ticker())
+    # print(get_articles_by_ticker_and_date("TSLA", datetime(2024, 12, 17), datetime(2024, 12, 18, 6, 0)))
+    # print(get_articles_by_ticker_and_date("TSLA", datetime(2024, 12, 17), datetime(2024, 12, 20, 6, 0)))
     # print("\n=== Final Users ===")
-    #print(get_all_users())
+    # print(get_all_users())
     #update_user("user1@example.com", "johnwon2007@gmail.com")
     # print("=== Adding Users ===")
     # users = [
