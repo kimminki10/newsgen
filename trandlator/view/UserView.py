@@ -20,7 +20,7 @@ def send_verification_email(t, email, url):
     send_mail(
         'Verify your email',
         f'Click the link to verify your email: {verification_link}',
-        settings.DEFAULT_FROM_EMAIL,
+        settings.EMAIL_HOST_USER,
         [email],
         fail_silently=False,
     )
@@ -32,7 +32,7 @@ class UserCreateView(generics.CreateAPIView):
     def create(self, request, *args, **kwargs):
         response = super().create(request, *args, **kwargs)
         user = User.objects.get(email=request.data['email'])
-        send_verification_email('email', user.email, "http://localhost:5173/user/verify_email/")
+        send_verification_email('email', user.email, f"http://{settings.HOST_NAME}/check-email")
         return response
     
 class UserDetailView(generics.RetrieveAPIView):
@@ -75,7 +75,7 @@ class ResetPassword(generics.GenericAPIView):
     def post(self, request):
         email = request.data['email']
         user = User.objects.get(email=email)
-        send_verification_email('password', user.email, "http://localhost:5173/reset-password/")
+        send_verification_email('password', user.email, f"http://{settings.HOST_NAME}/reset-password/")
         return Response({'message': 'Password reset email sent'}, status=status.HTTP_200_OK)
 
 
