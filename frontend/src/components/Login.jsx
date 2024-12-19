@@ -12,11 +12,13 @@ const do_login = async (email, password) => {
       password,
     });
     if (response.status === 200) {
-      alert("로그인에 성공했습니다.");
       localStorage.setItem("fintrend_access_token", response.data.access);
       localStorage.setItem("fintrend_refresh_token", response.data.refresh);
       localStorage.setItem("userEmail", email);
       return true;
+    } else if (response.status === 401) {
+      console.log("로그인 실패: 이메일 또는 비밀번호가 일치하지 않습니다.");
+      alert("이메일 또는 비밀번호가 일치하지 않습니다.");
     } else {
       console.log(response.data);
       alert("로그인에 실패했습니다. 다시 시도해주세요.");

@@ -221,6 +221,11 @@
   cursor: not-allowed;
 }
 
+.stock-buttons {
+  display: flex;
+  justify-content: flex-end;
+}
+
 @media (max-width: 768px) {
   .profile-container {
     padding: 10px;

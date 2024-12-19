@@ -74,23 +74,8 @@ const TodaysNews = ({ contents }) => {
 };
 
 const AboutPage = () => {
-  const [userEmail, setUserEmail] = useState("");
-
-  useEffect(() => {
-    const email = localStorage.getItem("userEmail");
-    if (email) {
-      setUserEmail(email);
-    }
-  }, []);
-
   return (
     <div>
-      <div className="user-email">
-        <span role="img" aria-label="smile">
-          😊
-        </span>{" "}
-        {userEmail}
-      </div>
       <h1>
         핀트렌드로 쉽게
         <br />

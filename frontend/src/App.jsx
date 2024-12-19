@@ -16,12 +16,14 @@ import Profile from "./components/Profile";
 import Mail from "./components/Mail";
 import "./App.css";
 import NewPasswordPage from "./components/NewPasswordPage";
+import { TickerProvider } from "./components/TickerContext";
 
 import "@fontsource/poppins/600.css";
 
 function App() {
   return (
     <AuthProvider>
+      <TickerProvider>
       <Router>
         <Layout>
           <Routes>
@@ -47,6 +49,7 @@ function App() {
           </Routes>
         </Layout>
       </Router>
+      </TickerProvider>
     </AuthProvider>
   );
 }

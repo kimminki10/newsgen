@@ -1,6 +1,8 @@
 from rest_framework import generics
-from trandlator.models import User
+from trandlator.models import User, Ticker
 from trandlator.controller.UserSerialize import UserSerializer
+from trandlator.controller.TickerSerialize import TickerSerializer
+from trandlator.controller.TickerSerialize import TickerNameSerializer
 from django.core.cache import cache
 from django.core.mail import send_mail
 from django.conf import settings
@@ -35,11 +37,30 @@ class UserCreateView(generics.CreateAPIView):
     
 
 class UserTickers(generics.ListAPIView):
-    serializer_class = UserSerializer
+    serializer_class = TickerNameSerializer
     permission_classes = [permissions.IsAuthenticated]
 
     def get_queryset(self):
         return User.objects.get(email=self.request.user.email).tickers.all()
+    
+    def list(self, request, *args, **kwargs):
+        queryset = self.get_queryset()
+        serializer = TickerNameSerializer(queryset, many=True)
+        return Response(serializer.data)
+    
+class UserTickerUpdate(generics.UpdateAPIView):
+    serializer_class = UserSerializer
+    permission_classes = [permissions.IsAuthenticated]
+
+    def get_queryset(self):
+        return User.objects.get(email=self.request.user.email)
+    
+    def update(self, request, *args, **kwargs):
+        user = self.get_queryset()
+        tickers = Ticker.objects.filter(ticker_name__in=request.data['tickers']).all()
+        user.tickers.set(tickers)
+        user.save()
+        return Response({'message': 'Tickers updated'}, status=status.HTTP_200_OK)
     
 
 class ResetPassword(generics.GenericAPIView):

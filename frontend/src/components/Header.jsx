@@ -20,7 +20,7 @@ const HeaderButton = ({ text, link, onClick }) => {
 };
 
 const Header = () => {
-  const { user, logout } = useAuth();
+  const { user } = useAuth();
 
   return (
     <div>

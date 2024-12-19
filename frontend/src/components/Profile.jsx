@@ -4,19 +4,18 @@ import TextBox from "./TextBox";
 import { useNavigate } from "react-router-dom";
 import SubscriptionManagement from "./SubscriptionManagement";
 import { useAuth } from "./AuthContext";
+import axios from "axios";
+import { useTicker } from "./TickerContext";
+
 
 const Profile = () => {
   const {logout} = useAuth();
   const navigate = useNavigate();
   const [searchTerm, setSearchTerm] = useState("");
   const [userEmail, setUserEmail] = useState("");
-  const [selectedStocks, setSelectedStocks] = useState([
-    "TSLA",
-    "NVDA",
-    "MSFT",
-    "TSLA",
-    "TSLA",
-  ]);
+  const [selectedStocks, setSelectedStocks] = useState([]);
+  const { tickerList } = useTicker();
+
 
   // 메일 발송 설정 상태
   const [mailSettings, setMailSettings] = useState({
@@ -29,46 +28,80 @@ const Profile = () => {
   const [isSettingsChanged, setIsSettingsChanged] = useState(false);
   const [isSaving, setIsSaving] = useState(false);
   const [isSending, setIsSending] = useState(false);
+  
+  const requestUserTicker = async () => {
+    try {
+      const header = {
+        Authorization: `Bearer ${localStorage.getItem("fintrend_access_token")}`,
+      }
+      const response = await axios.get("/api/user/tickers/", { headers: header });
+      setSelectedStocks(response.data.map((stock) => stock.ticker_name));
+    } catch (error) {
+      console.error(error);
+      logout();
+      navigate("/login");
+    }
+  }
 
   // 이메일 가져오기
   useEffect(() => {
     const email = localStorage.getItem("userEmail");
     if (email) {
       setUserEmail(email);
+      requestUserTicker();
+    } else {
+      navigate("/login");
     }
   }, []);
 
-  // 샘플 티커 데이터
-  const sampleTickers = [
-    { ticker: "AAPL", name: "Apple Inc." },
-    { ticker: "GOOGL", name: "Alphabet Inc." },
-    { ticker: "AMZN", name: "Amazon.com Inc." },
-    { ticker: "TSLA", name: "Tesla Inc." },
-    { ticker: "NVDA", name: "NVIDIA Corporation" },
-    { ticker: "MSFT", name: "Microsoft Corporation" },
-  ];
-
   const [searchResults, setSearchResults] = useState([]);
   const maxStocks = 10;
+
+  const requestUserUpdate = async () => {
+    try {
+      const data = { 
+        tickers: selectedStocks,
+        frequency: mailSettings.frequency,
+        timeSlot: mailSettings.timeSlot,
+        newsCount: mailSettings.newsCount,
+      };
+      const header = {
+        Authorization: `Bearer ${localStorage.getItem("fintrend_access_token")}`,
+      }
+      const response = await axios.put("/api/user/tickers/update/", data, { headers: header });
+      console.log(response);
+    } catch (error) {
+      console.error(error);
+    }
+  }
 
   // 로그아웃 핸들러
   const handleLogout = () => {
     localStorage.removeItem("fintrend_access_token");
     localStorage.removeItem("fintrend_refresh_token");
+    localStorage.removeItem("userEmail");
     logout();
     navigate("/login");
   };
 
   // 검색 핸들러
   const handleSearch = (e) => {
-    if (e.key === "Enter" || e.type === "click") {
-      const results = sampleTickers.filter(
-        (stock) =>
-          stock.ticker.toLowerCase().includes(searchTerm.toLowerCase()) ||
-          stock.name.toLowerCase().includes(searchTerm.toLowerCase())
-      );
-      setSearchResults(results);
+    if (searchTerm === "") {
+      setSearchResults([]);
+      return;
     }
+    if (e.key === 'Enter') {
+      console.log('Enter');
+      searchResults[0] && addStock(searchResults[0]);
+      setSearchResults([]);
+      setSearchTerm("");
+      return;
+    }
+    const results = tickerList.filter((ticker) =>
+      ticker.ticker_name.toLowerCase().includes(searchTerm.toLowerCase())
+    );
+    const tickerNames = results.map((stock) => stock.ticker_name);
+    setSearchResults(tickerNames);
   };
 
   // 주식 추가 핸들러
@@ -100,8 +133,7 @@ const Profile = () => {
   const handleSaveSettings = async () => {
     try {
       setIsSaving(true);
-      // TODO: API 호출하여 설정 저장
-      await new Promise((resolve) => setTimeout(resolve, 1000)); // 임시 딜레이
+      await requestUserUpdate();
       setIsSettingsChanged(false);
       alert("설정이 저장되었습니다.");
     } catch (error) {
@@ -172,18 +204,25 @@ const Profile = () => {
           </div>
           {searchResults.length > 0 && (
             <div className="search-results">
-              {searchResults.map((result, index) => (
+              {searchResults.map((ticker, index) => (
                 <div
                   key={index}
                   className="search-result-item"
-                  onClick={() => addStock(result.ticker)}
+                  onClick={() => addStock(ticker)}
                 >
-                  <span className="ticker">{result.ticker}</span>
-                  <span className="company-name">{result.name}</span>
+                  <span className="ticker">{ticker}</span>
                 </div>
               ))}
             </div>
           )}
+        </div>
+        <div className="stock-buttons">
+          <button
+            className={`save-button active`}
+            onClick={handleSaveSettings}
+          >
+            {isSaving ? "저장 중..." : "설정 저장하기"}
+          </button>
         </div>
       </div>
 

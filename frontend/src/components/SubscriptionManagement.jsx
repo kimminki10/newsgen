@@ -75,7 +75,7 @@ const SubscriptionManagement = () => {
               className="unsubscribe-button"
               onClick={() => handleSubscriptionChange("unsubscribe")}
             >
-              우리 그만 해여자 (구독 해지) 😭
+              우리 그만 해어져 (구독 해지) 😭
             </button>
             <p className="unsubscribe-note">
               * 구독 해지 시 저장된 모든 설정이 초기화됩니다

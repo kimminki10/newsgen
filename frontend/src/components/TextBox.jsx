@@ -1,7 +1,7 @@
 import React, { forwardRef } from 'react';
 import './TextBox.css';
 
-const TextBox = forwardRef(({ label, type, placeholder, value, onChange }, ref) => {
+const TextBox = forwardRef(({ label, type, placeholder, value, onChange, onKeyPress }, ref) => {
     TextBox.displayName = 'TextBox';
 
     return (
@@ -13,6 +13,7 @@ const TextBox = forwardRef(({ label, type, placeholder, value, onChange }, ref) 
             placeholder={placeholder}
             value={value}
             onChange={onChange}
+            onKeyDown={onKeyPress}
         />
         </div>
     );
