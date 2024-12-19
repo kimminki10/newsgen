@@ -5,6 +5,7 @@ from django.core.cache import cache
 from django.core.mail import send_mail
 from django.conf import settings
 from rest_framework.response import Response
+from rest_framework import permissions
 from rest_framework import status
 import uuid
 
@@ -35,6 +36,7 @@ class UserCreateView(generics.CreateAPIView):
 
 class UserTickers(generics.ListAPIView):
     serializer_class = UserSerializer
+    permission_classes = [permissions.IsAuthenticated]
 
     def get_queryset(self):
         return User.objects.get(email=self.request.user.email).tickers.all()

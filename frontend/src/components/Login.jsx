@@ -15,6 +15,7 @@ const do_login = async (email, password) => {
       alert("로그인에 성공했습니다.");
       localStorage.setItem("fintrend_access_token", response.data.access);
       localStorage.setItem("fintrend_refresh_token", response.data.refresh);
+      localStorage.setItem("userEmail", email);
       return true;
     } else {
       console.log(response.data);
