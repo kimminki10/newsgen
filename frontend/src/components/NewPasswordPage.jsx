@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import TextBox from "./TextBox";
 import "./NewPasswordPage.css";
@@ -11,8 +11,11 @@ const NewPasswordPage = () => {
   const { token } = useParams();
   const navigate = useNavigate();
 
-  const handleChangeClick = async () => {
+  const handleLoginClick = () => {
+    navigate("/login");
+  };
 
+  const handleChangeClick = async () => {
     // 비밀번호 유효성 검사
     if (password.length < 8) {
       setError("비밀번호는 8자 이상이어야 합니다.");
@@ -26,18 +29,15 @@ const NewPasswordPage = () => {
 
     try {
       setLoading(true);
-      const response = await fetch(
-        `/api/user/change_password/${token}/`,
-        {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({
-            password: password,
-          }),
-        }
-      );
+      const response = await fetch(`/api/user/change_password/${token}/`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          password: password,
+        }),
+      });
 
       if (!response.ok) {
         throw new Error("Failed to reset password");
@@ -52,47 +52,55 @@ const NewPasswordPage = () => {
     }
   };
 
-  // 버튼 활성화 여부를 결정하는 조건
   const isSubmitDisabled = () => {
     return loading || !password || !confirmPassword || password.length < 8;
   };
 
   return (
-    <div>
+    <div className="new-password-container">
       <h1>비밀번호 재설정</h1>
-      <div className="password-fields">
-        <TextBox
-          label="새로운 비밀번호"
-          type="password"
-          value={password}
-          onChange={(e) => {
-            setPassword(e.target.value);
-            setError(""); // 입력 시 에러 메시지 초기화
-          }}
-          placeholder="8자 이상 입력해주세요"
-          required
-        />
-        <TextBox
-          label="새로운 비밀번호 확인"
-          type="password"
-          value={confirmPassword}
-          onChange={(e) => {
-            setConfirmPassword(e.target.value);
-            console.log("confirmPassword", e);
-            setError(""); // 입력 시 에러 메시지 초기화
-          }}
-          placeholder="비밀번호를 다시 입력해주세요"
-          required
-        />
+      <div className="input-wrapper">
+        <div className="password-field">
+          <TextBox
+            label="새로운 비밀번호"
+            type="password"
+            value={password}
+            onChange={(e) => {
+              setPassword(e.target.value);
+              setError("");
+            }}
+            placeholder="8자 이상 입력해주세요"
+            required
+          />
+          <span className="password-hint">
+            비밀번호는 8자 이상이어야 합니다
+          </span>
+        </div>
+        <div className="password-field">
+          <TextBox
+            label="새로운 비밀번호 확인"
+            type="password"
+            value={confirmPassword}
+            onChange={(e) => {
+              setConfirmPassword(e.target.value);
+              setError("");
+            }}
+            placeholder="비밀번호를 다시 입력해주세요"
+            required
+          />
+        </div>
+        {error && <div className="error-message">{error}</div>}
+        <button
+          onClick={handleChangeClick}
+          className="submit-btn"
+          disabled={isSubmitDisabled()}
+        >
+          {loading ? "처리중..." : "재설정하기"}
+        </button>
+        <div className="button-container">
+          <button onClick={handleLoginClick}>로그인으로 돌아가기</button>
+        </div>
       </div>
-      {error && <p className="error-message">{error}</p>}
-      <button
-        onClick={() => handleChangeClick() }
-        className="submit-btn"
-        disabled={isSubmitDisabled()}
-      >
-        {loading ? "처리중..." : "재설정하기"}
-      </button>
     </div>
   );
 };
