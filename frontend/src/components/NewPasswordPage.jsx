@@ -27,7 +27,7 @@ const NewPasswordPage = () => {
     try {
       setLoading(true);
       const response = await fetch(
-        `/user/change_password/${token}/`,
+        `/api/user/change_password/${token}/`,
         {
           method: "POST",
           headers: {

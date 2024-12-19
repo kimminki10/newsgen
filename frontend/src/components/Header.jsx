@@ -20,7 +20,7 @@ const HeaderButton = ({ text, link, onClick }) => {
 };
 
 const Header = () => {
-  const { isLoggedIn, userEmail, logout } = useAuth();
+  const { user, logout } = useAuth();
 
   return (
     <div>
@@ -29,11 +29,11 @@ const Header = () => {
           Fintrend
         </Link>
         <div className="header-content">
-          {isLoggedIn ? (
+          {user ? (
             <>
               <Link to="/profile" className="user-profile">
                 <span className="user-icon">😊</span>
-                <span className="user-email">{userEmail}</span>
+                <span className="user-email">{user}</span>
               </Link>
             </>
           ) : (

@@ -2,7 +2,6 @@ import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { Link, useParams } from "react-router-dom";
 import "./NewsList.css";
-import config from "../config";
 import NewsItem from "./NewsItem";
 
 const NewsList = () => {
@@ -12,7 +11,7 @@ const NewsList = () => {
   useEffect(() => {
     const fetchTickerData = async () => {
       try {
-        const response = await axios.get(`${config.backendBaseUrl}/ticker/${ticker}/`);
+        const response = await axios.get(`/api/ticker/${ticker}/`);
           const { articles, ...rest } = response.data;
           setTickerData(rest);
           setArticles(articles);

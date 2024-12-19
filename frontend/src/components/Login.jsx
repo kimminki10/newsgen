@@ -7,7 +7,7 @@ import "./Login.css";
 
 const do_login = async (email, password) => {
   try {
-    const response = await axios.post("/token/", {
+    const response = await axios.post("/api/token/", {
       email,
       password,
     });

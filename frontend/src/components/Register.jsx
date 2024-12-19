@@ -6,7 +6,7 @@ import "./Register.css";
 
 const do_register = async (email, password) => {
   try {
-    const response = await axios.post("/user/", {
+    const response = await axios.post("/api/user/", {
       email,
       password,
     });
