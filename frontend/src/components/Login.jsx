@@ -11,6 +11,8 @@ const do_login = async (email, password) => {
     const response = await axios.post("http://localhost:8000/token/", { email, password });
     if (response.status === 200) {
       alert("로그인에 성공했습니다.");
+      localStorage.setItem("fintrend_access_token", response.data.access);
+      localStorage.setItem("fintrend_refresh_token", response.data.refresh);
       return true;
     } else {
       console.log(response.data);
