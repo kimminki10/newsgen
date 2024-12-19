@@ -1,14 +1,17 @@
+import os
+import pytz
+import threading
 from django.apps import AppConfig
 from django.conf import settings
 
 from .jobs_status import is_job_registered, register_job,clear_job_status,job_id  # 작업 상태 관리 함수 가져오기
+
 import atexit
-import threading
-import os
-import pytz
 
 def scheduled_ticker():
-    print("------------- tickers ---------------------------")
+    from .jobs import Automate_Tickers
+    print("--scheduled_Automate_Tickers--")
+    Automate_Tickers()
 
 def scheduled_automate():
     from .jobs import Automate
@@ -29,9 +32,11 @@ class TrandlatorConfig(AppConfig):
             print("Skipping duplicate scheduler initialization")
             return
         print("Scheduler ready")
+       
         if settings.DEBUG:
             print("Scheduler ready debug")
             # 스케줄러 초기화를 별도의 스레드에서 수행
+            
             scheduled_task = threading.Thread(target=self.start_scheduler)
             scheduled_task.start()
 
@@ -41,19 +46,24 @@ class TrandlatorConfig(AppConfig):
         from apscheduler.triggers.interval import IntervalTrigger
         from django_apscheduler.jobstores import DjangoJobStore, register_events
         from apscheduler.triggers.cron import CronTrigger
+        from crawling.services.set_tickers import add_new_tickers
+
         if is_job_registered(job_id):
             print("Job already registered. Skipping registration.")
             return
-      
-        register_job(job_id)
+        
+        #서버 실행시 초기 tickers 등록
+        add_new_tickers()
         print("Registering new job...")
 
         kst = pytz.timezone('Asia/Seoul')
         # (실행할 함수, 타이머, 서버 실행시 즉시 실행 한번 할지 여부 )
         schedulerFuncs =[
-            (scheduled_automate,IntervalTrigger(minutes=1),True),
-            (scheduled_ticker,CronTrigger(hour=23, minute=30, timezone=kst),True) #미국장 시작 11:30  pm (한국시간)
+            (scheduled_ticker,CronTrigger(hour=23, minute=30, timezone=kst),True), #미국장 시작 11:30  pm (한국시간)
+            (scheduled_automate,IntervalTrigger(minutes=1),True)
         ]
+
+        
 
         
         for func,trigger,isImmediately in schedulerFuncs:

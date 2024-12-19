@@ -63,6 +63,16 @@ LOGGING = {
             'handlers': ['console', 'file'],
             'level': 'DEBUG',
         },
+        'yfinance': {  # yfinance 로그 설정
+            'handlers': ['console'],
+            'level': 'WARNING',  # yfinance 로그를 WARNING 이상으로 제한
+            'propagate': False,
+        },
+        'urllib3': {  # urllib3 로그 설정
+            'handlers': ['console'],
+            'level': 'WARNING',  # urllib3 로그를 WARNING 이상으로 제한
+            'propagate': False,
+        },
     },
 }
 

@@ -1,3 +1,4 @@
+
 import os
 import django
 import random
@@ -13,6 +14,11 @@ django.setup()
 from trandlator.models import User, Article, Ticker
 from trandlator.controller.TickerSerialize import TickerNoArticleSerializer, TickerNameSerializer
 from trandlator.controller.ArticleSerializer import ArticleSerializer
+
+# 로그 레벨을 WARNING으로 설정하여 디버그 로그 비활성화
+# yfinance의 로거 비활성화
+
+
 
 ##################################################################################################################################
 #Used in daily_email.py
@@ -108,29 +114,35 @@ def add_tickers_to_db(price_data):
     :return: Summary dictionary with counts of added tickers.
     """
     # Extract ticker names from the price_data keys
-    ticker_names = price_data.keys()
 
-    # Prepare Ticker objects for bulk creation
-    ticker_objects = [
-        Ticker(
-            ticker_name=name,
-            last_price=float(data["last_price"]),
-            before_last_price=float(data["before_last_price"]),
-            price_diff=float(data["price_difference"]),
-            percentage_diff=float(data["percentage_difference"]),
-            last_price_date=data["last_price_date"],
-            before_last_date=data["before_last_price_date"]
-        )
-        for name, data in price_data.items()
-    ]
+    try:
+        ticker_names = price_data.keys()
 
-    # Bulk insert the new tickers into the database
-    Ticker.objects.bulk_create(ticker_objects)
+        # Prepare Ticker objects for bulk creation
+        ticker_objects = [
+            Ticker(
+                ticker_name=name,
+                last_price=float(data["last_price"]),
+                before_last_price=float(data["before_last_price"]),
+                price_diff=float(data["price_difference"]),
+                percentage_diff=float(data["percentage_difference"]),
+                last_price_date=data["last_price_date"],
+                before_last_date=data["before_last_price_date"]
+            )
+            for name, data in price_data.items()
+        ]
 
-    # Return a summary
-    return {
-        "added": len(ticker_objects)
-    }
+        # Bulk insert the new tickers into the database
+        Ticker.objects.bulk_create(ticker_objects)
+
+        # Return a summary
+        return {
+            "added": len(ticker_objects)
+        }
+    except Exception as e:
+        return {
+            "error": str(e)
+        }
 #ORM VERSION
 # def get_articles_by_ticker_and_date(ticker_name: str, start_date:datetime, end_date: datetime):
 #     ticker = Ticker.objects.get(ticker_name=ticker_name)

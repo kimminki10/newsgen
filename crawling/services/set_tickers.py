@@ -1,6 +1,22 @@
-from crawling.db_service_folder import db_services as ds
+import os
+import sys
+from io import StringIO
+
 import yfinance as yf
+
+
 import pandas as pd
+
+
+# 프로젝트 루트를 Python 경로에 추가
+sys.path.append(os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__)))))
+
+from crawling.db_service_folder import db_services as ds
+
+
+
+
+
 
 def add_new_tickers():
     print("티커 이름들 가져오기기")
@@ -8,13 +24,18 @@ def add_new_tickers():
     print("티커 값들 가져오기기")
     result, valid_tickers, invalid_tickers = validate_tickers(ticker_names)
     print("디비에 저장하기기")
-    print(ds.add_tickers_to_db(result))
+    ds.add_tickers_to_db(result)
+   
 
 def validate_tickers(ticker_list, period="5d"):
     # Fetch minimal data for the ticker list
+    #여기 함수에서 sql 로그 많이 찍힘 
+
     data = yf.download(ticker_list, period=period, group_by="ticker", progress=False, actions=False)
-    print(data)
+
+    #print(data)
     # Initialize lists for valid and invalid tickers
+    
     valid_tickers = []
     invalid_tickers = []
     result = {}
@@ -115,5 +136,5 @@ def get_ticker_names(csv='combined_tickers_large.csv'):
     all_tickers_list.extend(symbols)
     return all_tickers_list
 
-if __name__ == "__main__":
-    add_new_tickers()
+#if __name__ == "__main__":
+    #add_new_tickers()

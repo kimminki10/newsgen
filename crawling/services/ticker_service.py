@@ -1,5 +1,8 @@
+
 import yfinance as yf
 import pandas as pd
+
+
 
 def ticker_price_diff(ticker: str):
     """
@@ -90,6 +93,7 @@ def tickers_price_diff(tickers: list[str]):
     return result
 
     
+"""
 if __name__ == "__main__":
     # Major U.S. Indices
     sp500_ticker = "^GSPC"    # S&P 500: Tracks the top 500 large-cap U.S. companies
@@ -144,3 +148,4 @@ if __name__ == "__main__":
     sp500_ticker = "^GSPC"
     print(ticker_price_diff(sp500_ticker))
     #print(tickers_price_diff(all_tickers['Major Indices']))
+"""
