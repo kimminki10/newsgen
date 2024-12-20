@@ -10,5 +10,5 @@ def update_ticker_data():
     ds.update_ticker_prices(tickers_data)
     print("done")
     
-if __name__ == "__main__":
-    update_ticker_data()
+#if __name__ == "__main__":
+    #update_ticker_data()

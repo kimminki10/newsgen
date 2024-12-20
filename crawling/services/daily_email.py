@@ -1,6 +1,6 @@
 
 from datetime import datetime
-from email_service import send_email as se
+from crawling.services.email_service import send_email as se
 
 from crawling.db_service_folder import db_services as ds
 # 티커 위로 좀더 작게
@@ -12,7 +12,7 @@ def daily_email():
     #user다 가져와서
     users = ds.get_all_users()
     #TODO: remove [:1] later
-    for user in users[:1]:
+    for user in users[:1]:#1 플고
         #유저마다 ticker 가져오고
             user_email = user['email']
             #티커 없을 때 처리도 해야함
@@ -20,6 +20,7 @@ def daily_email():
             #해당 티커들 마다 오늘 기사 있는지 찾아보고 있으면 잘 약식정리
             tickers_articles = []
             for ticker in tickers:
+                # 날짜는 이야기해보고 하자
                 #오늘날짜랑 어제날짜 구해서 집어넣기 지금은 더미값
                 #원하는 날짜의 해당 티커의 기사들만 가져옴
                 ticker_articles = ds.get_articles_by_ticker_and_date(ticker, datetime(2024, 12, 17), datetime(2024, 12, 20))

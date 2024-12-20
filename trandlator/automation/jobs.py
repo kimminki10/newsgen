@@ -2,6 +2,8 @@ import logging
 from crawling.automate_crawling import automate_crawler
 from crawling.services.ticker_service import tickers_price_diff
 from crawling.db_service_folder import db_services as ds
+from crawling.services.daily_email import daily_email
+from crawling.services.daily_stock_prices import update_ticker_data
 logger = logging.getLogger(__name__)
 
 # 로그 레벨을 WARNING으로 설정하여 디버그 로그 비활성화
@@ -17,14 +19,9 @@ def Automate():
 
 # Tickers automate
 def Automate_Tickers():
+    #장시간 끝날때 한번만 실행 -> 여유시간 30분 두고 실행 
     print("Tickers Schedule Start!")
-    all_ticker_names = ds.get_all_ticker_names()
-    print(f"Ticker Names : {all_ticker_names}")
-    """
-    if(len(all_ticker_names) > 0):
-        all_tickers_price_diff = tickers_price_diff(all_ticker_names)
-        print(f"Ticker All : {all_tickers_price_diff}")
-    """
+    update_ticker_data()
     print("Tickers Schedule End!")
 
 def Automate_Mail():
