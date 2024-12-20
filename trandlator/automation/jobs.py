@@ -27,3 +27,6 @@ def Automate_Tickers():
     """
     print("Tickers Schedule End!")
 
+def Automate_Mail():
+    print("Mail Schedule Start!")
+    print("Mail Schedule End!")

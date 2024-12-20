@@ -17,6 +17,11 @@ def scheduled_automate():
     from .jobs import Automate
     print("--scheduled_automate--")
     Automate()
+
+def scheduled_mail():
+    from .jobs import Automate_Mail
+    print("--scheduled_automate--")
+    Automate_Mail()
     
 scheduled_task = None
 
@@ -54,20 +59,22 @@ class TrandlatorConfig(AppConfig):
         register_job(job_id)
 
         #서버 실행시 초기 tickers 등록
-        add_new_tickers()
+        #add_new_tickers()
         print("Registering new job...")
 
         kst = pytz.timezone('Asia/Seoul')
-        # (실행할 함수, 타이머, 서버 실행시 즉시 실행 한번 할지 여부 )
-        schedulerFuncs =[
-            (scheduled_ticker,CronTrigger(hour=23, minute=30, timezone=kst),True), #미국장 시작 11:30  pm (한국시간)
-            (scheduled_automate,IntervalTrigger(minutes=1),True)
+        # (실행할 함수,job id, 타이머, 서버 실행시 즉시 실행 한번 할지 여부 )
+        schedulers =[
+            (scheduled_ticker,"scheduled_ticker",CronTrigger(hour=23, minute=30, timezone=kst),True), #미국장 시작 11:30  pm (한국시간)
+            (scheduled_automate,"scheduled_automate",IntervalTrigger(minutes=1),True),
+            (scheduled_mail,"scheduled_mail_0",CronTrigger(hour=0, minute=0, timezone=kst),False),
+            (scheduled_mail,"scheduled_mail_1",CronTrigger(hour=12, minute=0, timezone=kst),False)
         ]
 
         
 
-        
-        for func,trigger,isImmediately in schedulerFuncs:
+        # Scheduler 생성
+        for func,now_job_id,trigger,isImmediately in schedulers:
             scheduler = BackgroundScheduler(
                 jobstores={
                     'default': DjangoJobStore(),
@@ -86,12 +93,12 @@ class TrandlatorConfig(AppConfig):
 
             register_events(scheduler)
             scheduler.start()
-            print(f"Scheduler register : {func.__name__}")
+            print(f"Scheduler register : {now_job_id}")
             # 1분마다 실행되는 작업 등록
             scheduler.add_job(
                 func,
                 trigger,
-                id=func.__name__,
+                id=now_job_id,
                 replace_existing=False
             )
             if isImmediately == True:

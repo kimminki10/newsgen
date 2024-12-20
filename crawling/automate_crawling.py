@@ -1,7 +1,7 @@
 from . import finviz, news_crawler, openAI
 from .chrome_driver import get_driver
 from .db_service_folder.db_services import add_article, check_article_exists_by_url
-from trandlator.jobs_status import is_job_registered,job_id
+from trandlator.automation.jobs_status import is_job_registered,job_id
 
 driver = None
 

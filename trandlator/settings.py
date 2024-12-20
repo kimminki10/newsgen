@@ -39,7 +39,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'corsheaders',
-    'trandlator',
+    'trandlator.automation',
     'rest_framework',
     'django_apscheduler'
 ]

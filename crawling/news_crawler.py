@@ -1,6 +1,6 @@
 from .chrome_driver import get_driver
 from . import yahoo_crawler, basic_crawler
-from trandlator.jobs_status import is_job_registered,job_id
+from trandlator.automation.jobs_status import is_job_registered,job_id
 
 def crawler(driver, url: str):
     if is_job_registered(job_id) == False:
