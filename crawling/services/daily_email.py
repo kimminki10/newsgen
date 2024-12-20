@@ -1,7 +1,7 @@
 
-from datetime import datetime
+from datetime import datetime, timedelta
+import pytz
 from crawling.services.email_service import send_email as se
-
 from crawling.db_service_folder import db_services as ds
 # 티커 위로 좀더 작게
 # 구도해지 링크 달아주기
@@ -11,6 +11,11 @@ def daily_email():
     daily_news_html = ""
     #user다 가져와서
     users = ds.get_all_users()
+    kst = pytz.timezone('Asia/Seoul')
+    # Get current time in KST
+    today = datetime.now(kst)
+    yesterday = today - timedelta(days=1)
+    print(today, yesterday)
     #TODO: remove [:1] later
     for user in users[:1]:#1 플고
         #유저마다 ticker 가져오고
@@ -23,7 +28,7 @@ def daily_email():
                 # 날짜는 이야기해보고 하자
                 #오늘날짜랑 어제날짜 구해서 집어넣기 지금은 더미값
                 #원하는 날짜의 해당 티커의 기사들만 가져옴
-                ticker_articles = ds.get_articles_by_ticker_and_date(ticker, datetime(2024, 12, 17), datetime(2024, 12, 20))
+                ticker_articles = ds.get_articles_by_ticker_and_date(ticker, yesterday, today)
                 #기사 전체에 추가
                 tickers_articles.extend(ticker_articles)
             
@@ -42,7 +47,7 @@ def daily_email():
                 daily_news_html = format_articles_html(articles[:5])
                 content = daily_news_html
             # 이메일 보내는 기능
-            #print(f'Sent to: {user_email} \n subject: {subject} \n content: {content}')
+            print(f'EMAIL Sent to: {user_email} \n subject: {subject} \n content: {content}')
             se(user_email, subject, content)
             
 

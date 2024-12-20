@@ -15,8 +15,8 @@ def send_email(receiver_email, subject, content):
     load_dotenv(override=True)
 
     # 발신자 이메일과 비밀번호를 환경 변수에서 불러오기
-    sender_email = os.environ.get('SENDER_EMAIL')  # 발신자 이메일 주소
-    sender_password = os.environ.get('SENDER_PASSWORD')  # 발신자 이메일 앱 비밀번호
+    sender_email = os.environ.get('EMAIL_HOST_USER')  # 발신자 이메일 주소
+    sender_password = os.environ.get('EMAIL_HOST_PASSWORD')  # 발신자 이메일 앱 비밀번호
 
     # 이메일 내용 및 속성 설정
     html_message = MIMEText(content, 'html')  # 이메일 내용을 HTML 형식으로 설정
