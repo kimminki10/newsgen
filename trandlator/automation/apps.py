@@ -65,10 +65,10 @@ class TrandlatorConfig(AppConfig):
         kst = pytz.timezone('Asia/Seoul')
         # (실행할 함수,job id, 타이머, 서버 실행시 즉시 실행 한번 할지 여부 )
         schedulers =[
-            (scheduled_ticker,"scheduled_ticker",CronTrigger(hour=23, minute=30, timezone=kst),True), #미국장 시작 11:30  pm (한국시간)
-            (scheduled_automate,"scheduled_automate",IntervalTrigger(minutes=3),True),
-            (scheduled_mail,"scheduled_mail_0",CronTrigger(hour=0, minute=0, timezone=kst),False),
-            (scheduled_mail,"scheduled_mail_1",CronTrigger(hour=12, minute=0, timezone=kst),False)
+            #(scheduled_ticker,"scheduled_ticker",CronTrigger(hour=23, minute=30, timezone=kst),True), #미국장 시작 11:30  pm (한국시간)
+            (scheduled_automate,"scheduled_automate",IntervalTrigger(minutes=3),True)
+            #(scheduled_mail,"scheduled_mail_0",CronTrigger(hour=0, minute=0, timezone=kst),False),
+            #(scheduled_mail,"scheduled_mail_1",CronTrigger(hour=12, minute=0, timezone=kst),False)
         ]
 
         for func,now_job_id,trigger,isImmediately in schedulers:
