@@ -1,7 +1,7 @@
 
 import yfinance as yf
 import pandas as pd
-
+from datetime import timedelta
 
 
 def ticker_price_diff(ticker: str):
@@ -38,58 +38,97 @@ def ticker_price_diff(ticker: str):
         return last_price, before_last_price, difference, percentage, last_price_date, before_last_date
     return None
 
+
+def fetch_batch(batch_tickers):
+    try:
+        # Fetch 5-day historical data for the tickers
+        result_batch = yf.Tickers(batch_tickers).history(period="5d")
+        return result_batch.dropna()
+    except Exception as e:
+        print(f"Error fetching data for batch {batch_tickers}: {e}")
+        return pd.DataFrame()
+
 def tickers_price_diff(tickers: list[str]):
     """
     RETURNS 
         last_price: 마지막 가격
         before_last_price: 마지막 전의 가격
-        price diffence in USD: 전날과 전전날의 차이
+        price difference in USD: 전날과 전전날의 차이
         price difference in percentage: 퍼센티지 기준의 차이
         last_price_date: 전날의 정확한 날짜 (한국시간)
         before_last_date: 전전날의 정확한 날짜 (한국시간)
     """
-    # Fetch historical data using yfinance
-    data = yf.Tickers(tickers).history(period="5d")
+    data = pd.DataFrame()
+    batch_size = 9
+    
+    #요청에 실패한 ticker 들 모음
+    failTickers = []
+    # 모든 데이터가 도착하지 못한 경우
+    notEnoughs = []
+    # Fetch data in batches
+    # 네트워크 상황에 따라 일부 데이터 결과를 못받는경우가 있다.
+    for i in range(0, len(tickers), batch_size):
+        batch_tickers = tickers[i:i+batch_size]
+        result_batch = fetch_batch(batch_tickers)
+        if not result_batch.empty:
+            data = pd.concat([data, result_batch], axis=0)
 
-    # Initialize result dictionary
+    print("---- Batch Fin ----")
+    
+    # Check if any data was retrieved
+    if data.empty:
+        print("No data fetched for the tickers.")
+        return {}
+
     result = {}
+   
 
+    
+    # Process each ticker
     for ticker in tickers:
         try:
-            # Extract 'Close' prices for the ticker and drop NaN values
+            # Extract the 'Close' prices for the ticker
             close_prices = data['Close'][ticker].dropna()
             
-            # Ensure we have at least two valid prices
+            # Ensure at least two data points are available
             if len(close_prices) >= 2:
-                # Extract last price and before last price
+                # Get the last two prices
                 last_price = close_prices.iloc[-1]
                 before_last_price = close_prices.iloc[-2]
-                # Calculate price difference
+
+                # Calculate differences
                 price_difference = last_price - before_last_price
                 percentage_difference = (price_difference / before_last_price) * 100
-                
-                #두자릿수로 계산
+
+                # Round to two decimal places
                 last_price = round(last_price, 2)
                 before_last_price = round(before_last_price, 2)
                 price_difference = round(price_difference, 2)
                 percentage_difference = round(percentage_difference, 2)
-                
-                # Store results
+
+                # Get the corresponding dates and convert to KST
+                last_price_date = close_prices.index[-1] + timedelta(hours=9)
+                before_last_date = close_prices.index[-2] + timedelta(hours=9)
+
+                # Store the results
                 result[ticker] = {
                     "last_price": last_price,
                     "before_last_price": before_last_price,
                     "price_difference": price_difference,
                     "percentage_difference": percentage_difference,
-                    "last_price_date": close_prices.index[-1],
-                    "before_last_price_date": close_prices.index[-2]
+                    "last_price_date": last_price_date.strftime('%Y-%m-%d %H:%M:%S'),
+                    "before_last_date": before_last_date.strftime('%Y-%m-%d %H:%M:%S'),
                 }
             else:
-                # result[ticker] = "Not enough data"
-                print(f"{ticker} does not have Enough price_data")
-
+                notEnoughs.append(ticker)
+                #print(f"{ticker} does not have enough price data.")
         except KeyError:
-            result[ticker] = "Ticker not found"
-    
+            failTickers.append(ticker)
+        
+    print(f"Success Tickers : {len(result)}.")
+    print(f"Not Enough Tickers : {len(notEnoughs)}.")
+    print(f"Error Tickers : {len(failTickers)} .")
+
     return result
 
     

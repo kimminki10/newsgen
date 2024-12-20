@@ -83,12 +83,31 @@ def update_ticker_prices(price_data: dict):
         if ticker_name in price_data:
             data = price_data[ticker_name]
             # Update the ticker object
-            ticker.before_last_price = data["before_last_price"]
-            ticker.last_price = data["last_price"]
-            ticker.price_diff = data["price_difference"]
-            ticker.percentage_diff = data["percentage_difference"]
-            ticker.last_price_date = data["last_price_date"]
-            ticker.before_last_date = data["before_last_price_date"]
+            ticker_keys = [
+                "before_last_price","last_price","price_difference",
+                "percentage_difference","last_price_date","before_last_price_date"
+            ]
+
+           
+        
+            if "before_last_price" in data:   
+                ticker.before_last_price = data["before_last_price"]
+
+            if "last_price" in data:  
+                ticker.last_price = data["last_price"]
+
+            if "price_difference" in data:  
+                ticker.price_diff = data["price_difference"]
+
+            if "percentage_difference" in data:  
+                ticker.percentage_diff = data["percentage_difference"]
+
+            if "last_price_date" in data:  
+                ticker.last_price_date = data["last_price_date"]
+
+            if "before_last_price_date" in data:  
+                ticker.before_last_date = data["before_last_price_date"]
+
             tickers_to_update.append(ticker)
     # Bulk update the database
     if tickers_to_update:

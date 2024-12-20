@@ -61,7 +61,7 @@ LOGGING = {
     'loggers': {
         '': {
             'handlers': ['console', 'file'],
-            'level': 'DEBUG',
+            'level': 'WARNING',
         },
         'yfinance': {  # yfinance 로그 설정
             'handlers': ['console'],

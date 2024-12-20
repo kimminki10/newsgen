@@ -56,6 +56,7 @@ class TrandlatorConfig(AppConfig):
         if is_job_registered(job_id):
             print("Job already registered. Skipping registration.")
             return
+        
         register_job(job_id)
 
         #서버 실행시 초기 tickers 등록
@@ -65,7 +66,7 @@ class TrandlatorConfig(AppConfig):
         kst = pytz.timezone('Asia/Seoul')
         # (실행할 함수,job id, 타이머, 서버 실행시 즉시 실행 한번 할지 여부 )
         schedulers =[
-            #(scheduled_ticker,"scheduled_ticker",CronTrigger(hour=23, minute=30, timezone=kst),True), #미국장 시작 11:30  pm (한국시간)
+            (scheduled_ticker,"scheduled_ticker",CronTrigger(hour=6, minute=30, timezone=kst),False), #미국장 시작 11:30  pm (한국시간)
             (scheduled_automate,"scheduled_automate",IntervalTrigger(minutes=3),True)
             #(scheduled_mail,"scheduled_mail_0",CronTrigger(hour=0, minute=0, timezone=kst),False),
             #(scheduled_mail,"scheduled_mail_1",CronTrigger(hour=12, minute=0, timezone=kst),False)

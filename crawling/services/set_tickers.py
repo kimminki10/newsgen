@@ -10,16 +10,17 @@ from crawling.db_service_folder import db_services as ds
 def add_new_tickers():
     print("티커 이름들 가져오기기")
     ticker_names = get_ticker_names()
-    print("티커 값들 가져오기기")
+    print(f"티커 값들 가져오기기 : {len(ticker_names)}")
     result, valid_tickers, invalid_tickers = validate_tickers(ticker_names)
-    print("디비에 저장하기기")
-    ds.add_tickers_to_db(result)
+    print(f"----- 디비에 저장하기기 ---- : {len(result)}")
+    print(ds.add_tickers_to_db(result))
    
 
 def validate_tickers(ticker_list, period="5d"):
     # Fetch minimal data for the ticker list
     #여기 함수에서 sql 로그 많이 찍힘 
 
+    print("Ticker validate")
     #yf.download 에 에러 로그만 출력하도록 설정
     logging.disable(logging.CRITICAL)
     data = yf.download(ticker_list, period=period, group_by="ticker", progress=False, actions=False)
