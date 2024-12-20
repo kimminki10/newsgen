@@ -23,7 +23,7 @@ scheduled_task = None
 class TrandlatorConfig(AppConfig):
     default_auto_field = 'django.db.models.BigAutoField'
     name = 'trandlator'
-
+    global job_id
     def ready(self):
         if is_job_registered(job_id):
             return
@@ -51,7 +51,8 @@ class TrandlatorConfig(AppConfig):
         if is_job_registered(job_id):
             print("Job already registered. Skipping registration.")
             return
-        
+        register_job(job_id)
+
         #서버 실행시 초기 tickers 등록
         add_new_tickers()
         print("Registering new job...")

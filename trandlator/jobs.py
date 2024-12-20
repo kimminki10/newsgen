@@ -20,9 +20,10 @@ def Automate_Tickers():
     print("Tickers Schedule Start!")
     all_ticker_names = ds.get_all_ticker_names()
     print(f"Ticker Names : {all_ticker_names}")
+    """
     if(len(all_ticker_names) > 0):
         all_tickers_price_diff = tickers_price_diff(all_ticker_names)
         print(f"Ticker All : {all_tickers_price_diff}")
-   
+    """
     print("Tickers Schedule End!")
 

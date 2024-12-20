@@ -1,22 +1,11 @@
-import os
-import sys
-from io import StringIO
+
 
 import yfinance as yf
 
-
+import logging
 import pandas as pd
 
-
-# 프로젝트 루트를 Python 경로에 추가
-sys.path.append(os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__)))))
-
 from crawling.db_service_folder import db_services as ds
-
-
-
-
-
 
 def add_new_tickers():
     print("티커 이름들 가져오기기")
@@ -31,8 +20,11 @@ def validate_tickers(ticker_list, period="5d"):
     # Fetch minimal data for the ticker list
     #여기 함수에서 sql 로그 많이 찍힘 
 
+    #yf.download 에 에러 로그만 출력하도록 설정
+    logging.disable(logging.CRITICAL)
     data = yf.download(ticker_list, period=period, group_by="ticker", progress=False, actions=False)
-
+    #yf.download 완료 후 모든 로그 출력하도록 설정
+    logging.disable(logging.DEBUG)
     #print(data)
     # Initialize lists for valid and invalid tickers
     

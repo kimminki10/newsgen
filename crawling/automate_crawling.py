@@ -6,6 +6,7 @@ from trandlator.jobs_status import is_job_registered,job_id
 driver = None
 
 def automate_crawler():
+        global job_id
         # finviz에서 리스트 긁어오기
         driver = get_driver()
         print("------- 크롤링 시작 -------")
