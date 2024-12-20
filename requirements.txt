@@ -1,8 +1,8 @@
 djangorestframework
-selenium
 playwright
 django-cors-headers
 selenium
+webdriver-manager
 requests
 python-dotenv
 djangorestframework-simplejwt
