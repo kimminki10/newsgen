@@ -59,7 +59,7 @@ class TrandlatorConfig(AppConfig):
         register_job(job_id)
 
         #서버 실행시 초기 tickers 등록
-        #add_new_tickers()
+        add_new_tickers()
         print("Registering new job...")
 
         kst = pytz.timezone('Asia/Seoul')

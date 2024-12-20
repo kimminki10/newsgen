@@ -8,6 +8,7 @@ logging.getLogger('urllib3').setLevel(logging.CRITICAL)
 
 def get_driver():
     options = webdriver.ChromeOptions()
+    
     options.add_argument("--disable-notifications")  # 알림 비활성화
     driver = webdriver.Chrome(options=options)
     return driver
