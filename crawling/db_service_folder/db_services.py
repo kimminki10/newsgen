@@ -120,24 +120,23 @@ def add_tickers_to_db(price_data):
         ticker_names = price_data.keys()
 
         # Prepare Ticker objects for bulk creation
-        ticker_objects = [
-            Ticker(
-                ticker_name=name,
-                last_price=float(data["last_price"]),
-                before_last_price=float(data["before_last_price"]),
-                price_diff=float(data["price_difference"]),
-                percentage_diff=float(data["percentage_difference"]),
-                last_price_date=data["last_price_date"],
-                before_last_date=data["before_last_price_date"]
-            )
-            for name, data in price_data.items()
-        ]
+        ticker_objects = []
+        for name, data in price_data.items():
+            ticker = Ticker.objects.get_or_create(ticker_name=name)[0]
+            ticker.last_price = data["last_price"]
+            ticker.before_last_price = data["before_last_price"]
+            ticker.price_diff = data["price_difference"]
+            ticker.percentage_diff = data["percentage_difference"]
+            ticker.last_price_date = data["last_price_date"]
+            ticker.before_last_date = data["before_last_price_date"]
+            ticker.save()
+            ticker_objects.append(ticker)
 
         # Bulk insert the new tickers into the database
-        batch_size = 10
-        for i in range(0, len(ticker_objects), batch_size):
-            with transaction.atomic():
-                Ticker.objects.bulk_create(ticker_objects[i:i + batch_size])
+        # batch_size = 10
+        # for i in range(0, len(ticker_objects), batch_size):
+        #     with transaction.atomic():
+        #         Ticker.objects.bulk_create(ticker_objects[i:i + batch_size])
 
         # Return a summary
         return {
