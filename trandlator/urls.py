@@ -1,7 +1,7 @@
 from django.contrib import admin
 from django.urls import path
 from trandlator.view.UserView import (UserCreateView, 
-                                      UserTickers, 
+                                      UserSendMail, 
                                       UserVerifyEmail, 
                                       ResetPassword, 
                                       ChangePassword,
@@ -21,6 +21,7 @@ urlpatterns = [
     path('user/reset_password/', ResetPassword.as_view(), name='reset_password'),
     path('user/change_password/<str:token>/', ChangePassword.as_view(), name='change_password'),
     path('user/<str:email>/', UserDetailView.as_view(), name='user_detail'),
+    path('user/mail/send/', UserSendMail.as_view(), name='user_send_mail'),
     path('ticker/', TickerView.as_view(), name='ticker'),
     path('ticker/<str:ticker_name>/', TickerDetailView.as_view(), name='ticker_detail'),
     path('article/', ArticleView.as_view(), name='article'),

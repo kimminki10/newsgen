@@ -13,3 +13,5 @@ db.sqlite3
 
 # Ignore migrations
 trandlator/migrations/
+
+debug.log

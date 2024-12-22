@@ -17,6 +17,7 @@ import Mail from "./components/Mail";
 import "./App.css";
 import NewPasswordPage from "./components/NewPasswordPage";
 import { TickerProvider } from "./components/TickerContext";
+import VerifyEmailPage from "./components/VerifyEmail";
 
 import "@fontsource/poppins/600.css";
 
@@ -31,6 +32,7 @@ function App() {
             <Route path="/login" element={<Login />} />
             <Route path="/reset-password" element={<ResetPasswordPage />} />
             <Route path="/check-email" element={<CheckEmailPage />} />
+            <Route path="/verify-email/:token" element={<VerifyEmailPage />} />
             <Route
               path="/reset-password/:token"
               element={<NewPasswordPage />}

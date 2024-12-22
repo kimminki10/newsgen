@@ -156,8 +156,11 @@ const Profile = () => {
   const handleSendMail = async () => {
     try {
       setIsSending(true);
-      // TODO: API 호출하여 메일 발송
-      await new Promise((resolve) => setTimeout(resolve, 1000)); // 임시 딜레이
+      const header = {
+        Authorization: `Bearer ${localStorage.getItem("fintrend_access_token")}`,
+      }
+      const response = await axios.post("/api/user/mail/send/", {}, { headers: header });
+      console.log(response);
       alert("메일이 발송되었습니다.");
     } catch (error) {
       alert("메일 발송에 실패했습니다.");

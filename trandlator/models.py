@@ -1,13 +1,13 @@
 from django.contrib.auth.models import AbstractBaseUser, BaseUserManager
 from django.db import models
-
+from datetime import datetime
 
 class Article(models.Model):
     title = models.CharField(max_length=100, default='empty title')
     content = models.TextField(default='empty content')
     summary = models.TextField(default='empty summary')
-    created_at = models.DateTimeField(auto_now_add=True)
-    updated_at = models.DateTimeField(auto_now=True)
+    created_at = models.DateTimeField(auto_now_add=True, default=datetime.now)
+    updated_at = models.DateTimeField(auto_now=True, default=datetime.now)
     views = models.PositiveIntegerField(default=0)
     origin_url = models.URLField(max_length=200, blank=True, unique=True)
     tts_content = models.TextField(default='empty tts content')
@@ -21,8 +21,8 @@ class Ticker(models.Model):
     before_last_price = models.FloatField(default=0)
     price_diff = models.FloatField(default=0)
     percentage_diff = models.FloatField(default=0)
-    last_price_date = models.DateTimeField(auto_now_add=True)
-    before_last_date = models.DateTimeField(auto_now_add=True)
+    last_price_date = models.DateTimeField(auto_now_add=True, default=datetime.now)
+    before_last_date = models.DateTimeField(auto_now_add=True, default=datetime.now)
 
     def __str__(self):
         return self.ticker_name

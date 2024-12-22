@@ -32,7 +32,7 @@ class UserCreateView(generics.CreateAPIView):
     def create(self, request, *args, **kwargs):
         response = super().create(request, *args, **kwargs)
         user = User.objects.get(email=request.data['email'])
-        send_verification_email('email', user.email, f"http://{settings.HOST_NAME}/check-email/")
+        send_verification_email('email', user.email, f"http://{settings.HOST_NAME}/verify-email/")
         return response
     
 class UserDetailView(generics.RetrieveAPIView):
@@ -88,6 +88,7 @@ class UserVerifyEmail(generics.GenericAPIView):
         user = User.objects.get(email=email)
         user.is_email_verified = True
         user.save()
+        cache.delete(token)
         return Response({'message': 'Email verified'}, status=status.HTTP_200_OK)
 
 class ChangePassword(generics.GenericAPIView):
