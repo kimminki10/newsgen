@@ -210,9 +210,6 @@ const Profile = () => {
               onChange={(e) => setSearchTerm(e.target.value)}
               onKeyPress={handleSearch}
             />
-            <button className="search-button" onClick={handleSearch}>
-              🔍
-            </button>
           </div>
           {searchResults.length > 0 && (
             <div className="search-results">

@@ -15,11 +15,11 @@ const TickerTitleItem = ({ tickerData }) => {
       <div className="ticker-title">{tickerData.ticker_name}</div>
       {isUp ? (
         <div className="price-change-up ticker-title-stock">
-          <div>{`${last_price} ▲${price_diff} (${percentage_diff})%`}</div>
+          <div>{`${last_price} ▲${price_diff} (${percentage_diff}%)`}</div>
         </div>
       ) : (
         <div className="price-change-down ticker-title-stock">
-          <div>{`${last_price} ▼${price_diff} (${percentage_diff})%`}</div>
+          <div>{`${last_price} ▼${price_diff} (${percentage_diff}%)`}</div>
         </div>
       )}
     </div>
@@ -45,8 +45,10 @@ const NewsList = () => {
 
   return (
     <div className="news-list">
-      <div className="ticker-info">
-        <TickerTitleItem tickerData={tickerData} />
+      <div className="ticker-info-container">
+        <div className="ticker-info">
+          <TickerTitleItem tickerData={tickerData} />
+        </div>
       </div>
 
       {articles.length !== 0 ?
@@ -57,9 +59,10 @@ const NewsList = () => {
                     ticker={ticker}
                     date={tickerData.updated_at}
                     currentPrice={tickerData.last_price}
-                    pricePointChange={tickerData.percentage_diff}
-                    priceChange={tickerData.price_diff}
+                    pricePointChange={tickerData.price_diff}
+                    priceChange={tickerData.percentage_diff}
                     content={news.content}
+                    origin_url={news.origin_url}
                 />
       ))
       : 

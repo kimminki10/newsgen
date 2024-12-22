@@ -1,8 +1,13 @@
 .news-list {
     display: flex;
     flex-direction: column;
-    align-items: center;
-    margin: 0 auto;
+    align-items: stretch;
+    width: 100%;
+}
+
+.ticker-info-container {
+    display: flex;
+    justify-content: center;
 }
 
 .ticker-title {
