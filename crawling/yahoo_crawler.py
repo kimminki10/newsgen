@@ -2,7 +2,7 @@ from selenium import webdriver
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
-from .chrome_driver import get_driver
+from crawling.chrome_driver import get_driver
 
 def crawl_yahoo_article(driver, url):
     # Selectors
@@ -46,9 +46,9 @@ def crawl_yahoo_article(driver, url):
         return False, "Error occurred", "", ""
 
 #Example usage
-# if __name__ == "__main__":
-#     yahoo_url = "https://finance.yahoo.com/news/private-equity-making-big-money-050026774.html"  # Replace with the actual Yahoo article URL
-#     crawled, title, time, article = crawl_yahoo_article(driver=get_driver(), url=yahoo_url)
-#     print("Title:", title)
-#     print("Time:", time)
-#     print("Article:", article)
+if __name__ == "__main__":
+    yahoo_url = "https://finance.yahoo.com/news/private-equity-making-big-money-050026774.html"  # Replace with the actual Yahoo article URL
+    crawled, title, time, article = crawl_yahoo_article(driver=get_driver(), url=yahoo_url)
+    print("Title:", title)
+    print("Time:", time)
+    print("Article:", article)

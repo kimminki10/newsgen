@@ -14,7 +14,7 @@ def add_new_tickers():
     result, valid_tickers, invalid_tickers = validate_tickers(ticker_names)
     print("디비에 저장하기기")
     ds.add_tickers_to_db(result)
-   
+    return len(result.keys())
 
 def validate_tickers(ticker_list, period="5d"):
     # Fetch minimal data for the ticker list

@@ -53,6 +53,24 @@ class UserTickers(generics.ListAPIView):
         serializer = TickerNameSerializer(queryset, many=True)
         return Response(serializer.data)
     
+class UserSendMail(generics.GenericAPIView):
+    permission_classes = [permissions.IsAuthenticated]
+
+    def post(self, request):
+        user = User.objects.get(email=request.user.email)
+        tickers = user.tickers.all()
+        for ticker in tickers:
+            articles = ticker.articles.all()
+            for article in articles:
+                send_mail(
+                    'News',
+                    f'{article.title}\n{article.content}',
+                    settings.EMAIL_HOST_USER,
+                    [user.email],
+                    fail_silently=False,
+                )
+        return Response({'message': 'Mail sent'}, status=status.HTTP_200_OK)
+    
 class UserTickerUpdate(generics.UpdateAPIView):
     serializer_class = UserSerializer
     permission_classes = [permissions.IsAuthenticated]

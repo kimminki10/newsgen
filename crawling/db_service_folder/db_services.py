@@ -3,13 +3,14 @@ import os
 import django
 import random
 from datetime import datetime
+from django.db import transaction
 # Step 1: Add the project root to the Python path
 # export PYTHONPATH=$PYTHONPATH:/Users/johnwon/Desktop/Projects/project2/project2_github/newsgen
 # Step 2: Set the Django settings module
-os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'trandlator.settings')
+# os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'trandlator.settings')
 
-# Step 3: Initialize Django
-django.setup()
+# # Step 3: Initialize Django
+# django.setup()
 
 from trandlator.models import User, Article, Ticker
 from trandlator.controller.TickerSerialize import TickerNoArticleSerializer, TickerNameSerializer
@@ -133,7 +134,10 @@ def add_tickers_to_db(price_data):
         ]
 
         # Bulk insert the new tickers into the database
-        Ticker.objects.bulk_create(ticker_objects)
+        batch_size = 10
+        for i in range(0, len(ticker_objects), batch_size):
+            with transaction.atomic():
+                Ticker.objects.bulk_create(ticker_objects[i:i + batch_size])
 
         # Return a summary
         return {
@@ -202,10 +206,12 @@ def update_user(email, new_email):
 #     ]
 #     return article_list
 
-def add_article(title, content, tickers, origin_url=""):
+def add_article(title, short_content, long_content, tts_content, tickers, origin_url=""):
     new_article = Article.objects.create(
         title=title,
-        content=content,
+        summary=short_content,
+        content=long_content,
+        tts_content=tts_content,
         origin_url=origin_url
     )
     # Add tickers to the article

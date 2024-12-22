@@ -2,15 +2,15 @@ import os
 import sys
 import django
 
-# Step 1: Add the project root to the Python path
-PROJECT_ROOT = os.path.abspath(os.path.join(os.path.dirname(__file__), '../../'))
-sys.path.append(PROJECT_ROOT)
+# # Step 1: Add the project root to the Python path
+# PROJECT_ROOT = os.path.abspath(os.path.join(os.path.dirname(__file__), '../../'))
+# sys.path.append(PROJECT_ROOT)
 
-# Step 2: Set the Django settings module
-os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'trandlator.settings')
+# # Step 2: Set the Django settings module
+# os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'trandlator.settings')
 
-# Step 3: Initialize Django
-django.setup()
+# # Step 3: Initialize Django
+# django.setup()
 
 from trandlator.models import User, Article, Ticker
 

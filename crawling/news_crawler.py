@@ -3,8 +3,8 @@ from . import yahoo_crawler, basic_crawler
 from trandlator.automation.jobs_status import is_job_registered,job_id
 
 def crawler(driver, url: str):
-    if is_job_registered(job_id) == False:
-        return None
+    # if is_job_registered(job_id) == True:
+    #     return None
     
     if url.startswith("https://finance.yahoo.com/"):
         print("Crawling yahoo")

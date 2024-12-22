@@ -35,6 +35,4 @@ def crawl_businesswire_article(url):
     except Exception as e:
         print(f"An error occurred: {e}")
         return "", "", "Error occurred"
-    finally:
-        driver.quit()
 

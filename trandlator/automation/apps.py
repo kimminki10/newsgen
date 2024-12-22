@@ -11,17 +11,17 @@ import atexit
 def scheduled_ticker():
     from .jobs import Automate_Tickers
     print("--scheduled_Automate_Tickers--")
-    Automate_Tickers()
+    #Automate_Tickers()
 
 def scheduled_automate():
     from .jobs import Automate
     print("--scheduled_automate--")
-    Automate()
+    #Automate()
 
 def scheduled_mail():
     from .jobs import Automate_Mail
     print("--scheduled_automate--")
-    Automate_Mail()
+    #Automate_Mail()
     
 scheduled_task = None
 
@@ -42,8 +42,6 @@ class TrandlatorConfig(AppConfig):
             print("Scheduler ready debug")
             # 스케줄러 초기화를 별도의 스레드에서 수행
             
-            scheduled_task = threading.Thread(target=self.start_scheduler)
-            scheduled_task.start()
 
     def start_scheduler(self):
         from apscheduler.schedulers.background import BackgroundScheduler
