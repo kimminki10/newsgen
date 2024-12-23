@@ -1,10 +1,12 @@
-from crawling.db_service_folder.db_services import add_article, check_article_exists_by_url
+from crawling.db_service_folder.db_services import add_article, check_article_exists_by_url, update_article_tts
 from crawling import finviz
 from crawling import chrome_driver
 from crawling import news_crawler
 
 from journalist.azure_api import AzureAPI
 from journalist.prompts import prompts_dict
+from journalist.announcer import request_tts
+from crawling.services.upload_to_blob import upload_tts
 
 driver = None
 def get_crawling_driver():
@@ -42,6 +44,14 @@ def create_article(content):
     return results
 
 
+def create_tts(content, id) -> str:
+    path = request_tts(content, id)
+    if path is "":
+        return ""
+    url = upload_tts(path, f"tts_audio{id}.mp3")
+    return url
+
+
 def add_new_articles():
     article_lists = crawl_article_data()
     print(f'crawled article lists: {article_lists[:3]}')
@@ -52,12 +62,14 @@ def add_new_articles():
         title, time, content = crawled_data
         results = create_article(content)
         
-        ticker = article[0]
+        ticker = [article[0]]
         origin_url = article[1]
         title = results['title']
         short_content = results['short_content']
         long_content = results['long_content']
         tts_content = results['tts']
-        add_article(title, short_content, long_content, tts_content, ticker, origin_url)
+        created_article = add_article(title, short_content, long_content, tts_content, ticker, origin_url)
+        tts_url = create_tts(content, f"tts{created_article.get("id")}")
+        update_article_tts(tts_url=tts_url, article_id=created_article.get("id"))
         count += 1
     return count

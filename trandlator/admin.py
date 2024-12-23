@@ -19,8 +19,10 @@ class ArticleAdmin(admin.ModelAdmin):
 
     def crawl_article(self, request):
         self.message_user(request, "Article crawling started.")
+        print("Article crawling started.")
         count = add_new_articles()
         self.message_user(request, f"Article data has been crawled. {count} articles have been added.")
+        print(f"Article data has been crawled. {count} articles have been added.")
         return HttpResponseRedirect("../")
 
     def crawl_article_button(self, obj):

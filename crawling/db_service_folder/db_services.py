@@ -51,6 +51,12 @@ def add_article(title: str, content: str, tickers: list, summary: str = 'empty s
         article.tickers.add(ticker)
     return article
 
+def update_article_tts(tts_url: str, article_id: int):
+    print("update tts article_id: ", article_id)
+    article = Article.objects.get(id=article_id)
+    article.tts_url = tts_url
+    article.save()
+
 #Used in auto crawling
 def check_article_exists_by_url(url: str) -> bool:
     return Article.objects.filter(origin_url=url).exists()
