@@ -9,14 +9,16 @@ from .jobs_status import is_job_registered, register_job,clear_job_status,job_id
 import atexit
 
 def scheduled_ticker():
-    from .jobs import Automate_Tickers
+    from crawling.services.daily_stock_prices import update_ticker_data
     print("--scheduled_Automate_Tickers--")
-    #Automate_Tickers()
+    update_ticker_data()
+    print("--scheduled_Automate_Tickers End--")
 
-def scheduled_automate():
-    from .jobs import Automate
-    print("--scheduled_automate--")
-    #Automate()
+def scheduled_Article():
+    from crawling.services.set_articles import add_new_articles
+    print("--scheduled_Article--")
+    add_new_articles()
+    print("--scheduled_Article End--")
 
 def scheduled_mail():
     from .jobs import Automate_Mail
@@ -37,7 +39,10 @@ class TrandlatorConfig(AppConfig):
             print("Skipping duplicate scheduler initialization")
             return
         print("Scheduler ready")
-       
+        self.start_scheduler()
+      
+
+        # 스케줄러 초기화를 별도의 스레드에서 수행
         if settings.DEBUG:
             print("Scheduler ready debug")
             # 스케줄러 초기화를 별도의 스레드에서 수행
@@ -49,33 +54,28 @@ class TrandlatorConfig(AppConfig):
         from apscheduler.triggers.interval import IntervalTrigger
         from django_apscheduler.jobstores import DjangoJobStore, register_events
         from apscheduler.triggers.cron import CronTrigger
-        from crawling.services.set_tickers import add_new_tickers
+ 
 
         if is_job_registered(job_id):
             print("Job already registered. Skipping registration.")
             return
         register_job(job_id)
 
-        #서버 실행시 초기 tickers 등록
-        add_new_tickers()
         print("Registering new job...")
 
         kst = pytz.timezone('Asia/Seoul')
         # (실행할 함수,job id, 타이머, 서버 실행시 즉시 실행 한번 할지 여부 )
         schedulers =[
-            #(scheduled_ticker,"scheduled_ticker",CronTrigger(hour=23, minute=30, timezone=kst),True), #미국장 시작 11:30  pm (한국시간)
-            (scheduled_automate,"scheduled_automate",IntervalTrigger(minutes=3),True)
+            (scheduled_ticker,"scheduled_ticker",CronTrigger(hour=23, minute=30, timezone=kst)), #미국장 시작 11:30  pm (한국시간)
+            (scheduled_Article,"scheduled_automate",IntervalTrigger(minutes=30))
             #(scheduled_mail,"scheduled_mail_0",CronTrigger(hour=0, minute=0, timezone=kst),False),
             #(scheduled_mail,"scheduled_mail_1",CronTrigger(hour=12, minute=0, timezone=kst),False)
         ]
 
-        for func,now_job_id,trigger,isImmediately in schedulers:
-            #서버가 실행될때 최초 한번 실행하도록 설정한건 먼저 실행
-            if isImmediately == True:
-                func()
+
 
         # Scheduler 생성
-        for func,now_job_id,trigger,isImmediately in schedulers:
+        for func,now_job_id,trigger in schedulers:
             scheduler = BackgroundScheduler(
                 jobstores={
                     'default': DjangoJobStore(),
