@@ -4,14 +4,7 @@ import { useAuth } from "./AuthContext";
 import SearchTextBox from "./SearchTextBox";
 import "./Header.css";
 
-const HeaderButton = ({ text, link, onClick }) => {
-  if (onClick) {
-    return (
-      <button onClick={onClick} className="header-button">
-        {text}
-      </button>
-    );
-  }
+const HeaderButton = ({ text, link }) => {
   return (
     <Link to={link} className="header-button">
       {text}
