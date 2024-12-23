@@ -62,6 +62,7 @@ const NewsList = () => {
                     pricePointChange={tickerData.price_diff}
                     priceChange={tickerData.percentage_diff}
                     content={news.content}
+                    tts_url={news.tts_url}
                     origin_url={news.origin_url}
                 />
       ))

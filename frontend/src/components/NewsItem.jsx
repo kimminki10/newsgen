@@ -2,7 +2,7 @@ import React, {useState} from "react";
 import { Link } from "react-router-dom";
 import "./NewsItem.css";
 
-const NewsItem = ({ title, ticker, currentPrice, pricePointChange, priceChange, date, content, origin_url }) => {
+const NewsItem = ({ title, ticker, currentPrice, pricePointChange, priceChange, date, content, tts_url, origin_url }) => {
     const [open, setOpen] = useState(false);
     const handleOpen = () => {
         setOpen(!open);
@@ -24,7 +24,7 @@ const NewsItem = ({ title, ticker, currentPrice, pricePointChange, priceChange, 
                 </div>
                 <div className="date-box">{date}</div>
             </div>
-            {open && <div className="news-content">{content}</div>}
+            {open && (<div><div className="news-content">{content}</div><audio controls src={`${tts_url}`}>듣기</audio></div>)}
         </div>
     );
 };

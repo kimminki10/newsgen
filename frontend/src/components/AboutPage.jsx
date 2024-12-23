@@ -28,6 +28,7 @@ const TodaysNews = ({ contents, tickers }) => {
           pricePointChange={ticker.price_diff}
           priceChange={ticker.percentage_diff}
           origin_url={content.origin_url}
+          tts_url={content.tts_url}
           content={content.content}
         />
       })}
