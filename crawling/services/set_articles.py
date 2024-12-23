@@ -1,4 +1,4 @@
-from crawling.db_service_folder.db_services import add_article, check_article_exists_by_url
+from crawling.db_service_folder.db_services import add_article, check_article_exists_by_url, update_article_tts
 from crawling import finviz
 from crawling import chrome_driver
 from crawling import news_crawler
@@ -6,6 +6,8 @@ from trandlator.automation.jobs_status import is_job_registered
 
 from journalist.azure_api import AzureAPI
 from journalist.prompts import prompts_dict
+from journalist.announcer import request_tts
+from crawling.services.upload_to_blob import upload_tts
 
 driver = None
 def get_crawling_driver():
@@ -34,6 +36,13 @@ def crawl_article(article):
         return
     return crawled_data
     
+def create_tts(content, id) -> str:
+    path = request_tts(content, id)
+    if path is "":
+        return ""
+    url = upload_tts(path, f"tts_audio{id}.mp3")
+    return url
+
 
 def create_article(content):
     results = { 
@@ -81,7 +90,9 @@ def add_new_articles(isAdmin=True):
         long_content = results['long_content']
         tts_content = results['tts']
         try:
-            add_article(title, short_content, long_content, tts_content, ticker, origin_url)
+            created_article = add_article(title, short_content, long_content, tts_content, ticker, origin_url)
+            tts_url = create_tts(tts_content, f"tts{created_article.get("id")}")
+            update_article_tts(tts_url=tts_url, article_id=created_article.get("id"))
         except Exception as e:
             print(f"add article Error : {e}")
             continue   

@@ -52,7 +52,7 @@ def add_article(title: str, content: str, tickers: list, summary: str = 'empty s
     return article
 
 def update_article_tts(tts_url: str, article_id: int):
-    print("update tts article_id: ", article_id)
+    print(f"update tts article_id: {article_id}, tts_url: {tts_url}")
     article = Article.objects.get(id=article_id)
     article.tts_url = tts_url
     article.save()

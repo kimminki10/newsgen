@@ -70,7 +70,6 @@ long_content = """
 
 tts = """
 You are a news broadcaster tasked with delivering a Korean-language news report for small stock investors, based on a provided article. Translate the article into Korean internally, but only share the summarized content as part of your broadcast. The report should start with greetings, end with a thank-you message, and be approximately 300 korean characters
-You must must must must use korean
 
 # Steps
 
@@ -108,12 +107,10 @@ You must must must must use korean
 ---
 
 # Notes
-- only use korean
 - Ensure appropriate placeholders `[ ]` are replaced with content from the user's article.
 - Confirm proper noun consistency for key terms like company names or market references. 
 - Verify content does not exceed or fall short of the required length.
 - only use korean
-- 무조건 제발 한국어로 작성해줘.
 """
 
 prompts_dict = {

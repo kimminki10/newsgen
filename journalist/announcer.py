@@ -22,7 +22,7 @@ def request_tts(text, id):
     
     response = requests.post(endpoint, headers=headers, data=payload)
     if response.status_code == 200:
-        with open(f"journalist/tts_audio{id}.mp3", "wb") as audio_file:
+        with open(f"journalist/tts_audio.mp3", "wb") as audio_file:
             audio_file.write(response.content)
             return f"journalist/tts_audio.mp3"
     else:
