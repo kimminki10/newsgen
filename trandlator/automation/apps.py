@@ -8,6 +8,8 @@ from django.conf import settings
 from .jobs_status import is_job_registered, register_job,clear_job_status,unregister_job,job_id  # 작업 상태 관리 함수 가져오기
 
 import atexit
+import signal
+import sys
 
 def scheduled_ticker():
     from crawling.services.daily_stock_prices import update_ticker_data
@@ -34,7 +36,7 @@ def scheduled_mail():
     daily_email()
     
 scheduled_task = None
-
+my_schedulers = []
 class TrandlatorConfig(AppConfig):
     default_auto_field = 'django.db.models.BigAutoField'
     name = 'trandlator'
@@ -81,7 +83,7 @@ class TrandlatorConfig(AppConfig):
         # (실행할 함수,job id, 타이머, 서버 실행시 즉시 실행 한번 할지 여부 )
         schedulers =[
             (scheduled_ticker,"scheduled_ticker",CronTrigger(hour=23, minute=30, timezone=kst)), #미국장 시작 11:30  pm (한국시간)
-            (scheduled_Article,"scheduled_automate",IntervalTrigger(seconds=10)),
+            (scheduled_Article,"scheduled_automate",IntervalTrigger(minutes=30)),
             (scheduled_mail,"scheduled_mail_0",CronTrigger(hour=0, minute=0, timezone=kst)),
             (scheduled_mail,"scheduled_mail_1",CronTrigger(hour=12, minute=0, timezone=kst))
         ]
@@ -118,15 +120,26 @@ class TrandlatorConfig(AppConfig):
                 id=now_job_id,
                 replace_existing=True
             )
+            my_schedulers.append(scheduler)
             
 
     def shutdown_scheduler(self, scheduler):
         """스케줄러를 안전하게 종료"""
         clear_job_status()
         print(f"스케줄러 종료 중 (잠시만 기다려주세요)...")
-
+    
         for job in scheduler.get_jobs():
-            scheduler.remove_job(job.id)
+            if scheduler.running:
+                scheduler.remove_job(job.id)
 
         scheduler.shutdown(wait=False)  # 스케줄러 중지
+def signal_handler(sig, frame):
+    print('Interrupt received, shutting down scheduler...')
+    unregister_job("scheduled_automate")
+    app_config = TrandlatorConfig('trandlator', sys.modules[__name__])
+    for scheduler in my_schedulers:
+        if scheduler.running:
+            app_config.shutdown_scheduler(scheduler)
+    sys.exit(0)
 
+signal.signal(signal.SIGINT, signal_handler)

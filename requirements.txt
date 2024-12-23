@@ -11,4 +11,5 @@ python-decouple
 yfinance
 
 django-apscheduler
+langchain_openai
 
