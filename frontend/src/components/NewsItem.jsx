@@ -14,7 +14,7 @@ const NewsItem = ({ title, ticker, currentPrice, pricePointChange, priceChange, 
             <div className="news-item-content">
                 <div className="ticker-price-box">
                     <Link className="ticker-box" to={`/ticker/${ticker}`}>{ticker}</Link>
-                    {priceChange[0] === '-' ? 
+                    {priceChange < 0 || priceChange[0] === '-' ? 
                     <div className="price-change-down">
                         <div className="price-change">{currentPrice} ▼{Math.abs(pricePointChange)} ({Math.abs(priceChange)}%)</div>
                     </div> : 

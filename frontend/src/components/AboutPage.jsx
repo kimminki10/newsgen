@@ -41,7 +41,6 @@ const AboutPage = () => {
   const fetchArticles = async () => {
     try {
       const response = await axios.get("/api/article/");
-      console.log(response.data.results);
       setArticles(response.data.results);
     } catch (error) {
       console.error("Error fetching articles:", error);
@@ -51,7 +50,6 @@ const AboutPage = () => {
   const fetchTicker = async () => {
     try {
       const response = await axios.get(`/api/ticker/`);
-      console.log(response.data);
       setTickers(response.data.tickers);
     } catch (error) {
       console.error("Error fetching ticker:", error);
