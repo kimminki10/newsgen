@@ -19,7 +19,7 @@ def upload_tts(file_path: str, blob_file_name: str) -> str:
         blob_client = blob_service_client.get_blob_client(container=container_name, blob=blob_file_name)
         print("\nUploading to Azure Storage as blob:\n\t" + upload_file_path)
         # Upload the created file
-        with open(file=f"journalist/{blob_file_name}", mode="rb") as data:
+        with open(file=upload_file_path, mode="rb") as data:
             blob_client.upload_blob(data)
             return f"https://newsttsstorage.blob.core.windows.net/tts-files/{blob_file_name}"
     except Exception as ex:
