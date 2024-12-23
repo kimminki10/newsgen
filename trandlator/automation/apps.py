@@ -61,7 +61,9 @@ class TrandlatorConfig(AppConfig):
         from apscheduler.schedulers.background import BackgroundScheduler
         from apscheduler.executors.pool import ThreadPoolExecutor
         from apscheduler.triggers.interval import IntervalTrigger
+        
         from django_apscheduler.jobstores import DjangoJobStore, register_events
+        from apscheduler.jobstores.memory import MemoryJobStore
         from apscheduler.triggers.cron import CronTrigger
  
 
@@ -75,6 +77,7 @@ class TrandlatorConfig(AppConfig):
         print("Registering new job...")
 
         kst = pytz.timezone('Asia/Seoul')
+       
         # (실행할 함수,job id, 타이머, 서버 실행시 즉시 실행 한번 할지 여부 )
         schedulers =[
             (scheduled_ticker,"scheduled_ticker",CronTrigger(hour=23, minute=30, timezone=kst)), #미국장 시작 11:30  pm (한국시간)
@@ -89,8 +92,9 @@ class TrandlatorConfig(AppConfig):
         # Scheduler 생성
         for func,now_job_id,trigger in schedulers:
             scheduler = BackgroundScheduler(
+                
                 jobstores={
-                    'default': DjangoJobStore(),
+                    'default': MemoryJobStore(),
                 },
                 executors={
                     'default': ThreadPoolExecutor(20),
