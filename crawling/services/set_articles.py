@@ -43,12 +43,12 @@ def create_article(content):
     return results
 
 
-def add_new_articles():
+def add_new_articles(isAdmin=True):
     article_lists = crawl_article_data()
     print(f'crawled article lists: {article_lists[:3]}')
     count = 0
     for article in article_lists:
-        if is_job_registered("scheduled_automate") == False:
+        if isAdmin == False and is_job_registered("scheduled_automate") == False:
             #스케줄러 강제 종료시 반목분 종료 코드
             print("Job already registered. scheduled_Article.")
             break

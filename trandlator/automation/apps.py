@@ -26,7 +26,7 @@ def scheduled_Article():
     
     register_job("scheduled_automate")
     print("--scheduled_Article--")
-    add_new_articles()
+    add_new_articles(isAdmin=False)
     print("--scheduled_Article End--")
     unregister_job("scheduled_automate")
 
