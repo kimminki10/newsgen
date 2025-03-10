@@ -46,6 +46,7 @@ INSTALLED_APPS = [
     'corsheaders',
     'trandlator.automation',
     'rest_framework',
+    'drf_yasg',
     'django_apscheduler',
     'user',
 ]

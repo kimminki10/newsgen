@@ -10,6 +10,7 @@ from django.conf import settings
 from rest_framework.response import Response
 from rest_framework import permissions
 from rest_framework import status
+from drf_yasg.utils import swagger_auto_schema
 import uuid
 
 
@@ -29,6 +30,11 @@ def send_verification_email(t, email, url):
 class UserCreateView(generics.CreateAPIView):
     queryset = User.objects.all()
     serializer_class = UserSerializer
+
+    @swagger_auto_schema(
+        operation_description="Create a new user",
+        responses={201: UserSerializer}
+    )
 
     def create(self, request, *args, **kwargs):
         response = super().create(request, *args, **kwargs)
