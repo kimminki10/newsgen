@@ -1,6 +1,6 @@
 from django.contrib import admin
 from django.urls import path
-from trandlator.view.UserView import (UserCreateView, 
+from user.views import (UserCreateView, 
                                       UserSendMail, 
                                       UserVerifyEmail, 
                                       ResetPassword, 
@@ -14,7 +14,7 @@ from rest_framework_simplejwt.views import TokenObtainPairView, TokenRefreshView
 urlpatterns = [
     #path('', test, name='home'),  # 루트 경로 ("/")
     path('admin/', admin.site.urls),  # Django 관리자 페이지
-    path('user/', UserCreateView.as_view(), name='user'),
+    path('user/', UserCreateView.as_view(), name='user-create'),
     path('user/update/', UserTickerUpdate.as_view(), name='user_tickers_update'),
     path('user/verify_email/<str:token>/', UserVerifyEmail.as_view(), name='verify_email'),
     path('user/resend_verification/', UserCreateView.as_view(), name='resend_verification'),

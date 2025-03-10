@@ -2,7 +2,8 @@ from django.contrib import admin
 from django.http import HttpResponseRedirect
 from django.urls import reverse
 from django.utils.html import format_html
-from .models import Article, Ticker, User
+from .models import Article, Ticker
+from user.models import User
 from django.urls import path
 from crawling.services.set_tickers import add_new_tickers
 from crawling.services.set_articles import add_new_articles

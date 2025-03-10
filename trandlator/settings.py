@@ -46,7 +46,8 @@ INSTALLED_APPS = [
     'corsheaders',
     'trandlator.automation',
     'rest_framework',
-    'django_apscheduler'
+    'django_apscheduler',
+    'user',
 ]
 
 LOGGING = {
@@ -173,7 +174,7 @@ STATIC_URL = 'static/'
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
-AUTH_USER_MODEL = 'trandlator.User'
+AUTH_USER_MODEL = 'user.User'
 
 REST_FRAMEWORK = {
     'DEFAULT_AUTHENTICATION_CLASSES': [

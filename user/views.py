@@ -1,6 +1,7 @@
 from rest_framework import generics
-from trandlator.models import User, Ticker
-from trandlator.controller.UserSerialize import UserSerializer
+from trandlator.models import Ticker
+from user.models import User
+from .serializer import UserSerializer
 from trandlator.controller.TickerSerialize import TickerSerializer
 from trandlator.controller.TickerSerialize import TickerNameSerializer
 from django.core.cache import cache

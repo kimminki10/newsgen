@@ -12,7 +12,8 @@ from django.db import transaction
 # # Step 3: Initialize Django
 # django.setup()
 
-from trandlator.models import User, Article, Ticker
+from trandlator.models import Article, Ticker
+from user.models import User
 from trandlator.controller.TickerSerialize import TickerNoArticleSerializer, TickerNameSerializer
 from trandlator.controller.ArticleSerializer import ArticleSerializer
 
