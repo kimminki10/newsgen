@@ -44,11 +44,12 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'corsheaders',
-    'trandlator.automation',
+    'trandlator',
     'rest_framework',
     'drf_yasg',
     'django_apscheduler',
     'user',
+    'django_celery_beat',
 ]
 
 LOGGING = {
@@ -193,3 +194,16 @@ EMAIL_USE_TLS = config('EMAIL_USE_TLS')
 EMAIL_HOST_USER = config('EMAIL_HOST_USER')
 EMAIL_HOST_PASSWORD = config('EMAIL_HOST_PASSWORD')
 HOST_NAME = config('HOST_NAME')
+
+# google api settings
+GOOGLE_API_KEY = config('GOOGLE_API_KEY')
+
+CELERY_BROKER_URL = 'redis://localhost:6379/0'  # Redis를 브로커로 사용
+CELERY_RESULT_BACKEND = 'redis://localhost:6379/0'
+CELERY_ACCEPT_CONTENT = ['application/json']
+CELERY_TASK_SERIALIZER = 'json'
+CELERY_RESULT_SERIALIZER = 'json'
+CELERY_TIMEZONE = 'Asia/Seoul'  # 한국 시간대로 설정
+
+# Beat 스케줄 설정
+CELERY_BEAT_SCHEDULER = 'django_celery_beat.schedulers:DatabaseScheduler'
