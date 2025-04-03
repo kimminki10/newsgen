@@ -3,8 +3,8 @@ from rest_framework.response import Response
 from rest_framework import status
 from rest_framework import generics
 from django.core.exceptions import ObjectDoesNotExist
-from ..models import Ticker
-from ..controller.TickerSerialize import TickerSerializer
+from .models import Ticker
+from .serializer import TickerSerializer
 
 
 class TickerView(APIView):

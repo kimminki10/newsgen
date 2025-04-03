@@ -1,8 +1,8 @@
 from rest_framework.generics import ListCreateAPIView
-from trandlator.controller.ArticleSerializer import ArticleSerializer
 from rest_framework.permissions import IsAuthenticated
-from trandlator.models import Article
 from rest_framework.pagination import CursorPagination
+from .models import Article
+from .serializer import ArticleSerializer
 
 class ArticleCursorPagination(CursorPagination):
     page_size = 10

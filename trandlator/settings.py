@@ -48,8 +48,10 @@ INSTALLED_APPS = [
     'rest_framework',
     'drf_yasg',
     'django_apscheduler',
-    'user',
     'django_celery_beat',
+    'user',
+    'article',
+    'ticker',
 ]
 
 LOGGING = {

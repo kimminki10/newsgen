@@ -1,6 +1,6 @@
 from django.db import models
 from django.contrib.auth.models import AbstractBaseUser, BaseUserManager
-from trandlator.models import Ticker
+from ticker.models import Ticker
 # Create your models here.
 
 

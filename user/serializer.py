@@ -1,6 +1,6 @@
 from .models import User
 from rest_framework import serializers
-from trandlator.controller.TickerSerialize import TickerSerializer
+from ticker.serializer import TickerSerializer
 
 class UserSerializer(serializers.ModelSerializer):
     tickers = TickerSerializer(many=True, read_only=True)

@@ -17,7 +17,7 @@ class UserTest(TestCase):
             'mail_timeSlot': 'onceDay',
             'mail_newsCount': 'oneNews'
         }
-        self.url = reverse('user-create')  # URL 이름을 실제 프로젝트에 맞게 수정하세요
+        self.url = reverse('user-create')
     
     def test_user_model_create(self):
         """User 모델 생성 테스트"""

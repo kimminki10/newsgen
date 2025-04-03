@@ -1,7 +1,7 @@
 from contextlib import contextmanager
 from celery import shared_task
 
-from trandlator.models import Article
+from article.models import Article
 
 from playwright.sync_api import sync_playwright
 from playwright.sync_api import Page
@@ -113,11 +113,11 @@ def parse_yahoo_article(url: str):
 def crawl_finviz() -> List[NewsItem]:
     with get_browser() as page:
         page.goto("https://finviz.com/news.ashx?v=3")
-        page.wait_for_selector('.news_table-row')
         html_content = page.content()
         news_items = parse_news_html(html_content)
         # Print the parsed news items
         return news_items
+        
     return []
 
 
