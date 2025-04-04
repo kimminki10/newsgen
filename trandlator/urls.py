@@ -1,14 +1,5 @@
 from django.contrib import admin
 from django.urls import path, include
-from user.views import (UserCreateView, 
-                                      UserSendMail, 
-                                      UserVerifyEmail, 
-                                      ResetPassword, 
-                                      ChangePassword,
-                                      UserTickerUpdate,
-                                      UserDetailView)
-from ticker.views import TickerView, TickerDetailView
-from article.views import ArticleView
 from rest_framework_simplejwt.views import TokenObtainPairView, TokenRefreshView
 
 from rest_framework import permissions

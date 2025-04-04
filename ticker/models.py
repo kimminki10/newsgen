@@ -12,6 +12,7 @@ class Ticker(models.Model):
     percentage_diff = models.FloatField(default=0)
     last_price_date = models.DateTimeField(default=timezone.now, blank=True)
     before_last_date = models.DateTimeField(default=timezone.now, blank=True)
+    created = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
         return self.ticker_name
