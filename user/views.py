@@ -60,6 +60,7 @@ class UserTickers(generics.ListAPIView):
         return Response(serializer.data)
     
 class UserSendMail(generics.GenericAPIView):
+    serializer_class = UserSerializer
     permission_classes = [permissions.IsAuthenticated]
 
     def post(self, request):
@@ -96,6 +97,8 @@ class UserTickerUpdate(generics.UpdateAPIView):
     
 
 class ResetPassword(generics.GenericAPIView):
+    serializer_class = UserSerializer
+
     def post(self, request):
         email = request.data['email']
         user = User.objects.get(email=email)
@@ -104,6 +107,8 @@ class ResetPassword(generics.GenericAPIView):
 
 
 class UserVerifyEmail(generics.GenericAPIView):
+    serializer_class = UserSerializer
+
     def get(self, request, token):
         token_value = cache.get(token)
         if token_value is None or token_value['type'] != 'email':
@@ -116,6 +121,8 @@ class UserVerifyEmail(generics.GenericAPIView):
         return Response({'message': 'Email verified'}, status=status.HTTP_200_OK)
 
 class ChangePassword(generics.GenericAPIView):
+    serializer_class = UserSerializer
+
     def post(self, request, token):
         token_value = cache.get(token)
         if token_value is None or token_value['type'] != 'password':
